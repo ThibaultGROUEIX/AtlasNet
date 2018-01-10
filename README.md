@@ -21,30 +21,28 @@ If you find this work useful in your research, please consider citing:
 
 The project page is available at : TODO
 
-##Install
+## Install
 
-This implementation uses [Pytorch v1.12](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on the latest version of [Pytorch](http://pytorch.org/) because of some retro compatibility issues.
-
-If one wants to use the demo, it's not an issue, though, if one wants to train the networks, on has the install the right version of [Pytorch](http://pytorch.org/).
+This implementation uses [Pytorch](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on [Pytorch v2](http://pytorch.org/) because of some weird error with the batch norm layers. It has been tested on v1.12, v3 and the latest sources available to date. TODO : update specfiles
 
 ```shell
 ## Download the repository
 git clone git@github.com:ThibaultGROUEIX/PointSetGen-pytorch.git
-conda create --name pytorch-meshnet --file spec-file.txt
-source activate pytorch-meshnet
+conda create --name pytorch-atlasnet --file spec-file.txt
+source activate pytorch-atlasnet
 ```
 
 ## Data and Trained models
 
 We used the [ShapeNet](https://www.shapenet.org/) dataset for 3D models, and rendered views from [3D-R2N2](https://github.com/chrischoy/3D-R2N2):
 
-To download the data, just run :
+* [The point clouds from ShapeNet, with normals](https://mega.nz/#!9LhW2CxT!A9d45cri4q8q10HfukUV_cy7J1lbWTFQtw7DKJlZKKAhttps://mega.nz/#!9LhW2CxT!A9d45cri4q8q10HfukUV_cy7J1lbWTFQtw7DKJlZKKA)
+* [The corresponding normalized mesh (for the metro distance)](https://mega.nz/#!leAFEK5T!SDrcll-caO4p8ws7zDNKPpjNNWEMcf9AQ-rmR79t_OA)
+* [the rendered views](https://mega.nz/#!4TgzCYTB!ACfHTD9VpUSUYYwI75k-GrSdqMH19jK0-CwBg1wKH08)
 
-```shell
-./scripts/download_data.sh
-```
+The trained models and some corresponding results are also available online :
 
-
+* trained_models (TODO)
 
 ## Demo
 
@@ -52,18 +50,41 @@ To download the data, just run :
 ./scripts/demo_SVR.sh
 ```
 
- Here show some results
+ TODO : Here show some results
 
 
 
 ## Train
 
-```shell
-./scripts/train_SVR.sh
+* First launch a visdom server :
+
+```bash
+python -m visdom.server -p 8888
 ```
 
+* Launch the training
 
+```shell
+export CUDA_VISIBLE_DEVICES=0 #whichever you want
+source activate pytorch-atlasnet
+git pull
+env=AE_AtlasNet
+nb_primitives=25
+python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives |& tee ${env}.txt
+```
+
+* Monitor your training on http://localhost:8888/
+
+  TODO : add pictures from visdom
+
+* Compute some results with your trained model
+
+  ```bash
+  python ./inference/run_AE_AtlasNet.py
+  ```
+
+  ​
 
 ## License
 
-TODO
+[MIT]()
