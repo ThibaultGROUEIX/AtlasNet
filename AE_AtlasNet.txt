@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "./training/train_AE_AtlasNet.py", line 16, in <module>
+    from aux.dataset import *
+ImportError: No module named aux.dataset

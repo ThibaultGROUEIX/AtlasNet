@@ -1,0 +1,7 @@
+*pyc
+*/*pyc
+*/*/*pyc
+*2017*
+*/*pth
+trained_models/*
+log/*
