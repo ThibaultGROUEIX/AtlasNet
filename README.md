@@ -1,6 +1,8 @@
-# PointSetGen-pytorch
+# AtlasNet
 
 This repository contains the source codes for the paper [A Papier-Mâché Approach to Learning Mesh Synthesis](). The network is able to synthesize a mesh (point cloud + connectivity) from a low-resolution point cloud, or from an image.
+
+​	TODO : add cool gifs
 
 ## Citing this work
 
@@ -65,7 +67,7 @@ python -m visdom.server -p 8888
 * Launch the training
 
 ```shell
-export CUDA_VISIBLE_DEVICES=0 #whichever you want
+git addexport CUDA_VISIBLE_DEVICES=0 #whichever you want
 source activate pytorch-atlasnet
 git pull
 env=AE_AtlasNet
@@ -83,8 +85,6 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
   python ./inference/run_AE_AtlasNet.py
   ```
 
-  ​
-
 ## License
 
-[MIT]()
+[MIT](https://github.com/ThibaultGROUEIX/AtlasNet/blob/master/license_MIT)
