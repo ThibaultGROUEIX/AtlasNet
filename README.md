@@ -77,7 +77,7 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
 
 * Monitor your training on http://localhost:8888/
 
-![img](file:///home/thibault/Pictures/visdom.png?lastModify=1515667390)
+![visdom](pictures/visdom.png)
 
 
 * Compute some results with your trained model
