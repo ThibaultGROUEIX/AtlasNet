@@ -1,6 +1,6 @@
 # AtlasNet
 
-This repository contains the source codes for the paper [A Papier-Mâché Approach to Learning Mesh Synthesis](). The network is able to synthesize a mesh (point cloud + connectivity) from a low-resolution point cloud, or from an image.
+This repository contains the source codes for the paper [A Papier-Mâché Approach to Learning Mesh Synthesis](http://imagine.enpc.fr/~groueixt/atlasnet/). The network is able to synthesize a mesh (point cloud + connectivity) from a low-resolution point cloud, or from an image.
 
 ​	TODO : add cool gifs
 
@@ -38,9 +38,9 @@ source activate pytorch-atlasnet
 
 We used the [ShapeNet](https://www.shapenet.org/) dataset for 3D models, and rendered views from [3D-R2N2](https://github.com/chrischoy/3D-R2N2):
 
-* [The point clouds from ShapeNet, with normals](https://mega.nz/#!9LhW2CxT!A9d45cri4q8q10HfukUV_cy7J1lbWTFQtw7DKJlZKKAhttps://mega.nz/#!9LhW2CxT!A9d45cri4q8q10HfukUV_cy7J1lbWTFQtw7DKJlZKKA) goes in ``` data/customShapeNet```
-* [The corresponding normalized mesh (for the metro distance)](https://mega.nz/#!leAFEK5T!SDrcll-caO4p8ws7zDNKPpjNNWEMcf9AQ-rmR79t_OA) goes in ``` data/ShapeNetCorev2Normalized```
-* [the rendered views](https://mega.nz/#!4TgzCYTB!ACfHTD9VpUSUYYwI75k-GrSdqMH19jK0-CwBg1wKH08) goes in ``` data/ShapeNetRendering```
+* [The point clouds from ShapeNet, with normals](https://mega.nz/#!9LhW2CxT!A9d45cri4q8q10HfukUV_cy7J1lbWTFQtw7DKJlZKKAhttps://mega.nz/#!9LhW2CxT!A9d45cri4q8q10HfukUV_cy7J1lbWTFQtw7DKJlZKKA) go in ``` data/customShapeNet```
+* [The corresponding normalized mesh (for the metro distance)](https://mega.nz/#!leAFEK5T!SDrcll-caO4p8ws7zDNKPpjNNWEMcf9AQ-rmR79t_OA) go in ``` data/ShapeNetCorev2Normalized```
+* [the rendered views](https://mega.nz/#!4TgzCYTB!ACfHTD9VpUSUYYwI75k-GrSdqMH19jK0-CwBg1wKH08) go in ``` data/ShapeNetRendering```
 
 The trained models and some corresponding results are also available online :
 
@@ -77,7 +77,8 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
 
 * Monitor your training on http://localhost:8888/
 
-  TODO : add pictures from visdom
+![img](file:///home/thibault/Pictures/visdom.png?lastModify=1515667390)
+
 
 * Compute some results with your trained model
 
