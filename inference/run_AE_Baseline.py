@@ -13,10 +13,12 @@ import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 from torch.autograd import Variable
-from aux.dataset import *
-from aux.model import *
-from aux.utils import *
-from aux.ply import *
+import sys
+sys.path.append('./aux/')
+from dataset import *
+from model import *
+from utils import *
+from ply import *
 import torch.nn.functional as F
 import sys
 from tqdm import tqdm
@@ -75,21 +77,14 @@ print(network)
 train_loss = AverageValueMeter()
 val_loss = AverageValueMeter()
 metro_PMA_loss = AverageValueMeter()
-metro_PSR_loss = AverageValueMeter()
 
 network.eval()
-grain = int(np.sqrt(opt.gen_points/opt.nb_primitives))-1
-grain = grain*1.0
-print(grain)
 
 #reset meters
 val_loss.reset()
-metro_PSR_loss.reset()
 metro_PMA_loss.reset()
 for item in dataset_test.cat:
     dataset_test.perCatValueMeter[item].reset()
-for item in dataset_test.cat:
-    dataset_test.perCatValueMeter_metro[item].reset()
 
 results = dataset_test.cat.copy()
 for i in results:
@@ -105,7 +100,7 @@ for i, data in enumerate(dataloader_test, 0):
     points = Variable(points)
     points = points.transpose(2,1).contiguous()
     points = points.cuda()
-    pointsReconstructed  = network.forward_inference(points, grid)
+    pointsReconstructed  = network.forward(points)
     dist1, dist2 = distChamfer(points.transpose(2,1).contiguous(), pointsReconstructed)
     loss_net = ((torch.mean(dist1) + torch.mean(dist2)))
     val_loss.update(loss_net.data[0])
@@ -130,14 +125,12 @@ for i, data in enumerate(dataloader_test, 0):
 
 log_table = {
   "metro_PMA_loss" : metro_PMA_loss.avg,
-  "metro_PSR_loss" : metro_PSR_loss.avg,
   "val_loss" : val_loss.avg,
   "gen_points" : opt.gen_points,
 }
 for item in dataset_test.cat:
     print(item, dataset_test.perCatValueMeter[item].avg)
     log_table.update({item: dataset_test.perCatValueMeter[item].avg})
-    log_table.update({item+"metro": dataset_test.perCatValueMeter_metro[item].avg})
 print(log_table)
 
 with open('stats.txt', 'a') as f: #open and append

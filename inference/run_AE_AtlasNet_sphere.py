@@ -13,10 +13,12 @@ import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 from torch.autograd import Variable
-from aux.dataset import *
-from aux.model import *
-from aux.utils import *
-from aux.ply import *
+import sys
+sys.path.append('./aux/')
+from dataset import *
+from model import *
+from utils import *
+from ply import *
 import torch.nn.functional as F
 import sys
 from tqdm import tqdm
@@ -76,7 +78,6 @@ print(network)
 train_loss = AverageValueMeter()
 val_loss = AverageValueMeter()
 metro_PMA_loss = AverageValueMeter()
-metro_PSR_loss = AverageValueMeter()
 
 network.eval()
 
@@ -84,11 +85,8 @@ network.eval()
 #reset meters
 val_loss.reset()
 metro_PSR_loss.reset()
-metro_PMA_loss.reset()
 for item in dataset_test.cat:
     dataset_test.perCatValueMeter[item].reset()
-for item in dataset_test.cat:
-    dataset_test.perCatValueMeter_metro[item].reset()
 
 #generate regular grid
 #load vertex and triangles
@@ -140,13 +138,11 @@ for i, data in enumerate(dataloader_test, 0):
 
 log_table = {
   "metro_PMA_loss" : metro_PMA_loss.avg,
-  "metro_PSR_loss" : metro_PSR_loss.avg,
   "val_loss" : val_loss.avg,
 }
 for item in dataset_test.cat:
     print(item, dataset_test.perCatValueMeter[item].avg)
     log_table.update({item: dataset_test.perCatValueMeter[item].avg})
-    log_table.update({item+"metro": dataset_test.perCatValueMeter_metro[item].avg})
 print(log_table)
 
 with open('stats.txt', 'a') as f: #open and append

@@ -13,10 +13,12 @@ import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 from torch.autograd import Variable
-from aux.dataset import *
-from aux.model import *
-from aux.utils import *
-from aux.ply import *
+import sys
+sys.path.append('./aux/')
+from dataset import *
+from model import *
+from utils import *
+from ply import *
 import torch.nn.functional as F
 import sys
 from tqdm import tqdm

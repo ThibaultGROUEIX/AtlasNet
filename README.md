@@ -21,11 +21,11 @@ If you find this work useful in your research, please consider citing:
 
 ## Project Page
 
-The project page is available at : TODO
+The project page is available http://imagine.enpc.fr/~groueixt/atlasnet/
 
 ## Install
 
-This implementation uses [Pytorch](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on [Pytorch v2](http://pytorch.org/) because of some weird error with the batch norm layers. It has been tested on v1.12, v3 and the latest sources available to date. TODO : update specfiles
+This implementation uses [Pytorch](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on [Pytorch v2](http://pytorch.org/) because of some weird error with the batch norm layers. It has been tested on v1.12, v3 and the latest sources available to date. TODO : update spec-files
 
 ```shell
 ## Download the repository
@@ -64,7 +64,7 @@ The trained models and some corresponding results are also available online :
 python -m visdom.server -p 8888
 ```
 
-* Launch the training
+* Launch the training. Check out all the options in ```./training/train_AE_AtlasNet.py``` .
 
 ```shell
 git addexport CUDA_VISIBLE_DEVICES=0 #whichever you want
@@ -85,6 +85,33 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
   ```bash
   python ./inference/run_AE_AtlasNet.py
   ```
+  The trained models accessible [here](TODO) have the following performances, slightly better than the one reported in [the paper](TODO). The number reported is the chamfer distance.
+
+| val_loss   | 0.0014795344685297894 |
+| ---------- | --------------------- |
+| watercraft | 0.00127737027906      |
+| monitor    | 0.0016588120616       |
+| car        | 0.00152693425022      |
+| couch      | 0.00171516126198      |
+| cabinet    | 0.00168296881168      |
+| lamp       | 0.00232362473947      |
+| plane      | 0.000833268054194     |
+| speaker    | 0.0025417242402       |
+| table      | 0.00149979386376      |
+| chair      | 0.00156113364435      |
+| bench      | 0.00120812499892      |
+| firearm    | 0.000626943988977     |
+| cellphone  | 0.0012117530635       |
+
+
+
+* Evaluate quantitatively the reconstructed meshes : [METRO DISTANCE](https://github.com/RobotLocomotion/meshConverters/tree/master/vcglib/apps/metro)
+
+## Acknowledgement
+
+The code for the Chamfer Loss was taken from Fei Xia'a repo : [PointGan](https://github.com/fxia22/pointGAN). Many thanks to him !
+
+This work was funded by [Adobe System](https://github.com/fxia22/pointGAN) and [Ecole Doctorale MSTIC](http://www.univ-paris-est.fr/fr/-ecole-doctorale-mathematiques-et-stic-mstic-ed-532/).
 
 ## License
 

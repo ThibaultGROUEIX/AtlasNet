@@ -13,12 +13,13 @@ import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 from torch.autograd import Variable
-from aux.dataset import *
-from aux.model import *
-from aux.utils import *
-from aux.ply import *
-import torch.nn.functional as F
 import sys
+sys.path.append('./aux/')
+from dataset import *
+from model import *
+from utils import *
+from ply import *
+import torch.nn.functional as F
 from tqdm import tqdm
 import os
 import json
@@ -40,7 +41,7 @@ parser.add_argument('--workers', type=int, help='number of data loading workers'
 parser.add_argument('--nepoch', type=int, default=50000, help='number of epochs to train for')
 parser.add_argument('--model', type=str, default = 'trained_models/ae_atlas_25.pth',  help='yuor path to the trained model')
 parser.add_argument('--num_points', type=int, default = 2500,  help='number of points fed to poitnet')
-parser.add_argument('--gen_points', type=int, default = 30000,  help='number of points to generate')
+parser.add_argument('--gen_points', type=int, default = 30000,  help='number of points to generate, put 30000 for high quality mesh, 2500 for quantitative comparison with the baseline')
 parser.add_argument('--nb_primitives', type=int, default = 25,  help='number of primitives')
 
 opt = parser.parse_args()
@@ -76,7 +77,6 @@ print(network)
 train_loss = AverageValueMeter()
 val_loss = AverageValueMeter()
 metro_PMA_loss = AverageValueMeter()
-metro_PSR_loss = AverageValueMeter()
 
 network.eval()
 grain = int(np.sqrt(opt.gen_points/opt.nb_primitives))-1
@@ -85,12 +85,9 @@ print(grain)
 
 #reset meters
 val_loss.reset()
-metro_PSR_loss.reset()
 metro_PMA_loss.reset()
 for item in dataset_test.cat:
     dataset_test.perCatValueMeter[item].reset()
-for item in dataset_test.cat:
-    dataset_test.perCatValueMeter_metro[item].reset()
 
 #generate regular grid
 faces = []
@@ -164,14 +161,12 @@ for i, data in enumerate(dataloader_test, 0):
 
 log_table = {
   "metro_PMA_loss" : metro_PMA_loss.avg,
-  "metro_PSR_loss" : metro_PSR_loss.avg,
   "val_loss" : val_loss.avg,
   "gen_points" : opt.gen_points,
 }
 for item in dataset_test.cat:
     print(item, dataset_test.perCatValueMeter[item].avg)
     log_table.update({item: dataset_test.perCatValueMeter[item].avg})
-    log_table.update({item+"metro": dataset_test.perCatValueMeter_metro[item].avg})
 print(log_table)
 
 with open('stats.txt', 'a') as f: #open and append
