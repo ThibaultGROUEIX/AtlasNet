@@ -36,17 +36,18 @@ best_val_loss = 10
 parser = argparse.ArgumentParser()
 parser.add_argument('--batchSize', type=int, default=32, help='input batch size')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=6)
-parser.add_argument('--nepoch', type=int, default=50000, help='number of epochs to train for')
-parser.add_argument('--model_preTrained_AE', type=str, default = 'trained_models/ae_sphere.pth',  help='model path')
+parser.add_argument('--nepoch', type=int, default=400, help='number of epochs to train for')
+parser.add_argument('--model_preTrained_AE', type=str, default = 'trained_models/ae_atlasnet_sphere.pth',  help='model path')
 parser.add_argument('--model', type=str, default = '',  help='model path')
 parser.add_argument('--num_points', type=int, default = 2500,  help='number of points')
 parser.add_argument('--nb_primitives', type=int, default = 1,  help='number of primitives')
-parser.add_argument('--env', type=str, default ="main"   ,  help='size of the bottleneck')
-parser.add_argument('--fix_decoder', type=bool, default = False   ,  help='size of the bottleneck')
+parser.add_argument('--env', type=str, default ="main"   ,  help='visdom env')
+parser.add_argument('--fix_decoder', type=bool, default = True   ,  help='if set to True, on the the resnet encoder is trained')
 
 opt = parser.parse_args()
 print (opt)
 
+#Launch visdom for visualization
 vis = visdom.Visdom(port = 8888, env=opt.env)
 now = datetime.datetime.now()
 save_path = now.isoformat()
@@ -62,6 +63,7 @@ print("Random Seed: ", opt.manualSeed)
 random.seed(opt.manualSeed)
 torch.manual_seed(opt.manualSeed)
 
+#Create train/test dataloader on new views and test dataset on new models
 
 dataset = ShapeNet( SVR=True, normal = False, class_choice = None, train=True)
 dataloader = torch.utils.data.DataLoader(dataset, batch_size=opt.batchSize,

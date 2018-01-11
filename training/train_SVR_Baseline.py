@@ -36,17 +36,17 @@ best_val_loss = 10
 parser = argparse.ArgumentParser()
 parser.add_argument('--batchSize', type=int, default=32, help='input batch size')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=6)
-parser.add_argument('--nepoch', type=int, default=50000, help='number of epochs to train for')
-parser.add_argument('--model_preTrained_AE', type=str, default = 'trained_models/ae_baseline.pth',  help='model path')
-parser.add_argument('--model', type=str, default = '',  help='model path')
-parser.add_argument('--num_points', type=int, default = 2500,  help='number of points')
-parser.add_argument('--nb_primitives', type=int, default = 1,  help='number of primitives')
-parser.add_argument('--env', type=str, default ="main"   ,  help='size of the bottleneck')
-parser.add_argument('--fix_decoder', type=bool, default = False   ,  help='size of the bottleneck')
+parser.add_argument('--nepoch', type=int, default=400, help='number of epochs to train for')
+parser.add_argument('--model_preTrained_AE', type=str, default = 'trained_models/ae_baseline.pth',  help='model path for fixed decoder')
+parser.add_argument('--model', type=str, default = '',  help='model path for pretraining')
+parser.add_argument('--num_points', type=int, default = 2500,  help='number of generated points')
+parser.add_argument('--env', type=str, default ="main"   ,  help='visdom env')
+parser.add_argument('--fix_decoder', type=bool, default = False   ,  help='if set to True, on the the resnet encoder is trained')
 
 opt = parser.parse_args()
 print (opt)
 
+#Launch visdom for visualization
 vis = visdom.Visdom(port = 8888, env=opt.env)
 now = datetime.datetime.now()
 save_path = now.isoformat()
@@ -62,6 +62,7 @@ print("Random Seed: ", opt.manualSeed)
 random.seed(opt.manualSeed)
 torch.manual_seed(opt.manualSeed)
 
+#Create train/test dataloader on new views and test dataset on new models
 
 dataset = ShapeNet( SVR=True, normal = False, class_choice = None, train=True)
 dataloader = torch.utils.data.DataLoader(dataset, batch_size=opt.batchSize,
@@ -82,7 +83,7 @@ print('testing set', len(dataset_test.datapath))
 cudnn.benchmark = True
 len_dataset = len(dataset)
 
-# LOAD Pretrained autoencoder and check its performance on testing set
+# load Pretrained autoencoder and check its performance on testing set
 network_preTrained_autoencoder = AE_Baseline(num_points = opt.num_points)
 network_preTrained_autoencoder.cuda()
 network_preTrained_autoencoder.load_state_dict(torch.load(opt.model_preTrained_AE ))
@@ -152,10 +153,6 @@ val_curve_new_views_same_model = vis.line(
 trainloss_acc0 = 1e-9
 trainloss_accs = 0
 
-labels_generated_points = torch.Tensor(range(1, (opt.nb_primitives+1)*(opt.num_points/opt.nb_primitives)+1)).view(opt.num_points/opt.nb_primitives,(opt.nb_primitives+1)).transpose(0,1)
-labels_generated_points = (labels_generated_points)%(opt.nb_primitives+1)
-labels_generated_points = labels_generated_points.contiguous().view(-1)
-print(labels_generated_points)
 
 for epoch in range(opt.nepoch):
     #TRAIN MODE
@@ -190,7 +187,6 @@ for epoch in range(opt.nepoch):
                         ),
                     )
             vis.scatter(X = pointsReconstructed[0].data.cpu(),
-                    Y = labels_generated_points[0:pointsReconstructed.size(1)],
                     win = 'FAKE_TRAIN',
                     opts = dict(
                         title="FAKE_TRAIN",
@@ -235,7 +231,6 @@ for epoch in range(opt.nepoch):
                             ),
                         )
                 vis.scatter(X = pointsReconstructed[0].data.cpu(),
-                        Y = labels_generated_points[0:pointsReconstructed.size(1)],
                         win = 'FAKE_CHAIR',
                         opts = dict(
                             title = "FAKE_CHAIR",
@@ -282,7 +277,6 @@ for epoch in range(opt.nepoch):
                         ),
                     )
             vis.scatter(X = pointsReconstructed[0].data.cpu(),
-                    Y = labels_generated_points[0:pointsReconstructed.size(1)],
                     win = 'FAKE_CHAIR',
                     opts = dict(
                         title = "FAKE_CHAIR",
