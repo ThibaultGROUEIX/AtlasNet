@@ -35,8 +35,14 @@ sys.path.append("./nndistance/")
 from modules.nnd import NNDModule
 distChamfer =  NNDModule()
 
+###############################################################
+# This script takes as input a 137 * 137 image (from ShapeNet), run it through a trained resnet encoder, then decode it through a trained atlasnet with 25 learned parameterizations, and save the output to output.ply
+
+###############################################################
+
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--input', type=str, default="data/plane_input_demo.png", help='input image')
 parser.add_argument('--batchSize', type=int, default=1, help='input batch size')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=6)
 parser.add_argument('--model', type=str, default = 'trained_models/svr_sphere.pth',  help='your path to the trained model')
@@ -55,13 +61,8 @@ random.seed(opt.manualSeed)
 torch.manual_seed(opt.manualSeed)
 
 
-dataset_test = ShapeNet( SVR=True, normal = False, class_choice = None, train=False)
-dataloader_test = torch.utils.data.DataLoader(dataset_test, batch_size=1,
-                                          shuffle=False, num_workers=int(opt.workers))
 
-print('testing set', len(dataset_test.datapath))
 cudnn.benchmark = True
-len_dataset = len(dataset_test)
 
 network = SVR_AtlasNet(num_points = opt.num_points, nb_primitives = opt.nb_primitives)
 network.cuda()
@@ -71,23 +72,10 @@ if opt.model != '':
     network.load_state_dict(torch.load(opt.model))
     print("previous weight loaded")
 
-print(network)
-
-
-train_loss = AverageValueMeter()
-val_loss = AverageValueMeter()
-metro_PMA_loss = AverageValueMeter()
-
 network.eval()
 grain = int(np.sqrt(opt.gen_points/opt.nb_primitives))-1
 grain = grain*1.0
 print(grain)
-
-#reset meters
-val_loss.reset()
-metro_PMA_loss.reset()
-for item in dataset_test.cat:
-    dataset_test.perCatValueMeter[item].reset()
 
 #generate regular grid
 faces = []
@@ -120,57 +108,35 @@ for i in range(opt.nb_primitives):
 print(grid_pytorch)
 print("grain", grain, 'number vertices', len(vertices)*opt.nb_primitives)
 
-results = dataset_test.cat.copy()
-for i in results:
-    results[i] = 0
+
+#prepare the input data
+from PIL import Image
+import torchvision.transforms as transforms
+
+my_transforms = transforms.Compose([
+                 transforms.CenterCrop(127),
+                 transforms.Scale(size =  224, interpolation = 2),
+                 transforms.ToTensor(),
+                 # normalize,
+            ])
 
 
-#Iterate on the data
-for i, data in enumerate(dataloader_test, 0):
-    img, points, cat , objpath, fn = data
-    img = Variable(img)
-    img = img.cuda()
-    cat = cat[0]
-    fn = fn[0]
-    results[cat] = results[cat] + 1
-    points = Variable(points)
-    points = points.cuda()
-
-    pointsReconstructed  = network.forward_inference(img, grid)
-    dist1, dist2 = distChamfer(points, pointsReconstructed)
-    loss_net = ((torch.mean(dist1) + torch.mean(dist2)))
-    val_loss.update(loss_net.data[0])
-    dataset_test.perCatValueMeter[cat].update(loss_net.data[0])
-
-    if results[cat] > 20:
-        #only save files for 20 objects per category
-        continue
-    print(results)
-
-    if not os.path.exists(opt.model[:-4]):
-        os.mkdir(opt.model[:-4])
-        print('created dir', opt.model[:-4])
-
-    if not os.path.exists(opt.model[:-4] + "/" + str(dataset_test.cat[cat])):
-        os.mkdir(opt.model[:-4] + "/" + str(dataset_test.cat[cat]))
-        print('created dir', opt.model[:-4] + "/" + str(dataset_test.cat[cat]))
-
-    write_ply(filename=opt.model[:-4] + "/" + str(dataset_test.cat[cat]) + "/" + fn+"_GT", points=pd.DataFrame(points.cpu().data.squeeze().numpy()), as_text=True)
-    b = np.zeros((len(faces),4)) + 3
-    b[:,1:] = np.array(faces)
-    write_ply(filename=opt.model[:-4] + "/" + str(dataset_test.cat[cat]) + "/" + fn+"_gen" + "_grain_" + str(int(opt.gen_points)), points=pd.DataFrame(torch.cat((pointsReconstructed.cpu().data.squeeze(), grid_pytorch), 1).numpy()), as_text=True, text=True, faces = pd.DataFrame(b.astype(int)))
+im = Image.open(opt.input)
+im = my_transforms(im) #scale
+img = im[:3,:,:].unsqueeze(0)
 
 
-log_table = {
-  "metro_PMA_loss" : metro_PMA_loss.avg,
-  "val_loss" : val_loss.avg,
-  "gen_points" : opt.gen_points,
-}
-for item in dataset_test.cat:
-    print(item, dataset_test.perCatValueMeter[item].avg)
-    log_table.update({item: dataset_test.perCatValueMeter[item].avg})
-    log_table.update({item+"metro": dataset_test.perCatValueMeter_metro[item].avg})
-print(log_table)
 
-with open('stats.txt', 'a') as f: #open and append
-    f.write('json_stats: ' + json.dumps(log_table) + '\n')
+img = Variable(img)
+img = img.cuda()
+
+#forward pass
+pointsReconstructed  = network.forward_inference(img, grid)
+
+
+
+#Save output 3D model
+b = np.zeros((len(faces),4)) + 3
+b[:,1:] = np.array(faces)
+write_ply(filename="output" + str(int(opt.gen_points)), points=pd.DataFrame(torch.cat((pointsReconstructed.cpu().data.squeeze(), grid_pytorch), 1).numpy()), as_text=True, text=True, faces = pd.DataFrame(b.astype(int)))
+

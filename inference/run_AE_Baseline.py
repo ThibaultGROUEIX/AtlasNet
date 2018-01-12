@@ -42,7 +42,6 @@ parser.add_argument('--workers', type=int, help='number of data loading workers'
 parser.add_argument('--nepoch', type=int, default=50000, help='number of epochs to train for')
 parser.add_argument('--model', type=str, default = 'trained_models/ae_baseline.pth',  help='yuor path to the trained model')
 parser.add_argument('--num_points', type=int, default = 2500,  help='number of points fed to poitnet')
-parser.add_argument('--gen_points', type=int, default = 2500,  help='number of points to generate')
 
 opt = parser.parse_args()
 print (opt)
@@ -126,7 +125,6 @@ for i, data in enumerate(dataloader_test, 0):
 log_table = {
   "metro_PMA_loss" : metro_PMA_loss.avg,
   "val_loss" : val_loss.avg,
-  "gen_points" : opt.gen_points,
 }
 for item in dataset_test.cat:
     print(item, dataset_test.perCatValueMeter[item].avg)

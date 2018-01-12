@@ -39,10 +39,8 @@ distChamfer =  NNDModule()
 parser = argparse.ArgumentParser()
 parser.add_argument('--batchSize', type=int, default=1, help='input batch size')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=6)
-parser.add_argument('--nepoch', type=int, default=50000, help='number of epochs to train for')
 parser.add_argument('--model', type=str, default = 'trained_models/svr_baseline.pth',  help='yuor path to the trained model')
 parser.add_argument('--num_points', type=int, default = 2500,  help='number of points fed to poitnet')
-parser.add_argument('--gen_points', type=int, default = 2500,  help='number of points to generate')
 
 opt = parser.parse_args()
 print (opt)
@@ -77,21 +75,14 @@ print(network)
 train_loss = AverageValueMeter()
 val_loss = AverageValueMeter()
 metro_PMA_loss = AverageValueMeter()
-metro_PSR_loss = AverageValueMeter()
 
 network.eval()
-grain = int(np.sqrt(opt.gen_points/opt.nb_primitives))-1
-grain = grain*1.0
-print(grain)
 
 #reset meters
 val_loss.reset()
-metro_PSR_loss.reset()
 metro_PMA_loss.reset()
 for item in dataset_test.cat:
     dataset_test.perCatValueMeter[item].reset()
-for item in dataset_test.cat:
-    dataset_test.perCatValueMeter_metro[item].reset()
 
 results = dataset_test.cat.copy()
 for i in results:
@@ -109,7 +100,7 @@ for i, data in enumerate(dataloader_test, 0):
     points = Variable(points)
     points = points.transpose(2,1).contiguous()
     points = points.cuda()
-    pointsReconstructed  = network.forward_inference(img, grid)
+    pointsReconstructed  = network.forward(img)
     dist1, dist2 = distChamfer(points.transpose(2,1).contiguous(), pointsReconstructed)
     loss_net = ((torch.mean(dist1) + torch.mean(dist2)))
     val_loss.update(loss_net.data[0])
@@ -134,14 +125,11 @@ for i, data in enumerate(dataloader_test, 0):
 
 log_table = {
   "metro_PMA_loss" : metro_PMA_loss.avg,
-  "metro_PSR_loss" : metro_PSR_loss.avg,
   "val_loss" : val_loss.avg,
-  "gen_points" : opt.gen_points,
 }
 for item in dataset_test.cat:
     print(item, dataset_test.perCatValueMeter[item].avg)
     log_table.update({item: dataset_test.perCatValueMeter[item].avg})
-    log_table.update({item+"metro": dataset_test.perCatValueMeter_metro[item].avg})
 print(log_table)
 
 with open('stats.txt', 'a') as f: #open and append

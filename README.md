@@ -16,7 +16,6 @@ If you find this work useful in your research, please consider citing:
   booktitle = {Proceedings of the European Conference on Computer Vision ({ECCV})},
   year={2016}
 }
-
 ```
 
 ## Project Page
@@ -51,8 +50,9 @@ The trained models and some corresponding results are also available online :
 ```shell
 ./scripts/demo_SVR.sh
 ```
+![input](pictures/2D3D.png)    
 
- TODO : Here show some results
+This script takes as input a 137 * 137 image (from ShapeNet), run it through a trained resnet encoder, then decode it through a trained atlasnet with 25 learned parameterizations, and save the output to output.ply
 
 
 
@@ -87,6 +87,10 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
   ```
   The trained models accessible [here](TODO) have the following performances, slightly better than the one reported in [the paper](TODO). The number reported is the chamfer distance.
 
+  ​
+
+  #### Autoencoder : 25 learned parameterization
+
 | val_loss   | 0.0014795344685297894 |
 | ---------- | --------------------- |
 | watercraft | 0.00127737027906      |
@@ -103,9 +107,38 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
 | firearm    | 0.000626943988977     |
 | cellphone  | 0.0012117530635       |
 
+####   Single View Reconstruction : 25 learned parameterization
 
+| val_loss   | 0.0014795344685297894 |
+| ---------- | --------------------- |
+| watercraft | 0.00127737027906      |
+| monitor    | 0.0016588120616       |
+| car        | 0.00152693425022      |
+| couch      | 0.00171516126198      |
+| cabinet    | 0.00168296881168      |
+| lamp       | 0.00232362473947      |
+| plane      | 0.000833268054194     |
+| speaker    | 0.0025417242402       |
+| table      | 0.00149979386376      |
+| chair      | 0.00156113364435      |
+| bench      | 0.00120812499892      |
+| firearm    | 0.000626943988977     |
+| cellphone  | 0.0012117530635       |
 
 * Evaluate quantitatively the reconstructed meshes : [METRO DISTANCE](https://github.com/RobotLocomotion/meshConverters/tree/master/vcglib/apps/metro)
+
+
+
+## Visualisation 
+
+The generated 3D models' surfaces are not oriented. As a consequence, some area will appear dark if you directly visualize the results in [Meshlab](http://www.meshlab.net/). You have to incorporate your own fragment shader in Meshlab, that flip the normals in they are hit by a ray from the wrong side. An exemple is given for the [Phong BRDF](https://en.wikipedia.org/wiki/Phong_reflection_model).
+
+```shell
+sudo mv /usr/share/meshlab/shaders/phong.frag /usr/share/meshlab/shaders/phong.frag.bak
+sudo mv aux/phong.frag /usr/share/meshlab/shaders/phong.frag #restart Meshlab
+```
+
+
 
 ## Acknowledgement
 
