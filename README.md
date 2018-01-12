@@ -1,6 +1,7 @@
 # AtlasNet
 
 This repository contains the source codes for the paper [A Papier-Mâché Approach to Learning Mesh Synthesis](http://imagine.enpc.fr/~groueixt/atlasnet/). The network is able to synthesize a mesh (point cloud + connectivity) from a low-resolution point cloud, or from an image.
+![teaset](pictures/teaser.small.png)    
 
 ​	TODO : add cool gifs
 
