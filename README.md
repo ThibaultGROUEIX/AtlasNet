@@ -3,7 +3,7 @@
 This repository contains the source codes for the paper [A Papier-Mâché Approach to Learning Mesh Synthesis](http://imagine.enpc.fr/~groueixt/atlasnet/). The network is able to synthesize a mesh (point cloud + connectivity) from a low-resolution point cloud, or from an image.
 ![teaset](pictures/teaser.small.png)    
 
-​	TODO : add cool gifs
+![result](pictures/plane.gif)
 
 ## Citing this work
 
@@ -30,7 +30,7 @@ This implementation uses [Pytorch](http://pytorch.org/). Please note that the Ch
 ```shell
 ## Download the repository
 git clone git@github.com:ThibaultGROUEIX/PointSetGen-pytorch.git
-conda create --name pytorch-atlasnet --file spec-file.txt
+conda create --name pytorch-atlasnet --file aux/spec-file.txt
 source activate pytorch-atlasnet
 ```
 
@@ -44,7 +44,7 @@ We used the [ShapeNet](https://www.shapenet.org/) dataset for 3D models, and ren
 
 The trained models and some corresponding results are also available online :
 
-* trained_models (TODO)
+* [The trained_models](https://mega.nz/#!JapgQRgC!OIAa7dIBaItFSrud3gaGd2Gavb_h_5hC8jHJAwgLNn4) go in ``` trained_models/```
 
 ## Demo
 
@@ -110,21 +110,21 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
 
 ####   Single View Reconstruction : 25 learned parameterization
 
-| val_loss   | 0.0014795344685297894 |
-| ---------- | --------------------- |
-| watercraft | 0.00127737027906      |
-| monitor    | 0.0016588120616       |
-| car        | 0.00152693425022      |
-| couch      | 0.00171516126198      |
-| cabinet    | 0.00168296881168      |
-| lamp       | 0.00232362473947      |
-| plane      | 0.000833268054194     |
-| speaker    | 0.0025417242402       |
-| table      | 0.00149979386376      |
-| chair      | 0.00156113364435      |
-| bench      | 0.00120812499892      |
-| firearm    | 0.000626943988977     |
-| cellphone  | 0.0012117530635       |
+| val_loss   | 0.004008637203893767 |
+| ---------- | -------------------- |
+| watercraft | 0.00336707355723     |
+| monitor    | 0.00456469316226     |
+| car        | 0.00306795421868     |
+| couch      | 0.00404269965806     |
+| cabinet    | 0.00355917039209     |
+| lamp       | 0.0114094304694      |
+| plane      | 0.00192791500002     |
+| speaker    | 0.00780984506137     |
+| table      | 0.00368373458016     |
+| chair      | 0.00407004468516     |
+| bench      | 0.0030023689528      |
+| firearm    | 0.00192803189235     |
+| cellphone  | 0.00293665724291     |
 
 * Evaluate quantitatively the reconstructed meshes : [METRO DISTANCE](https://github.com/RobotLocomotion/meshConverters/tree/master/vcglib/apps/metro)
 

@@ -40,7 +40,7 @@ distChamfer =  NNDModule()
 parser = argparse.ArgumentParser()
 parser.add_argument('--batchSize', type=int, default=1, help='input batch size')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=6)
-parser.add_argument('--model', type=str, default = 'trained_models/ae_sphere.pth',  help='yuor path to the trained model')
+parser.add_argument('--model', type=str, default = 'trained_models/svr_atlas_sphere.pth',  help='yuor path to the trained model')
 parser.add_argument('--num_points', type=int, default = 2500,  help='number of points fed to poitnet')
 parser.add_argument('--nb_primitives', type=int, default = 1,  help='number of primitives')
 
