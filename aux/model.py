@@ -159,8 +159,9 @@ class PointGenCon(nn.Module):
         return x
 
 class SVR_AtlasNet(nn.Module):
-    def __init__(self, num_points = 2048, bottleneck_size = 1024, nb_primitives = 5, pretrained_encoder = False):
+    def __init__(self, num_points = 2048, bottleneck_size = 1024, nb_primitives = 5, pretrained_encoder = False, cuda=True):
         super(SVR_AtlasNet, self).__init__()
+        self.usecuda = cuda
         self.num_points = num_points
         self.bottleneck_size = bottleneck_size
         self.nb_primitives = nb_primitives
@@ -194,7 +195,11 @@ class SVR_AtlasNet(nn.Module):
         x = self.encoder(x)
         outs = []
         for i in range(0, self.nb_primitives):
-            rand_grid = Variable(torch.cuda.FloatTensor(grid[i]))
+            if self.usecuda:
+                rand_grid = Variable(torch.cuda.FloatTensor(grid[i]))
+            else:
+                rand_grid = Variable(torch.FloatTensor(grid[i]))
+
             rand_grid = rand_grid.transpose(0, 1).contiguous().unsqueeze(0)
             rand_grid = rand_grid.expand(x.size(0), rand_grid.size(1), rand_grid.size(2)).contiguous()
             # print(rand_grid.sizerand_grid())

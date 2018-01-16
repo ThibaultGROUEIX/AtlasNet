@@ -45,10 +45,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--input', type=str, default="data/plane_input_demo.png", help='input image')
 parser.add_argument('--batchSize', type=int, default=1, help='input batch size')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=6)
-parser.add_argument('--model', type=str, default = 'trained_models/svr_sphere.pth',  help='your path to the trained model')
+parser.add_argument('--model', type=str, default = 'trained_models/svr_atlas_25.pth',  help='your path to the trained model')
 parser.add_argument('--num_points', type=int, default = 2500,  help='number of points fed to poitnet')
 parser.add_argument('--gen_points', type=int, default = 30000,  help='number of points to generate')
 parser.add_argument('--nb_primitives', type=int, default = 25,  help='number of primitives')
+parser.add_argument('--cuda', type=int, default = 1,  help='use cuda')
 
 opt = parser.parse_args()
 print (opt)
@@ -64,8 +65,9 @@ torch.manual_seed(opt.manualSeed)
 
 cudnn.benchmark = True
 
-network = SVR_AtlasNet(num_points = opt.num_points, nb_primitives = opt.nb_primitives)
-network.cuda()
+network = SVR_AtlasNet(num_points = opt.num_points, nb_primitives = opt.nb_primitives, cuda = opt.cuda)
+if opt.cuda:
+    network.cuda()
 
 network.apply(weights_init)
 if opt.model != '':
@@ -128,7 +130,8 @@ img = im[:3,:,:].unsqueeze(0)
 
 
 img = Variable(img)
-img = img.cuda()
+if opt.cuda:
+    img = img.cuda()
 
 #forward pass
 pointsReconstructed  = network.forward_inference(img, grid)
