@@ -141,5 +141,5 @@ pointsReconstructed  = network.forward_inference(img, grid)
 #Save output 3D model
 b = np.zeros((len(faces),4)) + 3
 b[:,1:] = np.array(faces)
-write_ply(filename="output" + str(int(opt.gen_points)), points=pd.DataFrame(torch.cat((pointsReconstructed.cpu().data.squeeze(), grid_pytorch), 1).numpy()), as_text=True, text=True, faces = pd.DataFrame(b.astype(int)))
+write_ply(filename=opt.input + str(int(opt.gen_points)), points=pd.DataFrame(torch.cat((pointsReconstructed.cpu().data.squeeze(), grid_pytorch), 1).numpy()), as_text=True, text=True, faces = pd.DataFrame(b.astype(int)))
 

@@ -10,12 +10,11 @@ This repository contains the source codes for the paper [A Papier-Mâché Approa
 If you find this work useful in your research, please consider citing:
 
 ```
-#####EDIT
-@inproceedings{choy20163d,
-  title={3D-R2N2: A Unified Approach for Single and Multi-view 3D Object Reconstruction},
-  author={Choy, Christopher B and Xu, Danfei and Gwak, JunYoung and Chen, Kevin and Savarese, Silvio},
-  booktitle = {Proceedings of the European Conference on Computer Vision ({ECCV})},
-  year={2016}
+@article{groueix2017,
+   title={A Papier-M&acirc;ch&eacute; Approach to Learning 3D Surface Generation},
+   author={Goueix, Thibault and Fisher, Matthew and Kim, Vladimir G. and Russel, Bryan C.    and Aubry, Mathieu},
+   journal={arXiv preprint arXiv:1802.xxxxx},
+   year={2018}
 }
 ```
 
