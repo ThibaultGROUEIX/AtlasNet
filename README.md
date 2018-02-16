@@ -151,3 +151,5 @@ This work was funded by [Adobe System](https://github.com/fxia22/pointGAN) and [
 ## License
 
 [MIT](https://github.com/ThibaultGROUEIX/AtlasNet/blob/master/license_MIT)
+
+[![Analytics](https://ga-beacon.appspot.com/UA-91308638-2/github.com/ThibaultGROUEIX/AtlasNet/readme.md?pixel)](https://github.com/ThibaultGROUEIX/AtlasNet/)
