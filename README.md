@@ -13,7 +13,7 @@ If you find this work useful in your research, please consider citing:
 @article{groueix2017,
    title={AtlasNet: A Papier-M&acirc;ch&eacute; Approach to Learning 3D Surface Generation},
    author={Goueix, Thibault and Fisher, Matthew and Kim, Vladimir G. and Russel, Bryan C.    and Aubry, Mathieu},
-   journal={arXiv preprint arXiv:1802.xxxxx},
+   journal={arXiv preprint arXiv:1802.05384},
    year={2018}
 }
 ```
