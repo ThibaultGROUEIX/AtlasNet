@@ -69,7 +69,7 @@ python -m visdom.server -p 8888
 * Launch the training. Check out all the options in ```./training/train_AE_AtlasNet.py``` .
 
 ```shell
-git addexport CUDA_VISIBLE_DEVICES=0 #whichever you want
+export CUDA_VISIBLE_DEVICES=0 #whichever you want
 source activate pytorch-atlasnet
 git pull
 env=AE_AtlasNet
