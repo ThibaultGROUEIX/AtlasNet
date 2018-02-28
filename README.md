@@ -29,8 +29,15 @@ This implementation uses [Pytorch](http://pytorch.org/). Please note that the Ch
 ```shell
 ## Download the repository
 git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
+## Create python env with relevant packages
 conda create --name pytorch-atlasnet --file aux/spec-file.txt
 source activate pytorch-atlasnet
+## Build chamfer distance
+cd AtlasNet/nndistance/src
+nvcc -c -o nnd_cuda.cu.o nnd_cuda.cu -x cu -Xcompiler -fPIC -arch=sm_52
+cd ..
+python build.py
+python test.py
 ```
 
 ## Data and Trained models
