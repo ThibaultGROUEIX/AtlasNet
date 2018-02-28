@@ -100,7 +100,7 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
 
   #### Autoencoder : 25 learned parameterization
 
-| val_loss   | 0.0014795344685297894 |
+| val_loss   | 0.0014795344685297 |
 | ---------- | --------------------- |
 | watercraft | 0.00127737027906      |
 | monitor    | 0.0016588120616       |
@@ -118,7 +118,7 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
 
 ####   Single View Reconstruction : 25 learned parameterization
 
-| val_loss   | 0.004008637203893767 |
+| val_loss   | 0.00400863720389 |
 | ---------- | -------------------- |
 | watercraft | 0.00336707355723     |
 | monitor    | 0.00456469316226     |
