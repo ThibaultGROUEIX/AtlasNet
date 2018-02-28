@@ -28,7 +28,7 @@ This implementation uses [Pytorch](http://pytorch.org/). Please note that the Ch
 
 ```shell
 ## Download the repository
-git clone git@github.com:ThibaultGROUEIX/PointSetGen-pytorch.git
+git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
 conda create --name pytorch-atlasnet --file aux/spec-file.txt
 source activate pytorch-atlasnet
 ```
