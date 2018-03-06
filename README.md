@@ -24,7 +24,12 @@ The project page is available http://imagine.enpc.fr/~groueixt/atlasnet/
 
 ## Install
 
-This implementation uses [Pytorch](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on [Pytorch v2](http://pytorch.org/) because of some weird error with the batch norm layers. It has been tested on v1.12, v3 and the latest sources available to date.
+This implementation uses [Pytorch](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on  [all versions of pytorch](http://pytorch.org/) because of some weird error with the batch norm layers. It has been tested on v1.12, v3 and the latest sources available to date.
+### Pytorch compatibility
+| [Pytorch](http://pytorch.org/) version | v1.12           | v2  | v3.1  |  0.4.0a0+ea02833 |
+| ------------- |:-------------:| -----:|-----:|-----:|
+|  | :heavy_check_mark: :+1: :smiley: | :no_entry_sign: :thumbsdown: :disappointed: | :no_entry_sign: :thumbsdown: :disappointed: | :heavy_check_mark: :+1: :smiley: |
+
 
 ```shell
 ## Download the repository
