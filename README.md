@@ -37,6 +37,7 @@ git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
 ## Create python env with relevant packages
 conda create --name pytorch-atlasnet --file aux/spec-file.txt
 source activate pytorch-atlasnet
+pip install pandas visdom tqdm
 ## Build chamfer distance
 cd AtlasNet/nndistance/src
 nvcc -c -o nnd_cuda.cu.o nnd_cuda.cu -x cu -Xcompiler -fPIC -arch=sm_52
