@@ -24,13 +24,8 @@ The project page is available http://imagine.enpc.fr/~groueixt/atlasnet/
 
 ## Install
 
-This implementation uses [Pytorch](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on  [all versions of pytorch](http://pytorch.org/) because of some weird error with the batch norm layers. It has been tested on v1.12, v3 and the latest sources available to date.
-### Pytorch compatibility
-| [Pytorch](http://pytorch.org/) version | v1.12           | v2  | v3.1  |  0.4.0a0+ea02833 |
-| ------------- |:-------------:| -----:|-----:|-----:|
-|  | :heavy_check_mark: :+1: :smiley: | :no_entry_sign: :thumbsdown: :disappointed: | :no_entry_sign: :thumbsdown: :disappointed: | :heavy_check_mark: :+1: :smiley: |
 
-
+### Clone the repo
 ```shell
 ## Download the repository
 git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
@@ -38,7 +33,16 @@ git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
 conda create --name pytorch-atlasnet --file aux/spec-file.txt
 source activate pytorch-atlasnet
 pip install pandas visdom tqdm
-## Build chamfer distance
+```
+
+This implementation uses [Pytorch](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on  [all versions of pytorch](http://pytorch.org/) because of some weird error with the batch norm layers. It has been tested on v1.12, v3 and the latest sources available to date.
+### Pytorch compatibility
+| [Pytorch](http://pytorch.org/) version | v1.12           | v2  | v3.1  |  0.4.0a0+ea02833 |
+| ------------- |:-------------:| -----:|-----:|-----:|
+|  | :heavy_check_mark: :+1: :smiley: | :no_entry_sign: :thumbsdown: :disappointed: | :no_entry_sign: :thumbsdown: :disappointed: | :heavy_check_mark: :+1: :smiley: |
+
+### Build chamfer distance
+```shell
 cd AtlasNet/nndistance/src
 nvcc -c -o nnd_cuda.cu.o nnd_cuda.cu -x cu -Xcompiler -fPIC -arch=sm_52
 cd ..
