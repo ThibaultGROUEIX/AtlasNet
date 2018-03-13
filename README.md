@@ -10,12 +10,12 @@ This repository contains the source codes for the paper [AtlasNet: A Papier-Mâc
 If you find this work useful in your research, please consider citing:
 
 ```
-@article{groueix2017,
-   title={AtlasNet: A Papier-Mâché Approach to Learning 3D Surface Generation},
-   author={Goueix, Thibault and Fisher, Matthew and Kim, Vladimir G. and Russel, Bryan C.    and Aubry, Mathieu},
-   journal={arXiv preprint arXiv:1802.05384},
-   year={2018}
-}
+@inproceedings{groueix2018,
+          title={{AtlasNet: A Papier-M\^ach\'e Approach to Learning 3D Surface Generation}},
+          author={Groueix, Thibault and Fisher, Matthew and Kim, Vladimir G. and Russell, Bryan and Aubry, Mathieu},
+          booktitle={Proceedings IEEE Conf. on Computer Vision and Pattern Recognition (CVPR)},
+          year={2018}
+        }
 ```
 
 ## Project Page
