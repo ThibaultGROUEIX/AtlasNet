@@ -40,7 +40,7 @@ parser.add_argument('--model', type=str, default = '',  help='optional reload mo
 parser.add_argument('--num_points', type=int, default = 2500,  help='number of points')
 parser.add_argument('--nb_primitives', type=int, default = 25,  help='number of primitives in the atlas')
 parser.add_argument('--super_points', type=int, default = 2500,  help='number of input points to pointNet, not used by default')
-parser.add_argument('--env', type=str, default ="main"   ,  help='visdom environment')
+parser.add_argument('--env', type=str, default ="AE_AtlasNet"   ,  help='visdom environment')
 
 opt = parser.parse_args()
 print (opt)
