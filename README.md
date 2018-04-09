@@ -33,6 +33,7 @@ git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
 conda create --name pytorch-atlasnet --file aux/spec-file.txt
 source activate pytorch-atlasnet
 pip install pandas visdom tqdm
+conda install pytorch=0.1.12 cuda80 -c soumith #Update cuda80 to cuda90 if relevant
 ```
 
 This implementation uses [Pytorch](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on  [all versions of pytorch](http://pytorch.org/) because of some weird error with the batch norm layers. It has been tested on v1.12, v3 and the latest sources available to date.
