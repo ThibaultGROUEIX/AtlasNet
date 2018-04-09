@@ -78,7 +78,7 @@ The trained models and some corresponding results are also available online :
 Require 3GB RAM on the GPU and 5sec to run. Pass ```--cuda 0``` to run without gpu (9sec). 
 
 ```shell
-python scripts/demo.py --cuda 1
+python inference/demo.py --cuda 1
 ```
 ![input](pictures/2D3D.png)    
 
