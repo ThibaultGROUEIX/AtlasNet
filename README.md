@@ -33,6 +33,8 @@ git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
 conda create --name pytorch-atlasnet --file aux/spec-file.txt
 source activate pytorch-atlasnet
 pip install pandas visdom tqdm
+conda install pytorch=0.1.12 cuda80 -c soumith #Update cuda80 to cuda90 if relevant
+conda install torchvision
 ```
 
 This implementation uses [Pytorch](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on  [all versions of pytorch](http://pytorch.org/) because of some weird error with the batch norm layers. It has been tested on v1.12, v3 and the latest sources available to date.
@@ -76,7 +78,7 @@ The trained models and some corresponding results are also available online :
 Require 3GB RAM on the GPU and 5sec to run. Pass ```--cuda 0``` to run without gpu (9sec). 
 
 ```shell
-./scripts/demo_SVR.sh --cuda 1
+python inference/demo.py --cuda 1
 ```
 ![input](pictures/2D3D.png)    
 
