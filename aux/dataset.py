@@ -24,7 +24,7 @@ class ShapeNet(data.Dataset):
         self.rootpc = rootpc
         self.npoints = npoints
         self.datapath = []
-        self.catfile = os.path.join(self.rootimg, '../synsetoffset2category.txt')
+        self.catfile = os.path.join('./data/synsetoffset2category.txt')
         self.cat = {}
         self.meta = {}
         self.SVR = SVR
