@@ -47,6 +47,14 @@ This implementation uses [Pytorch](http://pytorch.org/). Please note that the Ch
 
 **<u>Recommended</u>** : *Python* **2.7**, *Pytorch* **1.12**
 
+**<u>If you need v4</u>** : 
+
+```shell
+git clone --recursive https://github.com/pytorch/pytorch
+cd pytorch ; git reset --hard ea02833 #Go to this specific commit that works fine for the chamfer distance
+# Then follow pytorch install instruction as usual
+```
+
 Developped in python 2.7, so might need a few adjustements for python 3.6. I only tested "train_AE_AtlasNet.py" in python 3.6.
 
 ### Build chamfer distance
