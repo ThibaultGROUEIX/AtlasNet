@@ -14,7 +14,7 @@ import torchvision.transforms as transforms
 import torchvision.utils as vutils
 from torch.autograd import Variable
 import sys
-sys.path.append('./aux/')
+sys.path.append('./auxiliary/')
 from dataset import *
 from model import *
 from utils import *
