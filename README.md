@@ -80,7 +80,9 @@ When using the provided data make sure to respect the shapenet [license](https:/
 The trained models and some corresponding results are also available online :
 
 * [The trained_models](https://cloud.enpc.fr/s/c27Df7fRNXW2uG3) go in ``` trained_models/```
-
+ 
+In case you need the results of ICP on PointSetGen output :
+* [ICP on PSG](https://cloud.enpc.fr/s/3a7Xg9RzIsgmofw)
 ## Demo
 
 Require 3GB RAM on the GPU and 5sec to run. Pass ```--cuda 0``` to run without gpu (9sec). 
