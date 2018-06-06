@@ -318,8 +318,6 @@ for epoch in range(opt.nepoch):
         log_table.update({item: dataset_test.perCatValueMeter[item].avg})
     with open(logname, 'a') as f: #open and append
         f.write('json_stats: ' + json.dumps(log_table) + '\n')
-    if best_val_loss > val_loss.avg:
-        best_val_loss = val_loss.avg
-        print('New best loss : ', best_val_loss)
-        print('saving net...')
-        torch.save(network.state_dict(), '%s/network.pth' % (dir_name))
+    #save last network
+    print('saving net...')
+    torch.save(network.state_dict(), '%s/network.pth' % (dir_name))
