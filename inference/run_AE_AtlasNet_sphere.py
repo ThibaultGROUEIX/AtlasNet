@@ -77,14 +77,12 @@ print(network)
 
 train_loss = AverageValueMeter()
 val_loss = AverageValueMeter()
-metro_PMA_loss = AverageValueMeter()
 
 network.eval()
 
 
 #reset meters
 val_loss.reset()
-metro_PSR_loss.reset()
 for item in dataset_test.cat:
     dataset_test.perCatValueMeter[item].reset()
 
@@ -137,7 +135,6 @@ for i, data in enumerate(dataloader_test, 0):
 
 
 log_table = {
-  "metro_PMA_loss" : metro_PMA_loss.avg,
   "val_loss" : val_loss.avg,
 }
 for item in dataset_test.cat:

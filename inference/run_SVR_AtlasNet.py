@@ -76,7 +76,6 @@ print(network)
 
 train_loss = AverageValueMeter()
 val_loss = AverageValueMeter()
-metro_PMA_loss = AverageValueMeter()
 
 network.eval()
 grain = int(np.sqrt(opt.gen_points/opt.nb_primitives))-1
@@ -85,7 +84,6 @@ print(grain)
 
 #reset meters
 val_loss.reset()
-metro_PMA_loss.reset()
 for item in dataset_test.cat:
     dataset_test.perCatValueMeter[item].reset()
 
@@ -162,14 +160,12 @@ for i, data in enumerate(dataloader_test, 0):
 
 
 log_table = {
-  "metro_PMA_loss" : metro_PMA_loss.avg,
   "val_loss" : val_loss.avg,
   "gen_points" : opt.gen_points,
 }
 for item in dataset_test.cat:
     print(item, dataset_test.perCatValueMeter[item].avg)
     log_table.update({item: dataset_test.perCatValueMeter[item].avg})
-    log_table.update({item+"metro": dataset_test.perCatValueMeter_metro[item].avg})
 print(log_table)
 
 with open('stats.txt', 'a') as f: #open and append
