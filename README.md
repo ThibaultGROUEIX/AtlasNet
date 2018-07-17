@@ -80,7 +80,7 @@ When using the provided data make sure to respect the shapenet [license](https:/
 The trained models and some corresponding results are also available online :
 
 * [The trained_models](https://cloud.enpc.fr/s/c27Df7fRNXW2uG3) go in ``` trained_models/```
- 
+
 In case you need the results of ICP on PointSetGen output :
 * [ICP on PSG](https://cloud.enpc.fr/s/3a7Xg9RzIsgmofw)
 ## Demo
@@ -175,7 +175,7 @@ The generated 3D models' surfaces are not oriented. As a consequence, some area 
 
 ```shell
 sudo mv /usr/share/meshlab/shaders/phong.frag /usr/share/meshlab/shaders/phong.frag.bak
-sudo mv aux/phong.frag /usr/share/meshlab/shaders/phong.frag #restart Meshlab
+sudo cp auxiliary/phong.frag /usr/share/meshlab/shaders/phong.frag #restart Meshlab
 ```
 
 
