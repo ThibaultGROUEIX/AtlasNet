@@ -30,7 +30,7 @@ The project page is available http://imagine.enpc.fr/~groueixt/atlasnet/
 ## Download the repository
 git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
 ## Create python env with relevant packages
-conda create --name pytorch-atlasnet --file aux/spec-file.txt
+conda create --name pytorch-atlasnet --file auxiliary/spec-file.txt
 source activate pytorch-atlasnet
 pip install pandas visdom tqdm
 conda install pytorch=0.1.12 cuda80 -c soumith #Update cuda80 to cuda90 if relevant
