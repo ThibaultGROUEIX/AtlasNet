@@ -186,6 +186,19 @@ The code for the Chamfer Loss was taken from Fei Xia'a repo : [PointGan](https:/
 
 This work was funded by [Adobe System](https://github.com/fxia22/pointGAN) and [Ecole Doctorale MSTIC](http://www.univ-paris-est.fr/fr/-ecole-doctorale-mathematiques-et-stic-mstic-ed-532/).
 
+## Cool Contributions
+
+* **[Yana Hasson](https://github.com/hassony2)** trained our sphere model, for Single View Reconstruction (SVR) in view-centered coordinates : performances are unaffected! Qualitative and quantitative results follow. Many thanks !
+
+|  frame  | Average recontruction error for SVR (x1000) |
+| ---------- | -------------------- |
+| object-centered | 4.9   |
+| view-centered    | 4.9   |
+
+
+<img src="pictures/chair_yana.png" style="zoom:55%" /><img src="pictures/car_yana.png" style="zoom:60%" />
+
+
 ## License
 
 [MIT](https://github.com/ThibaultGROUEIX/AtlasNet/blob/master/license_MIT)
