@@ -190,10 +190,10 @@ This work was funded by [Adobe System](https://github.com/fxia22/pointGAN) and [
 
 * **[Yana Hasson](https://github.com/hassony2)** trained our sphere model, for Single View Reconstruction (SVR) in view-centered coordinates : performances are unaffected! Qualitative and quantitative results follow. Many thanks !
 
-|  frame  | Average recontruction error for SVR (x1000) |
+| frame | Average recontruction error for SVR (x1000) : chamfer distance on input pointcloud and reconstruction of size 2500 pts|
 | ---------- | -------------------- |
-| object-centered | 4.9   |
-| view-centered    | 4.9   |
+| object-centered | 4.87   |
+| view-centered    | 4.88   |
 
 
 <img src="pictures/chair_yana.png" style="zoom:55%" /><img src="pictures/car_yana.png" style="zoom:60%" />
