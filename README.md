@@ -1,3 +1,5 @@
+🚀 Major upgrade 🚀 : Migration to  **Pytorch v1** and **Python 3.7**. The code is now much more generic and easy to install. 
+
 # AtlasNet
 
 This repository contains the source codes for the paper [AtlasNet: A Papier-Mâché Approach to Learning 3D Surface Generation ](http://imagine.enpc.fr/~groueixt/atlasnet/). The network is able to synthesize a mesh (point cloud + connectivity) from a low-resolution point cloud, or from an image.
