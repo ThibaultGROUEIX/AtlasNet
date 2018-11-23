@@ -5,7 +5,7 @@ This repository contains the source codes for the paper [AtlasNet: A Papier-Mâc
 
 ![result](pictures/plane.gif)
 
-## Citing this work
+### Citing this work
 
 If you find this work useful in your research, please consider citing:
 
@@ -18,11 +18,11 @@ If you find this work useful in your research, please consider citing:
         }
 ```
 
-## Project Page
+### Project Page
 
 The project page is available http://imagine.enpc.fr/~groueixt/atlasnet/
 
-## Install
+# Install
 
 ### Clone the repo and install dependencies
 
@@ -35,22 +35,32 @@ git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
 conda create --name pytorch-atlasnet python=3.7
 source activate pytorch-atlasnet
 pip install pandas visdom
-conda install pytorch
+conda install pytorch torchvision -c pytorch # or from sources if you prefer
 # you're done ! Congrats :)
+
 ```
 
+# Demo
 
-### Build chamfer distance (optional)
+Require 3GB RAM on the GPU and 5sec to run. Pass ```--cuda 0``` to run without gpu (9sec). 
 
 ```shell
-cd AtlasNet/extension
-python setup.py install
+cd trained_models; ./download_models.sh; cd .. # download the trained models
+python inference/demo.py --cuda 1
 ```
 
-## Data and Trained models
+![input](/home/thibault/ssd/AtlasNet/pictures/2D3D.png)    
+
+This script takes as input a 137 * 137 image (from ShapeNet), run it through a trained resnet encoder, then decode it through a trained atlasnet with 25 learned parameterizations, and save the output to output.ply
+
+
+
+# Training
+
+### Data 
+
 ```shell
-wget --che	
-unzip
+cd data; ./download_data.sh; cd ..
 ```
 We used the [ShapeNet](https://www.shapenet.org/) dataset for 3D models, and rendered views from [3D-R2N2](https://github.com/chrischoy/3D-R2N2):
 
@@ -66,20 +76,19 @@ The trained models and some corresponding results are also available online :
 
 In case you need the results of ICP on PointSetGen output :
 * [ICP on PSG](https://cloud.enpc.fr/s/3a7Xg9RzIsgmofw)
-## Demo
 
-Require 3GB RAM on the GPU and 5sec to run. Pass ```--cuda 0``` to run without gpu (9sec). 
+
+
+### Build chamfer distance (optional)
 
 ```shell
-python inference/demo.py --cuda 1
+cd AtlasNet/extension
+python setup.py install
 ```
-![input](pictures/2D3D.png)    
-
-This script takes as input a 137 * 137 image (from ShapeNet), run it through a trained resnet encoder, then decode it through a trained atlasnet with 25 learned parameterizations, and save the output to output.ply
 
 
 
-## Train
+### Start training
 
 * First launch a visdom server :
 
@@ -160,7 +169,7 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
 
   **the number is slightly different for above because it comes from legacy code (Atlasnet v1). 
 
-## Visualisation 
+### Visualisation 
 
 The generated 3D models' surfaces are not oriented. As a consequence, some area will appear dark if you directly visualize the results in [Meshlab](http://www.meshlab.net/). You have to incorporate your own fragment shader in Meshlab, that flip the normals in they are hit by a ray from the wrong side. An exemple is given for the [Phong BRDF](https://en.wikipedia.org/wiki/Phong_reflection_model).
 
@@ -177,7 +186,7 @@ The code for the Chamfer Loss was adapted from Fei Xia' repo : [PointGan](https:
 
 This work was funded by [Adobe System](https://github.com/fxia22/pointGAN) and [Ecole Doctorale MSTIC](http://www.univ-paris-est.fr/fr/-ecole-doctorale-mathematiques-et-stic-mstic-ed-532/).
 
-## Cool Contributions
+# Cool Contributions
 
 * **[Yana Hasson](https://github.com/hassony2)** trained our sphere model, for Single View Reconstruction (SVR) in view-centered coordinates : performances are unaffected! Qualitative and quantitative results follow. Many thanks !
 View [this paper](http://openaccess.thecvf.com/content_cvpr_2018/CameraReady/3826.pdf) for a good review of on object-centered representation VS view-centered representation.
