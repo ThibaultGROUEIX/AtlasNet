@@ -87,7 +87,7 @@ Using the custom chamfer distance will *divide memory usage by 2* and will be a 
 
 ```shell
 source activate pytorch-atlasnet
-cd AtlasNet/extension
+cd ./extension
 python setup.py install
 ```
 
