@@ -125,9 +125,6 @@ if opt.fix_decoder:
         dist1, dist2 = distChamfer(points.transpose(2,1).contiguous(), pointsReconstructed)
         loss_net = (torch.mean(dist1)) + (torch.mean(dist2))
         val_loss.update(loss_net.item())
-        if opt.accelerated_chamfer:
-            distChamfer.cham.clean()
-            del distChamfer.cham  
     print("Previous decoder performances : ", val_loss.avg)
 
 #Create network
@@ -200,9 +197,6 @@ for epoch in range(opt.nepoch):
         train_loss.update(loss_net.item())
 
         optimizer.step()
-        if opt.accelerated_chamfer:
-            distChamfer.cham.clean()
-            del distChamfer.cham
 
         # VIZUALIZE
         if i%50 <= 0:
@@ -241,9 +235,6 @@ for epoch in range(opt.nepoch):
                 dist1, dist2 = distChamfer(points, pointsReconstructed)
                 loss_net = (torch.mean(dist1)) + (torch.mean(dist2))
                 val_view_loss.update(loss_net.item())
-                if opt.accelerated_chamfer:
-                    distChamfer.cham.clean()
-                    del distChamfer.cham
 
 
             #UPDATE CURVES
@@ -266,9 +257,6 @@ for epoch in range(opt.nepoch):
             dist1, dist2 = distChamfer(points, pointsReconstructed)
             loss_net = (torch.mean(dist1)) + (torch.mean(dist2))
             val_loss.update(loss_net.item())
-            if opt.accelerated_chamfer:
-                distChamfer.cham.clean()
-                del distChamfer.cham
 
             dataset_test.perCatValueMeter[cat[0]].update(loss_net.item())
             if i%25 ==0 :

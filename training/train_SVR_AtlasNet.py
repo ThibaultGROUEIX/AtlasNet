@@ -126,9 +126,6 @@ for i, data in enumerate(dataloader_test, 0):
     loss_net = (torch.mean(dist1)) + (torch.mean(dist2))
     val_loss.update(loss_net.item())
     # This is neccesary to avoid a memory leak issue
-    if opt.accelerated_chamfer:
-        distChamfer.cham.clean()
-        del distChamfer.cham
 
 print("Previous decoder performances : ", val_loss.avg)
 
@@ -211,9 +208,6 @@ for epoch in range(opt.nepoch):
 
         optimizer.step()
                 # This is neccesary to avoid a memory leak issue
-        if opt.accelerated_chamfer:
-            distChamfer.cham.clean()
-            del distChamfer.cham
 
         # VIZUALIZE
         if i%50 <= 0:
@@ -252,9 +246,6 @@ for epoch in range(opt.nepoch):
                 dist1, dist2 = distChamfer(points, pointsReconstructed)
                 loss_net = (torch.mean(dist1)) + (torch.mean(dist2))
                 # This is neccesary to avoid a memory leak issue
-                if opt.accelerated_chamfer:
-                    distChamfer.cham.clean()
-                    del distChamfer.cham
                 val_view_loss.update(loss_net.item())
             #UPDATE CURVES
         val_view_curve.append(val_view_loss.avg)
@@ -274,9 +265,6 @@ for epoch in range(opt.nepoch):
             loss_net = (torch.mean(dist1)) + (torch.mean(dist2))
             val_loss.update(loss_net.item())
             # This is neccesary to avoid a memory leak issue
-            if opt.accelerated_chamfer:
-                distChamfer.cham.clean()
-                del distChamfer.cham
             dataset_test.perCatValueMeter[cat[0]].update(loss_net.item())
             if i%25 ==0 :
                 vis.image(img[0].data.cpu().contiguous(), win = 'INPUT IMAGE VAL', opts = dict( title = "INPUT IMAGE TRAIN"))

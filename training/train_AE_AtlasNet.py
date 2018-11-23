@@ -153,12 +153,6 @@ for epoch in range(opt.nepoch):
         loss_net.backward()
         train_loss.update(loss_net.item())
         optimizer.step() #gradient update
-
-        # This is neccesary to avoid a memory leak issue
-        if opt.accelerated_chamfer:
-            distChamfer.cham.clean()
-            del distChamfer.cham
-
         # VIZUALIZE
         if i%50 <= 0:
             vis.scatter(X = points.transpose(2,1).contiguous()[0].data.cpu(),
@@ -200,10 +194,6 @@ for epoch in range(opt.nepoch):
             pointsReconstructed  = network(points)
             dist1, dist2 = distChamfer(points.transpose(2,1).contiguous(), pointsReconstructed)
             loss_net = (torch.mean(dist1)) + (torch.mean(dist2))
-            if opt.accelerated_chamfer:
-                distChamfer.cham.clean()
-                del distChamfer.cham
-
             val_loss.update(loss_net.item())
             dataset_test.perCatValueMeter[cat[0]].update(loss_net.item())
             if i%200 ==0 :
