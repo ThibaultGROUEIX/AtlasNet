@@ -49,7 +49,7 @@ cd trained_models; ./download_models.sh; cd .. # download the trained models
 python inference/demo.py --cuda 1
 ```
 
-![input](/home/thibault/ssd/AtlasNet/pictures/2D3D.png)    
+![input](./pictures/2D3D.png)    
 
 This script takes as input a 137 * 137 image (from ShapeNet), run it through a trained resnet encoder, then decode it through a trained atlasnet with 25 learned parameterizations, and save the output to output.ply
 
