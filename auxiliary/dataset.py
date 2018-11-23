@@ -72,7 +72,7 @@ class ShapeNet(data.Dataset):
                                      std=[0.229, 0.224, 0.225])
 
         self.transforms = transforms.Compose([
-                             transforms.Scale(size =  224, interpolation = 2),
+                             transforms.Resize(size =  224, interpolation = 2),
                              transforms.ToTensor(),
                              # normalize,
                         ])
@@ -93,7 +93,7 @@ class ShapeNet(data.Dataset):
         for item in self.cat:
             self.perCatValueMeter_metro[item] = AverageValueMeter()
         self.transformsb = transforms.Compose([
-                             transforms.Scale(size =  224, interpolation = 2),
+                             transforms.Resize(size =  224, interpolation = 2),
                         ])
 
     def __getitem__(self, index):
