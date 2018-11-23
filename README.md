@@ -81,7 +81,10 @@ In case you need the results of ICP on PointSetGen output :
 
 ### Build chamfer distance (optional)
 
+Using the custom chamfer distance will *divide memory usage by 2* and will be a bit faster. Use it if you're short on memory especially when training models for **Single View reconstruction**.
+
 ```shell
+source activate pytorch-atlasnet
 cd AtlasNet/extension
 python setup.py install
 ```
