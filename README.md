@@ -24,51 +24,34 @@ The project page is available http://imagine.enpc.fr/~groueixt/atlasnet/
 
 ## Install
 
+### Clone the repo and install dependencies
 
-### Clone the repo
+This implementation uses [Pytorch](http://pytorch.org/). 
+
 ```shell
 ## Download the repository
 git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
 ## Create python env with relevant packages
-conda create --name pytorch-atlasnet --file auxiliary/spec-file.txt
+conda create --name pytorch-atlasnet python=3.7
 source activate pytorch-atlasnet
-pip install pandas visdom tqdm
-conda install pytorch=0.1.12 cuda80 -c soumith #Update cuda80 to cuda90 if relevant
-conda install torchvision
+pip install pandas visdom
+conda install pytorch
+# you're done ! Congrats :)
 ```
 
-This implementation uses [Pytorch](http://pytorch.org/). Please note that the Chamfer Distance code doesn't work on  [all versions of pytorch](http://pytorch.org/) because of some weird error with the batch norm layers. It has been tested on v1.12, v3 and the latest sources available to date.
-### Pytorch compatibility
 
-| Python/[Pytorch](http://pytorch.org/) | v1.12           | v2  | v3.1  |  0.4.0a0+ea02833 | 0.4.x latest |
-| ------------- |:-------------:| -----:|-----:|-----:| ------------- |
-| 2.7 | :heavy_check_mark: :+1: :smiley: | :no_entry_sign: :thumbsdown: :disappointed: | :no_entry_sign: :thumbsdown: :disappointed: | :heavy_check_mark: :+1: :smiley: | 🚫 👎 😞 |
-| 3.6 | :heavy_check_mark::+1: :smiley: | ? | ? | :no_entry_sign: :thumbsdown: :disappointed: | 🚫 👎 😞 |
-
-**<u>Recommended</u>** : *Python* **2.7**, *Pytorch* **1.12**
-
-**<u>If you need v4</u>** : 
+### Build chamfer distance (optional)
 
 ```shell
-git clone --recursive https://github.com/pytorch/pytorch
-cd pytorch ; git reset --hard ea02833 #Go to this specific commit that works fine for the chamfer distance
-# Then follow pytorch install instruction as usual
-```
-
-Developped in python 2.7, so might need a few adjustements for python 3.6. I only tested "train_AE_AtlasNet.py" in python 3.6.
-
-### Build chamfer distance
-
-```shell
-cd AtlasNet/nndistance/src
-nvcc -c -o nnd_cuda.cu.o nnd_cuda.cu -x cu -Xcompiler -fPIC -arch=sm_52
-cd ..
-python build.py
-python test.py
+cd AtlasNet/extension
+python setup.py install
 ```
 
 ## Data and Trained models
-
+```shell
+wget --che	
+unzip
+```
 We used the [ShapeNet](https://www.shapenet.org/) dataset for 3D models, and rendered views from [3D-R2N2](https://github.com/chrischoy/3D-R2N2):
 
 When using the provided data make sure to respect the shapenet [license](https://shapenet.org/terms).
@@ -127,11 +110,19 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
   ```
   The trained models accessible [here](TODO) have the following performances, slightly better than the one reported in [the paper](TODO). The number reported is the chamfer distance.
 
-  ​
+| Method | Chamfer (2500 pts GT and 2500 pts Reconstruction) |
+| ---------- | --------------------- |
+| Autoencoder_Atlasnet_25prim | 0.0014476474650672833 |
+| Autoencoder_Atlasnet_1sphere              | 0.0017207141972321953 |
+| Autoencoder_baseline                      | 0.001963350556556298 |
+| SingleViewReconstruction_Atlasnet_25prim  | 0.004638490150569042 |
+| SingleViewReconstruction_Atlasnet_1sphere | 0.005198702077052366 |
+| SingleViewReconstruction_baseline         | 0.0048062904884797605 |
+
 
   #### Autoencoder : 25 learned parameterization
 
-| val_loss   | 0.0014795344685297 |
+| val_loss   | 0.0014795344685297** |
 | ---------- | --------------------- |
 | watercraft | 0.00127737027906      |
 | monitor    | 0.0016588120616       |
@@ -149,7 +140,7 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
 
 ####   Single View Reconstruction : 25 learned parameterization
 
-| val_loss   | 0.00400863720389 |
+| val_loss   | 0.00400863720389** |
 | ---------- | -------------------- |
 | watercraft | 0.00336707355723     |
 | monitor    | 0.00456469316226     |
@@ -167,7 +158,7 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
 
 * Evaluate quantitatively the reconstructed meshes : [METRO DISTANCE](https://github.com/RobotLocomotion/meshConverters/tree/master/vcglib/apps/metro)
 
-
+  **the number is slightly different for above because it comes from legacy code (Atlasnet v1). 
 
 ## Visualisation 
 
@@ -182,7 +173,7 @@ sudo cp auxiliary/phong.frag /usr/share/meshlab/shaders/phong.frag #restart Mesh
 
 ## Acknowledgement
 
-The code for the Chamfer Loss was taken from Fei Xia'a repo : [PointGan](https://github.com/fxia22/pointGAN). Many thanks to him !
+The code for the Chamfer Loss was adapted from Fei Xia' repo : [PointGan](https://github.com/fxia22/pointGAN). Many thanks to him !
 
 This work was funded by [Adobe System](https://github.com/fxia22/pointGAN) and [Ecole Doctorale MSTIC](http://www.univ-paris-est.fr/fr/-ecole-doctorale-mathematiques-et-stic-mstic-ed-532/).
 

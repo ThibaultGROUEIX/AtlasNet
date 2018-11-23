@@ -1,17 +1,7 @@
 from __future__ import print_function
 import argparse
-import os
 import random
 import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.parallel
-import torch.backends.cudnn as cudnn
-import torch.optim as optim
-import torch.utils.data
-import torchvision.datasets as dset
-import torchvision.transforms as transforms
-import torchvision.utils as vutils
 from torch.autograd import Variable
 import sys
 sys.path.append('./auxiliary/')
@@ -19,25 +9,11 @@ from dataset import *
 from model import *
 from utils import *
 from ply import *
-import torch.nn.functional as F
-import sys
-from tqdm import tqdm
-import os
-import json
-import time, datetime
-import subprocess
 import pandas as pd
-try:
-    from script.normalize_obj import *
-except:
-    print('couldnt load normalize obj')
-sys.path.append("./nndistance/")
-from modules.nnd import NNDModule
-distChamfer =  NNDModule()
+
 
 ###############################################################
 # This script takes as input a 137 * 137 image (from ShapeNet), run it through a trained resnet encoder, then decode it through a trained atlasnet with 25 learned parameterizations, and save the output to output.ply
-
 ###############################################################
 
 
@@ -52,18 +28,10 @@ parser.add_argument('--nb_primitives', type=int, default = 25,  help='number of 
 parser.add_argument('--cuda', type=int, default = 1,  help='use cuda')
 
 opt = parser.parse_args()
-print (opt)
-
 blue = lambda x:'\033[94m' + x + '\033[0m'
-
 opt.manualSeed = random.randint(1, 10000) # fix seed
-print("Random Seed: ", opt.manualSeed)
 random.seed(opt.manualSeed)
 torch.manual_seed(opt.manualSeed)
-
-
-
-cudnn.benchmark = True
 
 network = SVR_AtlasNet(num_points = opt.num_points, nb_primitives = opt.nb_primitives, cuda = opt.cuda)
 if opt.cuda:
@@ -77,7 +45,6 @@ if opt.model != '':
 network.eval()
 grain = int(np.sqrt(opt.gen_points/opt.nb_primitives))-1
 grain = grain*1.0
-print(grain)
 
 #generate regular grid
 faces = []
@@ -107,8 +74,6 @@ for i in range(opt.nb_primitives):
     for j in range(int((grain+1)*(grain+1))):
         grid_pytorch[int(j + (grain+1)*(grain+1)*i),0] = vertices[j][0]
         grid_pytorch[int(j + (grain+1)*(grain+1)*i),1] = vertices[j][1]
-print(grid_pytorch)
-print("grain", grain, 'number vertices', len(vertices)*opt.nb_primitives)
 
 
 #prepare the input data
@@ -117,7 +82,7 @@ import torchvision.transforms as transforms
 
 my_transforms = transforms.Compose([
                  transforms.CenterCrop(127),
-                 transforms.Scale(size =  224, interpolation = 2),
+                 transforms.Resize(size =  224, interpolation = 2),
                  transforms.ToTensor(),
                  # normalize,
             ])
@@ -143,3 +108,4 @@ b = np.zeros((len(faces),4)) + 3
 b[:,1:] = np.array(faces)
 write_ply(filename=opt.input + str(int(opt.gen_points)), points=pd.DataFrame(torch.cat((pointsReconstructed.cpu().data.squeeze(), grid_pytorch), 1).numpy()), as_text=True, text=True, faces = pd.DataFrame(b.astype(int)))
 
+print("Done demoing! Check out results in data/")

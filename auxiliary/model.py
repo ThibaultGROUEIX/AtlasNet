@@ -1,20 +1,10 @@
 from __future__ import print_function
-import argparse
-import os
-import random
 import torch
 import torch.nn as nn
 import torch.nn.parallel
-import torch.backends.cudnn as cudnn
-import torch.optim as optim
 import torch.utils.data
-import torchvision.transforms as transforms
-import torchvision.utils as vutils
 from torch.autograd import Variable
-from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
-import pdb
 import torch.nn.functional as F
 
 #UTILITIES
@@ -140,14 +130,14 @@ class PointGenCon(nn.Module):
         self.bottleneck_size = bottleneck_size
         super(PointGenCon, self).__init__()
         self.conv1 = torch.nn.Conv1d(self.bottleneck_size, self.bottleneck_size, 1)
-        self.conv2 = torch.nn.Conv1d(self.bottleneck_size, self.bottleneck_size/2, 1)
-        self.conv3 = torch.nn.Conv1d(self.bottleneck_size/2, self.bottleneck_size/4, 1)
-        self.conv4 = torch.nn.Conv1d(self.bottleneck_size/4, 3, 1)
+        self.conv2 = torch.nn.Conv1d(self.bottleneck_size, self.bottleneck_size//2, 1)
+        self.conv3 = torch.nn.Conv1d(self.bottleneck_size//2, self.bottleneck_size//4, 1)
+        self.conv4 = torch.nn.Conv1d(self.bottleneck_size//4, 3, 1)
 
         self.th = nn.Tanh()
         self.bn1 = torch.nn.BatchNorm1d(self.bottleneck_size)
-        self.bn2 = torch.nn.BatchNorm1d(self.bottleneck_size/2)
-        self.bn3 = torch.nn.BatchNorm1d(self.bottleneck_size/4)
+        self.bn2 = torch.nn.BatchNorm1d(self.bottleneck_size//2)
+        self.bn3 = torch.nn.BatchNorm1d(self.bottleneck_size//4)
 
     def forward(self, x):
         batchsize = x.size()[0]
@@ -174,7 +164,7 @@ class SVR_AtlasNet(nn.Module):
         x = self.encoder(x)
         outs = []
         for i in range(0, self.nb_primitives):
-            rand_grid = Variable(torch.cuda.FloatTensor(x.size(0), 2, self.num_points/self.nb_primitives))
+            rand_grid = Variable(torch.cuda.FloatTensor(x.size(0), 2, self.num_points//self.nb_primitives))
             rand_grid.data.uniform_(0, 1)
             y = x.unsqueeze(2).expand(x.size(0), x.size(1), rand_grid.size(2)).contiguous()
             y = torch.cat( (rand_grid, y.type_as(rand_grid)), 1).contiguous()
@@ -184,7 +174,7 @@ class SVR_AtlasNet(nn.Module):
     def decode(self, x):
         outs = []
         for i in range(0, self.nb_primitives):
-            rand_grid = Variable(torch.cuda.FloatTensor(x.size(0), 2, self.num_points/self.nb_primitives))
+            rand_grid = Variable(torch.cuda.FloatTensor(x.size(0), 2, self.num_points//self.nb_primitives))
             rand_grid.data.uniform_(0, 1)
             y = x.unsqueeze(2).expand(x.size(0), x.size(1), rand_grid.size(2)).contiguous()
             y = torch.cat( (rand_grid, y.type_as(rand_grid)), 1).contiguous()
@@ -239,7 +229,7 @@ class AE_AtlasNet(nn.Module):
         x = self.encoder(x)
         outs = []
         for i in range(0,self.nb_primitives):
-            rand_grid = Variable(torch.cuda.FloatTensor(x.size(0),2,self.num_points/self.nb_primitives))
+            rand_grid = Variable(torch.cuda.FloatTensor(x.size(0),2,self.num_points//self.nb_primitives))
             rand_grid.data.uniform_(0,1)
             y = x.unsqueeze(2).expand(x.size(0),x.size(1), rand_grid.size(2)).contiguous()
             y = torch.cat( (rand_grid, y), 1).contiguous()
@@ -291,9 +281,9 @@ class AE_AtlasNet_SPHERE(nn.Module):
         x = self.encoder(x)
         outs = []
         for i in range(0,self.nb_primitives):
-            rand_grid = Variable(torch.cuda.FloatTensor(x.size(0),3,self.num_points/self.nb_primitives)) #sample points randomly
+            rand_grid = Variable(torch.cuda.FloatTensor(x.size(0),3,self.num_points//self.nb_primitives)) #sample points randomly
             rand_grid.data.normal_(0,1)
-            rand_grid = rand_grid / torch.sqrt(torch.sum(rand_grid**2, dim=1, keepdim=True)).expand(x.size(0),3,self.num_points/self.nb_primitives)
+            rand_grid = rand_grid / torch.sqrt(torch.sum(rand_grid**2, dim=1, keepdim=True)).expand(x.size(0),3,self.num_points//self.nb_primitives)
             #assert a number of things like norm/visdom... then copy to other functions
             y = x.unsqueeze(2).expand(x.size(0),x.size(1), rand_grid.size(2)).contiguous()
             y = torch.cat( (rand_grid, y), 1).contiguous()
@@ -340,9 +330,9 @@ class SVR_AtlasNet_SPHERE(nn.Module):
         x = self.encoder(x)
         outs = []
         for i in range(0,self.nb_primitives):
-            rand_grid = Variable(torch.cuda.FloatTensor(x.size(0),3,self.num_points/self.nb_primitives)) #sample points randomly
+            rand_grid = Variable(torch.cuda.FloatTensor(x.size(0),3,self.num_points//self.nb_primitives)) #sample points randomly
             rand_grid.data.normal_(0,1)
-            rand_grid = rand_grid / torch.sqrt(torch.sum(rand_grid**2, dim=1, keepdim=True)).expand(x.size(0),3,self.num_points/self.nb_primitives)
+            rand_grid = rand_grid / torch.sqrt(torch.sum(rand_grid**2, dim=1, keepdim=True)).expand(x.size(0),3,self.num_points//self.nb_primitives)
             #assert a number of things like norm/visdom... then copy to other functions
             y = x.unsqueeze(2).expand(x.size(0),x.size(1), rand_grid.size(2)).contiguous()
             y = torch.cat( (rand_grid, y), 1).contiguous()
@@ -382,12 +372,12 @@ class PointDecoder(nn.Module):
         self.num_points = num_points
         self.bottleneck_size = bottleneck_size
         self.bn1 = torch.nn.BatchNorm1d(bottleneck_size)
-        self.bn2 = torch.nn.BatchNorm1d(bottleneck_size/2)
-        self.bn3 = torch.nn.BatchNorm1d(bottleneck_size/4)
+        self.bn2 = torch.nn.BatchNorm1d(bottleneck_size//2)
+        self.bn3 = torch.nn.BatchNorm1d(bottleneck_size//4)
         self.fc1 = nn.Linear(self.bottleneck_size, bottleneck_size)
-        self.fc2 = nn.Linear(self.bottleneck_size, bottleneck_size/2)
-        self.fc3 = nn.Linear(bottleneck_size/2, bottleneck_size/4)
-        self.fc4 = nn.Linear(bottleneck_size/4, self.num_points * 3)
+        self.fc2 = nn.Linear(self.bottleneck_size, bottleneck_size//2)
+        self.fc3 = nn.Linear(bottleneck_size//2, bottleneck_size//4)
+        self.fc4 = nn.Linear(bottleneck_size//4, self.num_points * 3)
         self.th = nn.Tanh()
 
     def forward(self, x):
@@ -407,12 +397,12 @@ class PointDecoderNormal(nn.Module):
         self.num_points = num_points
         self.bottleneck_size = bottleneck_size
         self.bn1 = torch.nn.BatchNorm1d(bottleneck_size)
-        self.bn2 = torch.nn.BatchNorm1d(bottleneck_size/2)
-        self.bn3 = torch.nn.BatchNorm1d(bottleneck_size/4)
+        self.bn2 = torch.nn.BatchNorm1d(bottleneck_size//2)
+        self.bn3 = torch.nn.BatchNorm1d(bottleneck_size//4)
         self.fc1 = nn.Linear(self.bottleneck_size, bottleneck_size)
-        self.fc2 = nn.Linear(self.bottleneck_size, bottleneck_size/2)
-        self.fc3 = nn.Linear(bottleneck_size/2, bottleneck_size/4)
-        self.fc4 = nn.Linear(bottleneck_size/4, self.num_points * 6)
+        self.fc2 = nn.Linear(self.bottleneck_size, bottleneck_size//2)
+        self.fc3 = nn.Linear(bottleneck_size//2, bottleneck_size//4)
+        self.fc4 = nn.Linear(bottleneck_size//4, self.num_points * 6)
         self.th = nn.Tanh()
 
     def forward(self, x):

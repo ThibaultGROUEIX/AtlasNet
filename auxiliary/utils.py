@@ -15,8 +15,8 @@ def weights_init(m):
 def adjust_learning_rate(optimizer, epoch, phase):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
     if (epoch%phase==(phase-1)):
-		for param_group in optimizer.param_groups:
-			param_group['lr'] = param_group['lr']/10.
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = param_group['lr']/10.
 
 
 class AverageValueMeter(object):
@@ -28,7 +28,7 @@ class AverageValueMeter(object):
         self.val = 0
         self.avg = 0
         self.sum = 0
-        self.count = 0
+        self.count = 0.0
 
     def update(self, val, n=1):
         self.val = val
@@ -152,4 +152,4 @@ if __name__ == '__main__':
   #random.seed(10)
 
   colors = get_colors(10)
-  print "Your colors:",colors
+  print("Your colors:",colors)

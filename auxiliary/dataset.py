@@ -1,15 +1,10 @@
 from __future__ import print_function
 import torch.utils.data as data
 import os.path
-import errno
 import torch
 import torchvision.transforms as transforms
 import numpy as np
-import cv2
-import random
-import math
 import os
-import sys
 from PIL import Image
 from utils import *
 
@@ -113,7 +108,7 @@ class ShapeNet(data.Dataset):
                         print(fn)
                         print(line)
                     break
-        for i in range(15):
+        for i in range(15): #this for loop is because of some weird error that happens sometime during loading I didn't track it down and brute force the solution like this.
             try:
                 mystring = my_get_n_random_lines(fn[1], n = self.npoints)
                 point_set = np.loadtxt(mystring).astype(np.float32)
