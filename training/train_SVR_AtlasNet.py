@@ -20,7 +20,7 @@ best_val_loss = 10
 # =============PARAMETERS======================================== #
 parser = argparse.ArgumentParser()
 parser.add_argument('--batchSize', type=int, default=32, help='input batch size')
-parser.add_argument('--workers', type=int, help='number of data loading workers', default=6)
+parser.add_argument('--workers', type=int, help='number of data loading workers', default=12)
 parser.add_argument('--nepoch', type=int, default=400, help='number of epochs to train for')
 parser.add_argument('--model_preTrained_AE', type=str, default = 'trained_models/ae_atlasnet_25.pth',  help='model path')
 parser.add_argument('--model', type=str, default = '',  help='model path')
@@ -28,7 +28,7 @@ parser.add_argument('--num_points', type=int, default = 2500,  help='number of p
 parser.add_argument('--nb_primitives', type=int, default = 25,  help='number of primitives')
 parser.add_argument('--env', type=str, default ="SVR_AtlasNet"   ,  help='visdom env')
 parser.add_argument('--fix_decoder', type=bool, default = True   ,  help='if set to True, on the the resnet encoder is trained')
-parser.add_argument('--accelerated_chamfer', type=int, default =1   ,  help='use custom build accelarated chamfer')
+parser.add_argument('--accelerated_chamfer', type=int, default =0   ,  help='use custom build accelarated chamfer')
 
 opt = parser.parse_args()
 print (opt)

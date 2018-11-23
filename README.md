@@ -119,55 +119,37 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
   ```
   The trained models accessible [here](TODO) have the following performances, slightly better than the one reported in [the paper](TODO). The number reported is the chamfer distance.
 
-| Method | Chamfer (2500 pts GT and 2500 pts Reconstruction) |
-| ---------- | --------------------- |
-| Autoencoder_Atlasnet_25prim | 0.0014476474650672833 |
-| Autoencoder_Atlasnet_1sphere              | 0.0017207141972321953 |
-| Autoencoder_baseline                      | 0.001963350556556298 |
-| SingleViewReconstruction_Atlasnet_25prim  | 0.004638490150569042 |
-| SingleViewReconstruction_Atlasnet_1sphere | 0.005198702077052366 |
-| SingleViewReconstruction_baseline         | 0.0048062904884797605 |
+| Method | Chamfer⁽⁰⁾ |GPU memory⁽¹⁾ |Time by epoch⁽²⁾|
+| ---------- | --------------------- | --------------------- | --------------------- |
+| Autoencoder_Atlasnet_25prim | 0.0014476474650672833 | 4.1GB         |6min55s|
+| Autoencoder_Atlasnet_1sphere              | 0.0017207141972321953 |3.6GB|5min30s|
+| Autoencoder_Baseline                     | 0.001963350556556298 |1.9GB|2min05s|
+| SingleViewReconstruction_Atlasnet_25prim  | 0.004638490150569042 |6.8GB|10min04s|
+| SingleViewReconstruction_Atlasnet_1sphere | 0.005198702077052366 |5.6GB|8min16s|
+| SingleViewReconstruction_Baseline        | 0.0048062904884797605 |1.7GB|3min30s|
 
+⁽⁰⁾  computed between 2500 ground truth points and 2500 reconstructed points.
+
+⁽¹⁾ with the flag ```--accelerated_chamfer 1```.
+
+⁽²⁾this is only an estimate, the code is not optimised.  The easiest way to enhance it would be to preload the training data to use the GPU at 100%. Time computed with the flag ```--accelerated_chamfer 1```.
 
   #### Autoencoder : 25 learned parameterization
 
-| val_loss   | 0.0014795344685297** |
-| ---------- | --------------------- |
-| watercraft | 0.00127737027906      |
-| monitor    | 0.0016588120616       |
-| car        | 0.00152693425022      |
-| couch      | 0.00171516126198      |
-| cabinet    | 0.00168296881168      |
-| lamp       | 0.00232362473947      |
-| plane      | 0.000833268054194     |
-| speaker    | 0.0025417242402       |
-| table      | 0.00149979386376      |
-| chair      | 0.00156113364435      |
-| bench      | 0.00120812499892      |
-| firearm    | 0.000626943988977     |
-| cellphone  | 0.0012117530635       |
+|  val_loss   | watercraft | monitor    | car        | couch      | cabinet    | lamp       | plane      | speaker    | table      | chair      | bench      | firearm    | cellphone  |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 0.0014795344685297⁽³⁾ | 0.00127737027906 | 0.0016588120616 | 0.00152693425022 | 0.00171516126198 | 0.00168296881168 | 0.00232362473947 | 0.000833268054194 | 0.0025417242402 | 0.00149979386376 | 0.00156113364435 | 0.00120812499892 | 0.000626943988977 | 0.0012117530635 |
 
 ####   Single View Reconstruction : 25 learned parameterization
 
-| val_loss   | 0.00400863720389** |
-| ---------- | -------------------- |
-| watercraft | 0.00336707355723     |
-| monitor    | 0.00456469316226     |
-| car        | 0.00306795421868     |
-| couch      | 0.00404269965806     |
-| cabinet    | 0.00355917039209     |
-| lamp       | 0.0114094304694      |
-| plane      | 0.00192791500002     |
-| speaker    | 0.00780984506137     |
-| table      | 0.00368373458016     |
-| chair      | 0.00407004468516     |
-| bench      | 0.0030023689528      |
-| firearm    | 0.00192803189235     |
-| cellphone  | 0.00293665724291     |
+| val_loss   | watercraft | monitor    | car        | couch      | cabinet    | lamp       | plane      | speaker    | table      | chair      | bench      | firearm    | cellphone  |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 0.00400863720389⁽³⁾ | 0.00336707355723 | 0.00456469316226 | 0.00306795421868 | 0.00404269965806 | 0.00355917039209 | 0.0114094304694 | 0.00192791500002 | 0.00780984506137 | 0.00368373458016 | 0.00407004468516 | 0.0030023689528 | 0.00192803189235 | 0.00293665724291 |
+
+⁽³⁾the number is slightly different for above because it comes from legacy code (Atlasnet v1). 
 
 * Evaluate quantitatively the reconstructed meshes : [METRO DISTANCE](https://github.com/RobotLocomotion/meshConverters/tree/master/vcglib/apps/metro)
 
-  **the number is slightly different for above because it comes from legacy code (Atlasnet v1). 
 
 ### Visualisation 
 
@@ -193,12 +175,12 @@ View [this paper](http://openaccess.thecvf.com/content_cvpr_2018/CameraReady/382
 
 | frame | Average recontruction error for SVR (x1000) : chamfer distance on input pointcloud and reconstruction of size 2500 pts|
 | ---------- | -------------------- |
-| object-centered | 4.87   |
+| object-centered | 4.87⁽⁴⁾ |
 | view-centered    | 4.88   |
-
 
 <img src="pictures/chair_yana.png" style="zoom:55%" /><img src="pictures/car_yana.png" style="zoom:60%" />
 
+⁽⁴⁾ Trained with Atlasnet v2 (with learning rate scheduler : slightly better than the paper's result)
 
 ## License
 
