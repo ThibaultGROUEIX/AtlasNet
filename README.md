@@ -41,7 +41,7 @@ conda install pytorch torchvision -c pytorch # or from sources if you prefer
 # you're done ! Congrats :)
 
 ```
-
+Tested on 11/18 with  pytorch 0.4.1 (py37_py36_py35_py27__9.0.176_7.1.2_2) and [latest source](https://github.com/pytorch/pytorch/commit/8e3240d022c47e670f7f3f1a379dbf308ea2f28f)
 # Demo
 
 Require 3GB RAM on the GPU and 5sec to run. Pass ```--cuda 0``` to run without gpu (9sec). 
