@@ -10,11 +10,10 @@ from utils import *
 
 
 class ShapeNet(data.Dataset):
-    def __init__(self, rootimg = "/home/thibault/ssd/data_cvpr17/ShapeNet/ShapeNetRendering", rootpc = "/home/thibault/ssd/data_cvpr17/customShapeNet" , method = 'PMA', class_choice = "chair", train = True, npoints = 2500, normal = False, balanced = False, gen_view=False, SVR=False, idx=0):
+    def __init__(self, rootimg = "./data/ShapeNet/ShapeNetRendering", rootpc = "./data/customShapeNet" , class_choice = "chair", train = True, npoints = 2500, normal = False, balanced = False, gen_view=False, SVR=False, idx=0):
         self.balanced = balanced
         self.normal = normal
         self.train = train
-        self.method = method
         self.rootimg = rootimg
         self.rootpc = rootpc
         self.npoints = npoints
