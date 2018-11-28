@@ -32,7 +32,7 @@ This implementation uses [Pytorch](http://pytorch.org/).
 
 ```shell
 ## Download the repository
-git clone git@github.com:ThibaultGROUEIX/AtlasNet.git
+git clone https://github.com/ThibaultGROUEIX/AtlasNet.git
 cd AtlasNet
 ## Create python env with relevant packages
 conda create --name pytorch-atlasnet python=3.7
