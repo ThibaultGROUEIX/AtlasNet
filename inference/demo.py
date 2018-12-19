@@ -39,9 +39,12 @@ if opt.cuda:
 
 network.apply(weights_init)
 if opt.model != '':
-    network.load_state_dict(torch.load(opt.model))
+    if opt.cuda:
+        network.load_state_dict(torch.load(opt.model))
+    else:
+        network.load_state_dict(torch.load(opt.model, map_location='cpu'))
     print("previous weight loaded")
-
+    
 network.eval()
 grain = int(np.sqrt(opt.gen_points/opt.nb_primitives))-1
 grain = grain*1.0
