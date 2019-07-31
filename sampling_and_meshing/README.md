@@ -8,7 +8,7 @@ Reconstructs a triangle mesh from a set of oriented 3D points by solving a Poiss
 PoissonRecon --in bunny.ply --out bunny.ply
 ```
 
-##[Virtual Scanner](https://github.com/wang-ps/O-CNN/tree/master/virtual_scanner)
+## [Virtual Scanner](https://github.com/wang-ps/O-CNN/tree/master/virtual_scanner)
 
 `cd O-CNN/virtual_scanner/`.
 
@@ -39,7 +39,7 @@ Example:
 
 
 
-##Point shuffling
+## Point shuffling
 
 Shuffle points sampled from Virtual Scanner. Can be useful to quickly load a subsampled version on the pointcloud (just read a random block of lines in a PLY). Written by [Pierre-Alain Langlois](http://imagine.enpc.fr/~langloip/)
 
