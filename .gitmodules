@@ -1,0 +1,8 @@
+[submodule "sampling_and_meshing/PoissonRecon"]
+	path = sampling_and_meshing/PoissonRecon
+	url = https://github.com/mkazhdan/PoissonRecon
+	branch = master
+[submodule "sampling_and_meshing/O-CNN"]
+	path = sampling_and_meshing/O-CNN
+	url = https://github.com/palanglois/O-CNN.git
+	branch = master
