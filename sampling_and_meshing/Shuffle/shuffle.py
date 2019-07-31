@@ -1,5 +1,13 @@
 # Written by the mighty Pierre-Alain Langlois
 
+
+import argparse
+from os import listdir
+from os.path import isfile, join
+import pymesh
+import numpy as np
+import copy
+
 def shuffle_pc(file, output_path):
 	"""
 	Function to shuffle a point cloud produced by virtual scanner.
