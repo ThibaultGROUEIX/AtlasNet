@@ -49,6 +49,7 @@ assimp export test.ply test.obj
 
 Shuffle points sampled from Virtual Scanner. Can be useful to quickly load a subsampled version on the pointcloud (just read a random block of lines in a PLY). Written by [Pierre-Alain Langlois](http://imagine.enpc.fr/~langloip/).
 
+Dependencies :  `pip install argparse joblib` and install [Pymesh](https://github.com/PyMesh/PyMesh)
 ```
 #Usage on one file:
 python shuffle.py --input input_path --output output_path
