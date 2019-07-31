@@ -12,7 +12,7 @@ PoissonRecon --in bunny.ply --out bunny.ply
 
 `cd O-CNN/virtual_scanner/`.
 
-This folder contains the code for converting 3D models to dense point clouds with normals.   
+This folder contains the code for converting 3D models to dense point clouds with normals.  It is a fork made by @palanglois to output a mesh in the `PLY` format.
 
 Install
 
