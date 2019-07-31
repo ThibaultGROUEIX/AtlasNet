@@ -1,3 +1,5 @@
+Run : `git submodule update —init`
+
 ## [Poisson Surface reconstruction](https://github.com/mkazhdan/PoissonRecon)
 
 Reconstructs a triangle mesh from a set of oriented 3D points by solving a Poisson system. Run `make` to install.
@@ -8,10 +10,23 @@ PoissonRecon --in bunny.ply --out bunny.ply
 
 ##[Virtual Scanner](https://github.com/wang-ps/O-CNN/tree/master/virtual_scanner)
 
-This folder contains the code for converting 3D models to dense point clouds with normals.  Run `make` to install.
+`cd O-CNN/virtual_scanner/`.
+
+This folder contains the code for converting 3D models to dense point clouds with normals.   
+
+Install
 
 ```
-Usage:
+apt-get install -y --no-install-recommends libboost-all-dev libcgal-dev libeigen3-dev
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make
+```
+
+Usage
+
+```
     VirtualScanner.exe <file_name> [nviews] [flags] [normalize]
         file_name: the name of the file (*.obj; *.off) to be processed.
         nviews: the number of views for scanning. Default: 6
