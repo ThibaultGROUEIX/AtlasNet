@@ -6,7 +6,7 @@ import torchvision.transforms as transforms
 import numpy as np
 import os
 from PIL import Image
-from utils import *
+from my_utils import *
 
 
 class ShapeNet(data.Dataset):
