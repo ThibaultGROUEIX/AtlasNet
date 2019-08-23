@@ -63,7 +63,7 @@ else:
         rx = xx[:, diag_ind, diag_ind].unsqueeze(1).expand_as(xx)
         ry = yy[:, diag_ind, diag_ind].unsqueeze(1).expand_as(yy)
         P = (rx.transpose(2,1) + ry - 2*zz)
-        return P.min(1)[0], P.min(2)[0]
+        return torch.min(P, 1)[0], torch.min(P, 2)[0], torch.min(P, 1)[1], torch.min(P, 2)[1]
 # ========================================================== #
 
 # =============DEFINE stuff for logs ======================================== #
