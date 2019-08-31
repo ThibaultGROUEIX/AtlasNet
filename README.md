@@ -1,4 +1,4 @@
-🚀 Major upgrade 🚀 : Migration to  **Pytorch v1** and **Python 3.7**. The code is now much more generic and easy to install. 
+🚀 Related project 🚀 : [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
 
 # AtlasNet
 
@@ -187,6 +187,12 @@ View [this paper](http://openaccess.thecvf.com/content_cvpr_2018/CameraReady/382
 <img src="pictures/chair_yana.png" style="zoom:55%" /><img src="pictures/car_yana.png" style="zoom:60%" />
 
 ⁽⁴⁾ Trained with Atlasnet v2 (with learning rate scheduler : slightly better than the paper's result)
+
+## 🚀 Related project 🚀:
+*  [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
+*  [3D-CODED](https://github.com/ThibaultGROUEIX/3D-CODED)
+*  [Cycle Consistent Deformations](https://github.com/ThibaultGROUEIX/CycleConsistentDeformation)
+
 
 ## License
 
