@@ -34,6 +34,7 @@ This implementation uses [Pytorch](http://pytorch.org/).
 ## Download the repository
 git clone https://github.com/ThibaultGROUEIX/AtlasNet.git
 cd AtlasNet
+git submodule update --init
 ## Create python env with relevant packages
 conda create --name pytorch-atlasnet python=3.7
 source activate pytorch-atlasnet
