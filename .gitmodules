@@ -9,3 +9,6 @@
 [submodule "extension"]
 	path = extension
 	url = https://github.com/ThibaultGROUEIX/chamfer_pytorch
+[submodule "ChamferDistancePytorch"]
+	path = ChamferDistancePytorch
+	url = https://github.com/ThibaultGROUEIX/ChamferDistancePytorch

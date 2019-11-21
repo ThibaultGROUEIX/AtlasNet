@@ -10,7 +10,7 @@ wget https://cloud.enpc.fr/s/RATKsfLQUSu0JWW/download --no-check-certificate
 unzip download
 rm download
 
-# the rendered views
+# the rendered views fron Choy
 wget https://cloud.enpc.fr/s/S6TCx1QJzviNHq0/download --no-check-certificate
 unzip download
 rm download
