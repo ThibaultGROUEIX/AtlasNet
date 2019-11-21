@@ -9,27 +9,40 @@ from template import GetTemplate
 
 class Atlasnet(nn.Module):
 
-    def __init__(self, trainer):
-        super(Atlasnet, self).__init__(trainer)
-        self.opt = trainer.opt
-        self.device = trainer.device
-        if self.opt.remove_all_batchNorms:
+    def __init__(self, opt):
+        """
+        Main Atlasnet module. This network takes an embedding in the form of a latent vector and returns a pointcloud or a mesh
+        :param opt: 
+        """
+        super(Atlasnet, self).__init__()
+        self.opt = opt
+        self.device = opt.device
+        self.nb_pts_in_primitive = opt.number_points / opt.nb_primitives
+        if opt.remove_all_batchNorms:
             torch.nn.BatchNorm1d = Identity
             print("Replacing all batchnorms by identities.")
 
+        # Initialize templates
+        self.template = [GetTemplate(opt.start_from, device=opt.device) for i in range(0, opt.nb_primitives)]
 
-        self.template = [GetTemplate(trainer.opt.start_from, trainer.datasets.dataset_train, device = trainer.device, npoints=trainer.opt.number_points / self.opt.nb_primitives) for i in range(0, trainer.opt.nb_primitives)]
-        self.decoder_getter = GetDecoder(bottleneck_size=trainer.opt.bottleneck, input_size=trainer.opt.dim_template, output_size=trainer.opt.dim_template,
-                                         decoder_type=trainer.opt.decoder)
-        self.decoder = nn.ModuleList([self.decoder_getter() for i in range(0, trainer.opt.nb_primitives)])
-
+        # Intialize deformation networks
+        self.decoder = nn.ModuleList(
+            [GetDecoder(bottleneck_size=opt.bottleneck, input_size=opt.dim_template, decoder_type=opt.decoder) for i in
+             range(0, opt.nb_primitives)])
 
     def forward(self, latent_vector):
+        """
+        Deform points from self.template using the embedding latent_vector
+        :param latent_vector: an opt.bottleneck size vector encoding a 3D shape or an image.
+        :return: A deformed pointcloud
+        """
+        # Sample points in the patches
         input_points = [self.template[i].getRandomPoints() for i in range(self.opt.nb_primitives)]
         input_points = [input_points.expand() for i in range(self.opt.nb_primitives)]
 
-        output_points = torch.cat([self.decoder[i](input_points[i],  latent_vector.unsqueeze(2)).unsqueeze(0) for i in range(0, self.opt.nb_primitives)], dim=0)
+        # Deform each patch
+        output_points = torch.cat([self.decoder[i](input_points[i], latent_vector.unsqueeze(2)).unsqueeze(0) for i in
+                                   range(0, self.opt.nb_primitives)], dim=0)
 
+        # Deform return the deformed pointcloud
         return output_points.contiguous()  # batch, nb_prim, num_point, 3
-
-
