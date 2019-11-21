@@ -103,9 +103,7 @@ The number reported are the chamfer distance, the f-score and the [metro](https:
 ⁽¹⁾ with the flag ```--accelerated_chamfer 1```.
 
 ⁽²⁾this is only an estimate, the code is not optimised.  The easiest way to enhance it would be to preload the training data to use the GPU at 100%. Time computed with the flag ```--accelerated_chamfer 1```.
-</details>
-
-### Visualisation 
+Visualisation 
 
 The generated 3D models' surfaces are not oriented. As a consequence, some area will appear dark if you directly visualize the results in [Meshlab](http://www.meshlab.net/). You have to incorporate your own fragment shader in Meshlab, that flip the normals in they are hit by a ray from the wrong side. An exemple is given for the [Phong BRDF](https://en.wikipedia.org/wiki/Phong_reflection_model).
 
@@ -114,7 +112,9 @@ sudo mv /usr/share/meshlab/shaders/phong.frag /usr/share/meshlab/shaders/phong.f
 sudo cp auxiliary/phong.frag /usr/share/meshlab/shaders/phong.frag #restart Meshlab
 ```
 
+</details>
 
+### 
 
 
 
