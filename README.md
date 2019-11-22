@@ -53,27 +53,18 @@ python setup.py install
 
 
 
-# Demo
+# Demo   ```python inference/demo.py```
 
-Require 3GB RAM on the GPU and 5sec to run. Pass ```--cuda 0``` to run without gpu (9sec). 
 
-TODO : Gif
-
-```shell
-python inference/demo.py --cuda 1
-```
 
 ![input](./pictures/2D3D.png)    
 
-This script takes as input a 137 * 137 image (from ShapeNet), run it through a trained resnet encoder, then decode it through a trained atlasnet with 25 learned parameterizations, and save the output to output.ply
 
 
 
-# Training
+# Training  ```python ./training/train.py```
 
-```shell
-python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives |& tee ${env}.txt
-```
+
 
 :raised_hand_with_fingers_splayed: Monitor your training on http://localhost:8888/
 
@@ -81,11 +72,9 @@ python ./training/train_AE_AtlasNet.py --env $env --nb_primitives $nb_primitives
 
 
 
-# Evaluate
+# Evaluate  ```python ./training/test.py```
 
-```bash
-python ./inference/run_AE_AtlasNet.py
-```
+
 <details><summary>Quantitative Results </summary>
 
 
@@ -123,11 +112,15 @@ sudo cp auxiliary/phong.frag /usr/share/meshlab/shaders/phong.frag #restart Mesh
 * **[Yana Hasson](https://github.com/hassony2)** trained our sphere model, for Single View Reconstruction (SVR) in view-centered coordinates : performances are unaffected! Qualitative and quantitative results follow. Many thanks !
 View [this paper](http://openaccess.thecvf.com/content_cvpr_2018/CameraReady/3826.pdf) for a good review of on object-centered representation VS view-centered representation.
 
+<details><summary>Quantitative Results </summary>
+
+
+
 | frame | Average recontruction error for SVR (x1000) : chamfer distance on input pointcloud and reconstruction of size 2500 pts|
 | ---------- | -------------------- |
 | object-centered | 4.87⁽⁴⁾ |
 | view-centered    | 4.88   |
-
+</details>
 <img src="pictures/chair_yana.png" style="zoom:55%" /><img src="pictures/car_yana.png" style="zoom:60%" />
 
 ⁽⁴⁾ Trained with Atlasnet v2 (with learning rate scheduler : slightly better than the paper's result)
@@ -177,3 +170,5 @@ When using the provided data make sure to respect the shapenet [license](https:/
 
 
 
+
+```

@@ -176,11 +176,6 @@ class ShapeNet(data.Dataset):
         points[:, :3] = self.normalization_function(points[:, :3])
         return points.unsqueeze(0), pointcloud_path, image_path, pointcloud, category
 
-    def int2str(self, N):
-        if N < 10:
-            return "0" + str(N)
-        else:
-            return str(N)
 
     def __getitem__(self, index):
         return_dict = self.data_metadata[index]
@@ -196,10 +191,10 @@ class ShapeNet(data.Dataset):
         if self.opt.SVR:
             if self.train:
                 N = np.random.randint(1, self.num_image_per_object)
-                im = Image.open(join(return_dict['image_path'], self.int2str(N) + ".png"))
+                im = Image.open(join(return_dict['image_path'], ShapeNet.int2str(N) + ".png"))
                 im = self.dataAugmentation(im)  # random crop
             else:
-                im = Image.open(join(return_dict['image_path'], self.int2str(self.idx_image_val) + ".png"))
+                im = Image.open(join(return_dict['image_path'], ShapeNet.int2str(self.idx_image_val) + ".png"))
                 im = self.validating(im)  # center crop
             im = self.transforms(im)  # scale
             im = im[:3, :, :]
@@ -209,6 +204,12 @@ class ShapeNet(data.Dataset):
     def __len__(self):
         return len(self.datapath)
 
+    @staticmethod
+    def int2str(N):
+        if N < 10:
+            return "0" + str(N)
+        else:
+            return str(N)
 
 if __name__ == '__main__':
     print('Testing Shapenet dataset')
