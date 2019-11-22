@@ -120,10 +120,13 @@ View [this paper](http://openaccess.thecvf.com/content_cvpr_2018/CameraReady/382
 | ---------- | -------------------- |
 | object-centered | 4.87⁽⁴⁾ |
 | view-centered    | 4.88   |
-</details>
+
 <img src="pictures/chair_yana.png" style="zoom:55%" /><img src="pictures/car_yana.png" style="zoom:60%" />
 
 ⁽⁴⁾ Trained with Atlasnet v2 (with learning rate scheduler : slightly better than the paper's result)
+
+</details>
+
 
 ## Paper reproduction 
 
