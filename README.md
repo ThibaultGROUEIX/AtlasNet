@@ -170,8 +170,3 @@ This work was funded by [Adobe System](https://github.com/fxia22/pointGAN) and [
 When using the provided data make sure to respect the shapenet [license](https://shapenet.org/terms).
 
 [MIT](https://github.com/ThibaultGROUEIX/AtlasNet/blob/master/license_MIT)
-
-
-
-
-```

@@ -28,14 +28,14 @@ class ShapeNet(data.Dataset):
         # Load classes
         self.pointcloud_path = join(dirname(__file__), 'data/ShapeNetV1PointCloud')
         self.image_path = join(dirname(__file__), 'data/ShapeNetV1Renderings')
-        self.classes = [x for x in next(os.walk(self.pointcloud_path))[1]]
 
         # Load taxonomy file
         self.taxonomy_path = join(dirname(__file__), 'data/taxonomy.json')
         if not exists(self.taxonomy_path):
-            os.system("chmod +x dataset/download_pointcloud.sh")
-            os.system("./dataset/download_pointcloud.sh")
+            os.system("chmod +x dataset/download_shapenet_pointclouds.sh")
+            os.system("./dataset/download_shapenet_pointclouds.sh")
 
+        self.classes = [x for x in next(os.walk(self.pointcloud_path))[1]]
         with open(self.taxonomy_path, 'r') as f:
             self.taxonomy = json.load(f)
 
@@ -106,8 +106,8 @@ class ShapeNet(data.Dataset):
 
         if self.opt.SVR:
             if not exists(self.image_path):
-                os.system("chmod +x dataset/download_images.sh")
-                os.system("./dataset/download_images.sh")
+                os.system("chmod +x dataset/download_shapenet_renderings.sh")
+                os.system("./dataset/download_shapenet_renderings.sh")
 
             self.num_image_per_object = 24
             self.idx_image_val = 0
@@ -213,7 +213,7 @@ class ShapeNet(data.Dataset):
 
 if __name__ == '__main__':
     print('Testing Shapenet dataset')
-    opt = {"normalization": "UnitBall", "class_choice": [], "SVR":True, "sample": True, "npoints":2500, "shapenet13":True}
+    opt = {"normalization": "UnitBall", "class_choice": ["plane"], "SVR":True, "sample": True, "npoints":2500, "shapenet13":True}
     d = ShapeNet(EasyDict(opt), train=False)
     print(d[1])
     a = len(d)
