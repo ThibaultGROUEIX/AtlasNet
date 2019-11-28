@@ -7,5 +7,8 @@ function gdrive_download () {
 cd dataset
 mkdir data
 gdrive_download 1OG-IxPSJok3in78uSAX26GiIJUa-kt2Y data/ShapeNetV1PointCloud.zip
-unzip data/ShapeNetV1PointCloud.zip
+cd data
+unzip ShapeNetV1PointCloud.zip
+rm ShapeNetV1PointCloud.zip
+cd ..
 cd ..

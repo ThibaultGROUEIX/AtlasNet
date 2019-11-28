@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import os
 import torch
 
+
 class AverageValueMeter(object):
     """
     Slightly fancier than the standard AverageValueMeter
@@ -48,22 +49,23 @@ class AverageValueMeter(object):
 
 
 def convert_label_to_one_hot_numpy(labels, num_categories):
-    labels = labels.view(len(labels),1)
+    labels = labels.view(len(labels), 1)
     label_one_hot = np.zeros((labels.shape[0], num_categories))
     for idx in range(labels.shape[0]):
         label_one_hot[idx, labels[idx]] = 1
     return label_one_hot
 
+
 def convert_label_to_one_hot_torch(labels, num_categories):
-    labels = labels.view(labels.nelement(),1).long()
+    labels = labels.view(labels.nelement(), 1).long()
     labels_onehot = torch.FloatTensor(len(labels), num_categories).to(labels.device)
     labels_onehot.zero_()
     labels_onehot.scatter_(1, labels, 1)
     return labels_onehot
 
+
 def convert_one_hot_to_labels(one_hot):
     return torch.max(one_hot, 1)[1]
-
 
 
 class Logs(object):
@@ -85,10 +87,8 @@ class Logs(object):
             self.curves[name].append(self.meters[name].avg)
             if len(name) < 20:
                 print(colored(name, 'yellow') + " " + colored(f"{self.meters[name].avg}", 'cyan'))
-            if name == "cluster_assignments_val" or name == "cluster_assignments" or name.find("cluster") > -1:
-                continue
-            else:
-                self.current_epoch[name] = self.meters[name].avg
+
+            self.current_epoch[name] = self.meters[name].avg
 
     def reset(self):
         """
@@ -122,8 +122,7 @@ class Logs(object):
             return np.column_stack((A, B))
 
     def plot_bar(self, vis, name):
-        vis.bar(self.meters[name].avg, win='barplot') # Here
-
+        vis.bar(self.meters[name].avg, win='barplot')  # Here
 
     def update_curves(self, vis, path):
         X_Loss = None
@@ -142,16 +141,6 @@ class Logs(object):
                 X_Loss = self.stack_numpy_array(X_Loss, np.arange(len(self.curves[name])))
                 Y_Loss = self.stack_numpy_array(Y_Loss, np.array(self.curves[name]))
 
-            elif name[:3] == "iou":
-                Names_iou.append(name)
-                X_iou = self.stack_numpy_array(X_iou, np.arange(len(self.curves[name])))
-                Y_iou = self.stack_numpy_array(Y_iou, np.array(self.curves[name]))
-
-            elif name[:3] == "nmi":
-                Names_nmi.append(name)
-                X_nmi = self.stack_numpy_array(X_nmi, np.arange(len(self.curves[name])))
-                Y_nmi = self.stack_numpy_array(Y_nmi, np.array(self.curves[name]))
-
             else:
                 print(f"Dont know what to do with {name}")
 
@@ -164,22 +153,6 @@ class Logs(object):
                  Y=np.log(Y_Loss),
                  win='log',
                  opts=dict(title="log", legend=Names_Loss))
-
-        try:
-            vis.line(X=X_iou,
-                     Y=Y_iou,
-                     win='iou',
-                     opts=dict(title="iou", legend=Names_iou))
-        except:
-            print("Visdom : No iou curve to display")
-
-        try:
-            vis.line(X=X_nmi,
-                     Y=Y_nmi,
-                     win='nmi',
-                     opts=dict(title="nmi", legend=Names_nmi))
-        except:
-            print("Visdom : No nmi curve to display")
 
         # Save figures in PNGs
         plt.figure()
@@ -195,20 +168,3 @@ class Logs(object):
         plt.title('Curves in Log')
         plt.legend()
         plt.savefig(os.path.join(path, "curve_log.png"))
-
-        try:
-            plt.figure()
-            plt.plot(X_iou, Y_iou, label=Names_iou)
-            plt.title('Curves')
-            plt.legend()
-            plt.savefig(os.path.join(path, "curve_iou.png"))
-        except:
-            print("Matplotlib : No iou curve to display")
-        try:
-            plt.figure()
-            plt.plot(X_nmi, Y_nmi, label=Names_nmi)
-            plt.title('Curves')
-            plt.legend()
-            plt.savefig(os.path.join(path, "curve_nmi.png"))
-        except:
-            print("Matplotlib : No nmi curve to display")

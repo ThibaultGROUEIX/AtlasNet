@@ -3,17 +3,20 @@ import numpy as np
 import torch
 from torch.autograd import Variable
 
+
 def GetTemplate(template_type, device=0):
-        if template_type == "SQUARE":
-            return SquareTemplate(device=device)
-        elif template_type == "SPHERE":
-            return SphereTemplate(device=device)
-        else:
-            print("select valid template type")
+    if template_type == "SQUARE":
+        return SquareTemplate(device=device)
+    elif template_type == "SPHERE":
+        return SphereTemplate(device=device)
+    else:
+        print("select valid template type")
+
 
 class SphereTemplate(object):
     def __init__(self, device=0, grain=6):
         self.device = device
+        self.dim = 3
 
     def get_random_points(self, shape):
         rand_grid = torch.cuda.FloatTensor(shape).view(-1, 3).to(self.device).float()
@@ -31,6 +34,7 @@ class SphereTemplate(object):
 class SquareTemplate(object):
     def __init__(self, device=0):
         self.device = device
+        self.dim = 2
 
     def get_random_points(self, shape):
         rand_grid = torch.cuda.FloatTensor(shape).to(self.device).float()
@@ -42,7 +46,7 @@ class SquareTemplate(object):
         self.mesh = pymesh.form_mesh(vertices=vertices, faces=faces)  # 10k vertices
         self.vertex = torch.from_numpy(self.mesh.vertices).to(self.device).float()
         self.num_vertex = self.vertex.size(0)
-        return Variable(self.vertex)
+        return Variable(self.vertex[:, :2].contiguous())
 
     @staticmethod
     def generate_square(grain):
@@ -66,5 +70,3 @@ class SquareTemplate(object):
                               (grain + 1) * (grain + 1) + j + (grain + 1) * (i + 1)])
 
         return np.array(vertices), np.array(faces)
-
-

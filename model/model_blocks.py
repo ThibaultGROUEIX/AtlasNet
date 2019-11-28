@@ -4,6 +4,8 @@ import torch.nn as nn
 import torch.nn.parallel
 import torch.utils.data
 import torch.nn.functional as F
+import os
+
 
 class Identity(nn.Module):
     def __init__(self, *args, **kwargs):
@@ -11,6 +13,7 @@ class Identity(nn.Module):
 
     def forward(self, input):
         return input
+
 
 class PointNetfeat(nn.Module):
     def __init__(self, nlatent=1024, dim_input=3):
@@ -68,6 +71,7 @@ class Mapping2Dto3D(nn.Module):
         x = F.relu(self.bn3(self.conv3(x)))
         return self.last_conv(x)
 
+
 class Mapping2Dto3DLight(nn.Module):
     def __init__(self, bottleneck_size=2500, input_size=3, dim_output=3):
         self.bottleneck_size = bottleneck_size
@@ -94,19 +98,14 @@ class Mapping2Dto3DLight(nn.Module):
     def get_regul(self):
         return self.regularization
 
-class GetDecoder(object):
-    def __init__(self, bottleneck_size=1024, input_size=2, output_size=3, decoder_type="Atlasnet"):
-        self.bottleneck_size = bottleneck_size
-        self.input_size = input_size
-        self.output_size = output_size
-        self.decoder_type = decoder_type
-        if self.decoder_type == "Atlasnet":
-            self.decoder = Mapping2Dto3D
-        elif self.decoder_type == "AtlasnetLight":
-            self.decoder = Mapping2Dto3DLight
-        else:
-            print("invalid decoder type")
-            os.exit()
 
-    def __call__(self):
-        return self.decoder(self.bottleneck_size, self.input_size, self.output_size)
+def GetDecoder(bottleneck_size=1024, input_size=2, output_size=3, decoder_type="Atlasnet"):
+    bottleneck_size = bottleneck_size
+    input_size = input_size
+    output_size = output_size
+    decoder_type = decoder_type
+    if decoder_type == "AtlasNet":
+        decoder = Mapping2Dto3D(bottleneck_size, input_size, output_size)
+    elif decoder_type == "AtlasNetLight":
+        decoder = Mapping2Dto3DLight(bottleneck_size, input_size, output_size)
+    return decoder

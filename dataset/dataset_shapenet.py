@@ -7,11 +7,12 @@ import os
 from PIL import Image
 import auxiliary.my_utils as my_utils
 import pickle
-import pointcloud_processor
+import auxiliary.pointcloud_processor as pointcloud_processor
 from os.path import join, dirname, exists
 from easydict import EasyDict
 import json
 from termcolor import colored
+
 
 class ShapeNet(data.Dataset):
     def __init__(self, opt, train=True):
@@ -19,7 +20,6 @@ class ShapeNet(data.Dataset):
         self.train = train
         my_utils.red_print('Create Shapenet Dataset...')
         self.init_normalization()
-
 
         # Define core path array
         self.datapath = []
@@ -47,12 +47,10 @@ class ShapeNet(data.Dataset):
                 self.id2names[dict_class['synsetId']] = name
                 self.names2id[name] = dict_class['synsetId']
 
-
-
-
         # Select classes
         if opt.shapenet13:
-            opt.class_choice = ["airplane", "bench", "cabinet", "car", "chair", "display", "lamp", "loudspeaker", "rifle", "sofa", "table", "telephone", "vessel" ]
+            opt.class_choice = ["airplane", "bench", "cabinet", "car", "chair", "display", "lamp", "loudspeaker",
+                                "rifle", "sofa", "table", "telephone", "vessel"]
 
         if len(opt.class_choice) > 0:
             new_classes = []
@@ -64,8 +62,17 @@ class ShapeNet(data.Dataset):
         self.path_dataset = join(dirname(__file__), 'data', 'cache')
         if not exists(self.path_dataset):
             os.mkdir(self.path_dataset)
-        self.path_dataset = join(self.path_dataset,  self.opt.normalization + str(train) + "_".join(self.opt.class_choice))
+        self.path_dataset = join(self.path_dataset,
+                                 self.opt.normalization + str(train) + "_".join(self.opt.class_choice))
 
+        if self.opt.SVR:
+            if not exists(self.image_path):
+                os.system("chmod +x dataset/download_shapenet_renderings.sh")
+                os.system("./dataset/download_shapenet_renderings.sh")
+
+            self.num_image_per_object = 24
+            self.idx_image_val = 0
+            self.init_singleview()
 
         # Compile list of pointcloud path by selected category
         for category in self.classes:
@@ -103,15 +110,6 @@ class ShapeNet(data.Dataset):
         # Preprocess and cache files
         self.preprocess()
 
-
-        if self.opt.SVR:
-            if not exists(self.image_path):
-                os.system("chmod +x dataset/download_shapenet_renderings.sh")
-                os.system("./dataset/download_shapenet_renderings.sh")
-
-            self.num_image_per_object = 24
-            self.idx_image_val = 0
-            self.init_singleview()
         my_utils.red_print('Create Shapenet Dataset... Done!')
 
     def preprocess(self):
@@ -131,7 +129,8 @@ class ShapeNet(data.Dataset):
             self.data_points = [a[0] for a in self.datas]
             self.data_points = torch.cat(self.data_points, 0)
 
-            self.data_metadata = [{'pointcloud_path':a[1], 'image_path':a[2], 'name':a[3], 'category':a[4]} for a in self.datas]
+            self.data_metadata = [{'pointcloud_path': a[1], 'image_path': a[2], 'name': a[3], 'category': a[4]} for a in
+                                  self.datas]
 
             # Save in cache
             with open(self.path_dataset + "info.pkl", "wb") as fp:  # Pickling
@@ -166,9 +165,6 @@ class ShapeNet(data.Dataset):
             transforms.CenterCrop(127),
         ])
 
-
-
-
     def _getitem(self, index):
         pointcloud_path, image_path, pointcloud, category = self.datapath[index]
         points = np.load(pointcloud_path)
@@ -176,16 +172,15 @@ class ShapeNet(data.Dataset):
         points[:, :3] = self.normalization_function(points[:, :3])
         return points.unsqueeze(0), pointcloud_path, image_path, pointcloud, category
 
-
     def __getitem__(self, index):
         return_dict = self.data_metadata[index]
         # Point processing
         points = self.data_points[index]
         points = points.clone()
         if self.opt.sample:
-            choice = np.random.choice(points.size(0), self.opt.npoints, replace=True)
+            choice = np.random.choice(points.size(0), self.opt.number_points, replace=True)
             points = points[choice, :]
-        return_dict['points'] = points[:,:3].contiguous()
+        return_dict['points'] = points[:, :3].contiguous()
 
         # Image processing
         if self.opt.SVR:
@@ -211,9 +206,11 @@ class ShapeNet(data.Dataset):
         else:
             return str(N)
 
+
 if __name__ == '__main__':
     print('Testing Shapenet dataset')
-    opt = {"normalization": "UnitBall", "class_choice": ["plane"], "SVR":True, "sample": True, "npoints":2500, "shapenet13":True}
+    opt = {"normalization": "UnitBall", "class_choice": ["plane"], "SVR": True, "sample": True, "npoints": 2500,
+           "shapenet13": True}
     d = ShapeNet(EasyDict(opt), train=False)
     print(d[1])
     a = len(d)
