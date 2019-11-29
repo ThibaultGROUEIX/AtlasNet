@@ -51,11 +51,11 @@ python setup.py install
 
 # Usage
 
-* **[Demo](demo.md)** :    ```python inference/demo.py```
+* **[Demo](./doc/demo.md)** :    ```python inference/demo.py```
 
-* **[Training](training.md)** :  ```python ./training/train.py```
+* **[Training](./doc/training.md)** :  ```python ./training/train.py```
 
-* **[Trained models evaluation](training.md)**:  ```python ./training/launch.py --mode test```
+* **[Trained models evaluation](./doc/training.md)**:  ```python ./training/launch.py --mode test```
 
   
 
@@ -80,7 +80,7 @@ python setup.py install
 
 [Cool Contributions from Yana Hasson](./doc/contributions.md)
 
-[Meshlab Visualization Trick](meshlab.md)
+[Meshlab Visualization Trick](./doc/meshlab.md)
 
 The code for the Chamfer Loss was adapted from Fei Xia' repo : [PointGan](https://github.com/fxia22/pointGAN). Many thanks to him !
 
