@@ -6,6 +6,7 @@ import torch.utils.data
 from model.model_blocks import GetDecoder, Identity
 from model.template import GetTemplate
 
+
 class Atlasnet(nn.Module):
 
     def __init__(self, opt):
@@ -39,14 +40,17 @@ class Atlasnet(nn.Module):
         # Sample points in the patches
         if train:
             input_points = [self.template[i].get_random_points(
-                torch.Size((latent_vector.size(0), self.template[i].dim, self.nb_pts_in_primitive))) for i in
-                            range(self.opt.nb_primitives)]
+                torch.Size((latent_vector.size(0), self.template[i].dim, self.nb_pts_in_primitive)),
+                latent_vector.device) for i in
+                range(self.opt.nb_primitives)]
         else:
-            input_points = [self.template[i].get_regular_points(self.nb_pts_in_primitive).transpose(0, 1).contiguous()
-                            for i in range(self.opt.nb_primitives)]
+            input_points = [
+                self.template[i].get_regular_points(self.nb_pts_in_primitive, latent_vector.device).transpose(0,
+                                                                                                              1).contiguous()
+                for i in range(self.opt.nb_primitives)]
             input_points = [input_points[i].unsqueeze(0).expand(
                 torch.Size((latent_vector.size(0), self.template[i].dim, input_points[i].size(1)))) for i in
-                            range(self.opt.nb_primitives)]
+                range(self.opt.nb_primitives)]
         # Deform each patch
         output_points = torch.cat([self.decoder[i](input_points[i], latent_vector.unsqueeze(2)).unsqueeze(1) for i in
                                    range(0, self.opt.nb_primitives)], dim=1)
@@ -61,15 +65,17 @@ class Atlasnet(nn.Module):
         :return:
         """
         import pymesh
-        input_points = [self.template[i].get_regular_points(self.nb_pts_in_primitive).transpose(0, 1).contiguous()
+        input_points = [self.template[i].get_regular_points(self.nb_pts_in_primitive, latent_vector.device).transpose(0,
+                                                                                                                      1).contiguous()
                         for i in range(self.opt.nb_primitives)]
         input_points = [input_points[i].unsqueeze(0) for i in range(self.opt.nb_primitives)]
 
         # Deform each patch
         output_points = [self.decoder[i](input_points[i], latent_vector.unsqueeze(2)).squeeze() for i in
-                                   range(0, self.opt.nb_primitives)]
+                         range(0, self.opt.nb_primitives)]
 
-        output_meshes = [pymesh.form_mesh(vertices = output_points[i].transpose(1,0).contiguous().cpu().numpy(), faces = self.template[i].mesh.faces)
+        output_meshes = [pymesh.form_mesh(vertices=output_points[i].transpose(1, 0).contiguous().cpu().numpy(),
+                                          faces=self.template[i].mesh.faces)
                          for i in range(self.opt.nb_primitives)]
 
         # Deform return the deformed pointcloud

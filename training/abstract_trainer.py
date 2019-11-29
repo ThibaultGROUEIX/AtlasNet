@@ -116,15 +116,25 @@ class AbstractTrainer(object):
         """
         Defines the learning rate schedule
         """
-        
+        # Warm-up following https://arxiv.org/pdf/1706.02677.pdf
+        if len(self.next_learning_rates) > 0:
+            next_learning_rate = self.next_learning_rates.pop()
+            print(f"warm-up learning rate {next_learning_rate}")
+            for g in self.optimizer.param_groups:
+                g['lr'] = next_learning_rate
+
+
         if self.epoch == self.opt.lr_decay_1:
             self.opt.lrate = self.opt.lrate / 10.0
+            print(f"First learning rate decay {self.opt.lrate}")
             self.optimizer = optim.Adam(self.network.parameters(), lr=self.opt.lrate)
         if self.epoch == self.opt.lr_decay_2:
             self.opt.lrate = self.opt.lrate / 10.0
+            print(f"Second learning rate decay {self.opt.lrate}")
             self.optimizer = optim.Adam(self.network.parameters(), lr=self.opt.lrate)
         if self.epoch == self.opt.lr_decay_3:
             self.opt.lrate = self.opt.lrate / 10.0
+            print(f"Third learning rate decay {self.opt.lrate}")
             self.optimizer = optim.Adam(self.network.parameters(), lr=self.opt.lrate)
 
     def increment_epoch(self):
@@ -138,3 +148,4 @@ class AbstractTrainer(object):
 
     def reset_epoch(self):
         self.epoch = self.opt.start_epoch
+

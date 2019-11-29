@@ -15,6 +15,7 @@ from easydict import EasyDict
 import model.model as model
 import auxiliary.mesh_processor as mesh_processor
 
+
 class Trainer(AbstractTrainer, Loss, Iteration):
     def __init__(self, opt):
         super(Trainer, self).__init__(opt)
@@ -68,6 +69,11 @@ class Trainer(AbstractTrainer, Loss, Iteration):
         if self.opt.reload:
             self.optimizer.load_state_dict(torch.load(f'{self.opt.checkpointname}'))
             my_utils.yellow_print("Reloaded optimizer")
+        self.next_learning_rates = []
+        if len(self.opt.multi_gpu) > 1:
+            self.next_learning_rates = np.linspace(self.opt.lrate, self.opt.lrate * len(self.opt.multi_gpu),
+                                                   5).tolist()
+            self.next_learning_rates.reverse()
 
     def build_dataset(self):
         """
@@ -159,7 +165,6 @@ class Trainer(AbstractTrainer, Loss, Iteration):
         return {"output_path": path,
                 "image_path": image_path}
 
-
     def test_epoch(self):
         self.flags.train = False
         self.network.eval()
@@ -177,6 +182,7 @@ class Trainer(AbstractTrainer, Loss, Iteration):
             self.html_report_data = EasyDict()
             self.html_report_data.output_meshes = [self.generate_random_mesh() for i in range(3)]
             log_curves = ["loss_val", "loss_train_total"]
-            self.html_report_data.data_curve = {key: [np.log(val) for val in self.log.curves[key]] for key in log_curves}
+            self.html_report_data.data_curve = {key: [np.log(val) for val in self.log.curves[key]] for key in
+                                                log_curves}
             self.html_report_data.fscore_curve = {"fscore": self.log.curves["fscore"]}
             html_report.main(self, outHtml="index.html")

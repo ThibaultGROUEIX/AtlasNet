@@ -14,7 +14,8 @@ def main(trainer, outHtml=None):
 
     webpage = HtmlGenerator.HtmlGenerator(path=outHtml, title=trainer.opt.dir_name, local_copy=True)
     loss_val = trainer.log.meters["loss_val"].avg
-    webpage.add_title(f"Reconstruction (Val):{loss_val} Metro:{trainer.metro_results} Fscore:{trainer.html_report_data.fscore_curve[-1]}")
+    final_fscore = trainer.html_report_data.fscore_curve["fscore"][-1]
+    webpage.add_title(f"Reconstruction (Val):{loss_val} Metro:{trainer.metro_results} Fscore:{final_fscore}")
 
     table = webpage.add_table()
 

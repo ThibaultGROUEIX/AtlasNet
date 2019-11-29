@@ -1,5 +1,3 @@
-🚀 Follow-up project 🚀 : [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
-
 <details><summary>🚀 Major refacto 11-2019 🚀 </summary>
 - [x] Factorize SVR and autoencoder <br>
 - [x] Factorise Square template and Sphere <br>
@@ -20,7 +18,6 @@
 - [x] Preprocess shapenet 55 and add it in dataloader <br>
 - [x] Make minimal dependencies <br>
 </details>
-
 
 
 # AtlasNet [[Project Page]](http://imagine.enpc.fr/~groueixt/atlasnet/) [[Paper]](https://arxiv.org/abs/1802.05384) [[Talk]](http://imagine.enpc.fr/~groueixt/atlasnet/atlasnet_slides_spotlight_CVPR.pptx)
@@ -53,92 +50,17 @@ python setup.py install
 
 
 
-# Demo   ```python inference/demo.py```
+# Usage
 
+* **[Demo](demo.md)** :    ```python inference/demo.py```
 
+* **[Training](training.md)** :  ```python ./training/train.py```
 
-![input](doc/pictures/2D3D.png)    
+* **[Trained models evaluation](training.md)**:  ```python ./training/launch.py --mode test```
 
-
-
-
-# Training  ```python ./training/train.py```
-
-
-
-:raised_hand_with_fingers_splayed: Monitor your training on http://localhost:8888/
-
-![visdom](doc/pictures/visdom2.png)
-
-
-
-# Evaluate  ```python ./training/test.py```
-
-
-<details><summary>Quantitative Results </summary>
-
-
-The number reported are the chamfer distance, the f-score and the [metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) distance.
-
-| Method | Chamfer⁽⁰⁾ | Fscore |Metro|GPU memory|Total Train time|
-| ---------- | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- |
-| Autoencoder 25 Squares | - | -   |-|-|-|
-| Autoencoder 1 Sphere              | - |-|-|-|-|
-| SingleView 25  Squares   | - |-|-|-|-|
-| SingleView 1 Sphere |- |-|-|-|-|
-
-⁽⁰⁾  computed between 2500 ground truth points and 2500 reconstructed points.
-
-⁽¹⁾ with the flag ```--accelerated_chamfer 1```.
-
-⁽²⁾this is only an estimate, the code is not optimised.  The easiest way to enhance it would be to preload the training data to use the GPU at 100%. Time computed with the flag ```--accelerated_chamfer 1```.
-Visualisation 
-
-The generated 3D models' surfaces are not oriented. As a consequence, some area will appear dark if you directly visualize the results in [Meshlab](http://www.meshlab.net/). You have to incorporate your own fragment shader in Meshlab, that flip the normals in they are hit by a ray from the wrong side. An exemple is given for the [Phong BRDF](https://en.wikipedia.org/wiki/Phong_reflection_model).
-
-```shell
-sudo mv /usr/share/meshlab/shaders/phong.frag /usr/share/meshlab/shaders/phong.frag.bak
-sudo cp auxiliary/phong.frag /usr/share/meshlab/shaders/phong.frag #restart Meshlab
-```
-
-</details>
-
-### 
-
-
-
-## Cool Contributions
-
-* **[Yana Hasson](https://github.com/hassony2)** trained our sphere model, for Single View Reconstruction (SVR) in view-centered coordinates : performances are unaffected! Qualitative and quantitative results follow. Many thanks !
-View [this paper](http://openaccess.thecvf.com/content_cvpr_2018/CameraReady/3826.pdf) for a good review of on object-centered representation VS view-centered representation.
-
-<details><summary>Quantitative Results </summary>
-
-
-
-| frame | Average recontruction error for SVR (x1000) : chamfer distance on input pointcloud and reconstruction of size 2500 pts|
-| ---------- | -------------------- |
-| object-centered | 4.87⁽⁴⁾ |
-| view-centered    | 4.88   |
-
-<img src="pictures/chair_yana.png" style="zoom:55%" /><img src="pictures/car_yana.png" style="zoom:60%" />
-
-⁽⁴⁾ Trained with Atlasnet v2 (with learning rate scheduler : slightly better than the paper's result)
-
-</details>
-
-
-## Paper reproduction 
-
-In case you need the results of ICP on PointSetGen output :
-
-* [ICP on PSG](https://cloud.enpc.fr/s/3a7Xg9RzIsgmofw)
-
-
+  
 
 ## Citing this work
-
-If you find this work useful in your research, please consider citing:
 
 ```
 @inproceedings{groueix2018,
@@ -151,31 +73,19 @@ If you find this work useful in your research, please consider citing:
 
 ### 
 
-## Acknowledgement
-
-The code for the Chamfer Loss was adapted from Fei Xia' repo : [PointGan](https://github.com/fxia22/pointGAN). Many thanks to him !
-
-This work was funded by [Adobe System](https://github.com/fxia22/pointGAN) and [Ecole Doctorale MSTIC](http://www.univ-paris-est.fr/fr/-ecole-doctorale-mathematiques-et-stic-mstic-ed-532/).
-
-
-
 ## 🚀 Related project 🚀:
 
 *  [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
 *  [3D-CODED](https://github.com/ThibaultGROUEIX/3D-CODED)
 *  [Cycle Consistent Deformations](https://github.com/ThibaultGROUEIX/CycleConsistentDeformation)
 
-## License
+[Cool Contributions from Yana Hasson](./doc/contributions.md)
+
+[Meshlab Visualization Trick](meshlab.md)
+
+The code for the Chamfer Loss was adapted from Fei Xia' repo : [PointGan](https://github.com/fxia22/pointGAN). Many thanks to him !
+
+This work was funded by [Adobe System](https://github.com/fxia22/pointGAN) and [Ecole Doctorale MSTIC](http://www.univ-paris-est.fr/fr/-ecole-doctorale-mathematiques-et-stic-mstic-ed-532/).
 
 When using the provided data make sure to respect the shapenet [license](https://shapenet.org/terms).
 
-<<<<<<< HEAD
-[MIT](https://github.com/ThibaultGROUEIX/AtlasNet/blob/master/license_MIT)
-=======
-[MIT](https://github.com/ThibaultGROUEIX/AtlasNet/blob/master/license_MIT)
-
-
-
-
-```
->>>>>>> 91ce35c021084aafe057200945358aec4ba3cd30
