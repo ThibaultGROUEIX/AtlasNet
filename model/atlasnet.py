@@ -18,6 +18,7 @@ class Atlasnet(nn.Module):
         self.opt = opt
         self.device = opt.device
         self.nb_pts_in_primitive = opt.number_points // opt.nb_primitives
+        self.nb_pts_in_primitive_eval = opt.number_points_eval // opt.nb_primitives
         if opt.remove_all_batchNorms:
             torch.nn.BatchNorm1d = Identity
             print("Replacing all batchnorms by identities.")
@@ -45,7 +46,7 @@ class Atlasnet(nn.Module):
                 range(self.opt.nb_primitives)]
         else:
             input_points = [
-                self.template[i].get_regular_points(self.nb_pts_in_primitive, latent_vector.device).transpose(0,
+                self.template[i].get_regular_points(self.nb_pts_in_primitive_eval, device=latent_vector.device).transpose(0,
                                                                                                               1).contiguous()
                 for i in range(self.opt.nb_primitives)]
             input_points = [input_points[i].unsqueeze(0).expand(

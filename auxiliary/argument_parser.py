@@ -48,6 +48,7 @@ def parser():
     parser.add_argument('--sample', type=int, default=1)
     parser.add_argument('--class_choice', nargs='+', default=["airplane"], type=str)
     parser.add_argument('--number_points', type=int, default=2500, help='Number of point sampled on the object')
+    parser.add_argument('--number_points_eval', type=int, default=2500, help='Number of point sampled on the object during evaluation')
     parser.add_argument('--random_rotation', type=int, default=0, help='Number of point sampled on the object')
     parser.add_argument('--data_augmentation_axis_rotation', type=int, default=0, help='Faust eval')
     parser.add_argument('--data_augmentation_random_flips', type=int, default=0, help='Faust eval')
@@ -64,7 +65,7 @@ def parser():
     # Network
     parser.add_argument('--model', type=str, default='', help='optional reload model path')
     parser.add_argument('--loop_per_epoch', type=int, default=1, help='optional reload model path')
-    parser.add_argument('--nb_primitives', type=int, default=2, help='number of primitives')
+    parser.add_argument('--nb_primitives', type=int, default=1, help='number of primitives')
     parser.add_argument('--template_type', type=str, default="SQUARE", choices=["SPHERE", "SQUARE"],
                         help='dim_out_patch')
     parser.add_argument('--decoder_type', type=str, default="AtlasNet", choices=["AtlasNet", "AtlasNetLight"],

@@ -53,7 +53,7 @@ python setup.py install
 
 * **[Demo](./doc/demo.md)** :    ```python inference/demo.py```
 
-* **[Training](./doc/training.md)** :  ```python ./training/train.py```
+* **[Training](./doc/training.md)** :  ```python ./training/train.py.```  *Monitor on  http://localhost:8890/*
 
 * **[Trained models evaluation](./doc/training.md)**:  ```python ./training/launch.py --mode test```
 
@@ -72,11 +72,15 @@ python setup.py install
 
 ### 
 
-## 🚀 Related project 🚀:
+## Related project
 
 *  [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
 *  [3D-CODED](https://github.com/ThibaultGROUEIX/3D-CODED)
 *  [Cycle Consistent Deformations](https://github.com/ThibaultGROUEIX/CycleConsistentDeformation)
+
+
+
+
 
 [Cool Contributions from Yana Hasson](./doc/contributions.md)
 

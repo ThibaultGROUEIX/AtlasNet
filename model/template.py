@@ -19,13 +19,13 @@ class SphereTemplate(object):
         self.dim = 3
 
     def get_random_points(self, shape,  device="gpu0"):
-        rand_grid = torch.cuda.FloatTensor(shape).view(-1, 3).to(device).float()
+        rand_grid = torch.cuda.FloatTensor(shape).to(device).float()
         rand_grid.data.normal_(0, 1)
         rand_grid = rand_grid / torch.sqrt(torch.sum(rand_grid ** 2, dim=1, keepdim=True))
         return Variable(rand_grid)
 
     def get_regular_points(self, npoints=None,  device="gpu0"):
-        self.mesh = pymesh.generate_icosphere(1, [0, 0, 0], 6)  # 163K vertices
+        self.mesh = pymesh.generate_icosphere(1, [0, 0, 0], 4)  # 2562 vertices
         self.vertex = torch.from_numpy(self.mesh.vertices).to(device).float()
         self.num_vertex = self.vertex.size(0)
         return Variable(self.vertex)
@@ -41,7 +41,7 @@ class SquareTemplate(object):
         rand_grid.data.uniform_(0, 1)
         return Variable(rand_grid)
 
-    def get_regular_points(self, npoints=10000, device="gpu0"):
+    def get_regular_points(self, npoints=2500, device="gpu0"):
         vertices, faces = self.generate_square(np.sqrt(npoints))
         self.mesh = pymesh.form_mesh(vertices=vertices, faces=faces)  # 10k vertices
         self.vertex = torch.from_numpy(self.mesh.vertices).to(device).float()
