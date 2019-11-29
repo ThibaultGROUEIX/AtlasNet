@@ -2,7 +2,7 @@
 
 :raised_hand_with_fingers_splayed: Monitor your training on http://localhost:8888/
 
-![visdom](/Users/mac-mud/Projects_tibo/AtlasNet/doc/pictures/visdom2.png)
+![visdom](./pictures/visdom2.png)
 
 
 
