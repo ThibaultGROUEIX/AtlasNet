@@ -17,7 +17,8 @@ trainer.build_losses()
 trainer.start_train_time = time.time()
 
 if opt.run_single_eval:
-    trainer.test_epoch()
+    with torch.no_grad():
+        trainer.test_epoch()
     os.exit()
 
 for epoch in range(trainer.epoch, opt.nepoch):

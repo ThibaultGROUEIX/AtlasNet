@@ -12,3 +12,6 @@
 [submodule "ChamferDistancePytorch"]
 	path = ChamferDistancePytorch
 	url = https://github.com/ThibaultGROUEIX/ChamferDistancePytorch
+[submodule "vcglib"]
+	path = vcglib
+	url = https://github.com/cnr-isti-vclab/vcglib.git

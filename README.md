@@ -30,9 +30,9 @@ Thibault Groueix,  Matthew Fisher, Vladimir G. Kim , Bryan C. Russell, Mathieu A
 In [CVPR, 2018](http://cvpr2018.thecvf.com/).
 
 
-![teaset](pictures/teaser.small.png)    
+![teaset](doc/pictures/teaser.small.png)    
 
-![result](pictures/plane.gif)
+![result](doc/pictures/plane.gif)
 
 
 
@@ -57,7 +57,7 @@ python setup.py install
 
 
 
-![input](./pictures/2D3D.png)    
+![input](doc/pictures/2D3D.png)    
 
 
 
@@ -68,7 +68,7 @@ python setup.py install
 
 :raised_hand_with_fingers_splayed: Monitor your training on http://localhost:8888/
 
-![visdom](pictures/visdom2.png)
+![visdom](doc/pictures/visdom2.png)
 
 
 

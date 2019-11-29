@@ -16,3 +16,11 @@ class EncoderDecoder(nn.Module):
 
     def forward(self, x, train=True):
         return self.decoder(self.encoder(x), train=train)
+
+    def generate_mesh(self, x):
+        """
+        x has batch size 1
+        :param x:
+        :return:
+        """
+        return self.decoder.generate_mesh(self.encoder(x))

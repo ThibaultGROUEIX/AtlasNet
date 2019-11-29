@@ -128,12 +128,7 @@ class Logs(object):
         X_Loss = None
         Y_Loss = None
         Names_Loss = []
-        X_iou = None
-        Y_iou = None
-        X_nmi = None
-        Y_nmi = None
-        Names_iou = []
-        Names_nmi = []
+
 
         for name in self.curves_names:
             if name[:4] == "loss":
@@ -153,7 +148,13 @@ class Logs(object):
                  Y=np.log(Y_Loss),
                  win='log',
                  opts=dict(title="log", legend=Names_Loss))
-
+        try:
+            vis.line(X=np.arange(len(self.curves["fscore"])),
+                     Y=self.curves["fscore"],
+                     win='fscore',
+                     opts=dict(title="fscore"))
+        except:
+            pass
         # Save figures in PNGs
         plt.figure()
         for i in range(X_Loss.shape[1]):

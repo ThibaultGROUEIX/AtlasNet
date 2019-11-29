@@ -1,0 +1,20 @@
+get_filename_component(VirtualScanner_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include(CMakeFindDependencyMacro)
+
+if(NOT VCPKG_TOOLCHAIN)
+    list(APPEND CMAKE_MODULE_PATH ${VirtualScanner_CMAKE_DIR})
+endif()
+
+find_package(Boost REQUIRED COMPONENTS filesystem system)
+find_package(Eigen3 REQUIRED)
+find_package(CGAL REQUIRED)
+
+if(NOT VCPKG_TOOLCHAIN)
+    list(REMOVE_AT CMAKE_MODULE_PATH -1)
+endif()
+
+if(NOT TARGET OCNN::VirtualScanner)
+    include("${VirtualScanner_CMAKE_DIR}/VirtualScannerTargets.cmake")
+endif()
+
+set(VirtualScanner_LIBRARIES OCNN::VirtualScanner)

@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.3)
+
+if(SKBUILD)
+    project(python_ocnn VERSION 18.10.09)
+    find_package(PythonExtensions REQUIRED)
+    find_package(Cython REQUIRED)
+    add_subdirectory(python/ocnn/virtualscanner)
+else()
+    project(virtualscannerexe VERSION 18.10.09 LANGUAGES CXX)
+    add_subdirectory(cpp/libvirtualscanner "${CMAKE_CURRENT_BINARY_DIR}/_libvirtualscanner")
+    add_subdirectory(cpp/virtualscanner/ "${CMAKE_CURRENT_BINARY_DIR}/_virtualscanner")
+endif()

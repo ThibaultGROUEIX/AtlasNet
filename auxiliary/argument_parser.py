@@ -26,7 +26,7 @@ def parser():
     # Training parameters
     parser.add_argument('--learning', type=int, default=1, help='input batch size')
     parser.add_argument('--batch_size', type=int, default=32, help='input batch size')
-    parser.add_argument('--batch_size_test', type=int, default=64, help='input batch size')
+    parser.add_argument('--batch_size_test', type=int, default=32, help='input batch size')
     parser.add_argument('--workers', type=int, help='number of data loading workers', default=0)
     parser.add_argument('--nepoch', type=int, default=100, help='number of epochs to train for')
     parser.add_argument('--start_epoch', type=int, default=0, help='number of epochs to train for')
@@ -39,12 +39,11 @@ def parser():
     parser.add_argument('--run_single_eval', type=int, default=0, help='learning rate decay 2')
 
     # Data
-    parser.add_argument('--dataset', type=str, default="Surreal",
-                        choices=['Surreal', 'Shapenet', 'ShapenetAtlasnet', 'ModelNet', 'MNIST3D', "MNIST",
-                                 "ModelNetSmall", "CIFAR", "STL", "COCO"])
+    parser.add_argument('--dataset', type=str, default="Shapenet",
+                        choices=['Shapenet'])
     parser.add_argument('--normalization', type=str, default="UnitBall",
                         choices=['UnitBall', 'BoundingBox', 'Identity'])
-    parser.add_argument('--shapenet13', type=int, default=0)
+    parser.add_argument('--shapenet13', type=int, default=1)
     parser.add_argument('--SVR', type=int, default=0)
     parser.add_argument('--sample', type=int, default=1)
     parser.add_argument('--class_choice', nargs='+', default=["airplane"], type=str)
@@ -65,7 +64,7 @@ def parser():
     # Network
     parser.add_argument('--model', type=str, default='', help='optional reload model path')
     parser.add_argument('--loop_per_epoch', type=int, default=1, help='optional reload model path')
-    parser.add_argument('--nb_primitives', type=int, default=1, help='number of primitives')
+    parser.add_argument('--nb_primitives', type=int, default=2, help='number of primitives')
     parser.add_argument('--template_type', type=str, default="SQUARE", choices=["SPHERE", "SQUARE"],
                         help='dim_out_patch')
     parser.add_argument('--decoder_type', type=str, default="AtlasNet", choices=["AtlasNet", "AtlasNetLight"],
@@ -75,6 +74,7 @@ def parser():
     parser.add_argument('--bottleneck_size', type=int, default=1024, help='dim_out_patch')
 
     # Loss
+    parser.add_argument('--compute_metro', type=int, default=1, help='dim_out_patch')
 
     opt = parser.parse_args()
 
@@ -90,9 +90,12 @@ def parser():
     opt.learning = my_utils.int_2_boolean(opt.learning)
     opt.shapenet13 = my_utils.int_2_boolean(opt.shapenet13)
     opt.SVR = my_utils.int_2_boolean(opt.SVR)
+    opt.compute_metro = my_utils.int_2_boolean(opt.compute_metro)
 
     opt.date = str(datetime.datetime.now())
     now = datetime.datetime.now()
+    opt = EasyDict(opt.__dict__)
+
     if opt.dir_name == "":
         opt.dir_name = os.path.join('log', opt.id + now.isoformat())
     else:
@@ -100,12 +103,10 @@ def parser():
         try:
             with open(os.path.join(opt.dir_name, "options.json"), 'r') as f:
                 my_opt_dict = json.load(f)
-            opt.nb_primitives = my_opt_dict["nb_primitives"]
-            opt.point_translation = my_opt_dict["point_translation"]
-            opt.dim_template = my_opt_dict["dim_template"]
-            opt.patch_deformation = my_opt_dict["patch_deformation"]
-            opt.dim_out_patch = my_opt_dict["dim_out_patch"]
-            opt.start_epoch = my_opt_dict["start_epoch"]
+            my_opt_dict.pop("run_single_eval")
+            my_opt_dict.pop("learning")
+            for key in my_opt_dict.keys():
+                opt[key] = my_opt_dict[key]
             my_utils.cyan_print("PARAMETER: ")
             for a in my_opt_dict:
                 print(
@@ -116,11 +117,10 @@ def parser():
                 )
         except:
             print("failed to reload parameters from option.txt, must be a new experiment")
-    opt = EasyDict(opt.__dict__)
 
     if opt.template_type == "SQUARE":
         opt.dim_template = 2
     if opt.template_type == "SPHERE":
         opt.dim_template = 3
-
+    opt.env = opt.env + opt.dir_name.split('/')[-1]
     return opt

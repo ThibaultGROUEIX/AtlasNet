@@ -5,15 +5,18 @@ class Iteration(object):
     def __init__(self):
         super(Iteration, self).__init__()
 
+    def make_network_input(self):
+        if self.opt.SVR:
+            self.data.network_input = self.data.image.to(self.opt.device)
+        else:
+            self.data.network_input = self.data.points.transpose(2, 1).contiguous().to(self.opt.device)
+
     def common_ops(self):
+        self.make_network_input()
         self.batch_size = self.data.points.size(0)
 
-        if self.opt.SVR:
-            self.data.pointsReconstructed_prims = self.network(self.data.image,
-                                                               train=self.flags.train)  # forward pass # batch, nb_prim, num_point, 3
-        else:
-            self.data.pointsReconstructed_prims = self.network(self.data.points.transpose(2, 1).contiguous(),
-                                                               train=self.flags.train)  # forward pass # batch, nb_prim, num_point, 3
+        self.data.pointsReconstructed_prims = self.network(self.data.network_input,
+                                                               train=self.flags.train)
         self.fuse_primitives()
 
         self.loss_model()  # batch
@@ -40,6 +43,7 @@ class Iteration(object):
         self.common_ops()
         self.num_val_points = self.data.pointsReconstructed.size(1)
         self.log.update("loss_val", self.data.loss.item())
+        self.log.update("fscore", self.data.loss_fscore.item())
         print(
             '\r' + colored(
                 '[%d: %d/%d]' % (self.epoch, self.iteration, self.datasets.len_dataset_test / self.opt.batch_size_test),

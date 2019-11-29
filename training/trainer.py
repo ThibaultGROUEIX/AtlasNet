@@ -7,29 +7,31 @@ import dataset.dataset_shapenet as dataset_shapenet
 import dataset.augmenter as augmenter
 from abstract_trainer import AbstractTrainer
 import os
-import auxiliary.visualCluster as visualCluster
+import auxiliary.html_report as html_report
 import numpy as np
 from training.iteration import Iteration
 from training.loss import Loss
 from easydict import EasyDict
 import model.model as model
-
+import auxiliary.mesh_processor as mesh_processor
 
 class Trainer(AbstractTrainer, Loss, Iteration):
     def __init__(self, opt):
         super(Trainer, self).__init__(opt)
         self.dataset_train = None
-        self.opt.template_img_path = os.path.join(self.opt.dir_name, "template_img")
-        if not os.path.exists(self.opt.template_img_path):
-            os.mkdir(self.opt.template_img_path)
+        self.opt.training_media_path = os.path.join(self.opt.dir_name, "training_media")
+        if not os.path.exists(self.opt.training_media_path):
+            os.mkdir(self.opt.training_media_path)
 
         # Define Flags
         self.flags = EasyDict()
+        self.flags.media_count = 0
         self.flags.add_log = True
         self.flags.build_website = False
         self.flags.get_closer_neighbourg = False
         self.flags.compute_clustering_errors = False
         self.display = EasyDict({"recons": []})
+        self.colormap = mesh_processor.ColorMap()
 
     def build_network(self):
         """
@@ -135,6 +137,29 @@ class Trainer(AbstractTrainer, Loss, Iteration):
             self.data.points = self.data.points.to(self.opt.device)
             self.test_iteration()
 
+    def load_point_input(self, path):
+        pass
+
+    def load_image_input(self, path):
+        pass
+
+    def generate_random_mesh(self):
+        index = np.random.randint(self.datasets.len_dataset_test)
+        self.data = EasyDict(self.datasets.dataset_test[index])
+        return self.generate_mesh()
+
+    def generate_mesh(self):
+        self.data.points.unsqueeze_(0)
+        self.make_network_input()
+        mesh = self.network.module.generate_mesh(self.data.network_input)
+        path = '/'.join([self.opt.training_media_path, str(self.flags.media_count)]) + ".obj"
+        image_path = '/'.join([self.data.image_path, '00.png'])
+        mesh_processor.save(mesh, path, self.colormap)
+        self.flags.media_count += 1
+        return {"output_path": path,
+                "image_path": image_path}
+
+
     def test_epoch(self):
         self.flags.train = False
         self.network.eval()
@@ -146,7 +171,12 @@ class Trainer(AbstractTrainer, Loss, Iteration):
         except:
             print("could not update curves")
         print(f"Sampled {self.num_val_points} regular points for evaluation")
+        if (self.flags.build_website or self.opt.run_single_eval) and self.opt.compute_metro:
+            self.metro()
         if self.flags.build_website:
+            self.html_report_data = EasyDict()
+            self.html_report_data.output_meshes = [self.generate_random_mesh() for i in range(3)]
             log_curves = ["loss_val", "loss_train_total"]
-            self.data_curve = {key: [np.log(val) for val in self.log.curves[key]] for key in log_curves}
-            visualCluster.main(self, outHtml="index.html")
+            self.html_report_data.data_curve = {key: [np.log(val) for val in self.log.curves[key]] for key in log_curves}
+            self.html_report_data.fscore_curve = {"fscore": self.log.curves["fscore"]}
+            html_report.main(self, outHtml="index.html")

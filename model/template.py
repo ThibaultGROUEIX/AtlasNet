@@ -50,6 +50,7 @@ class SquareTemplate(object):
 
     @staticmethod
     def generate_square(grain):
+        grain = int(grain)
         grain = grain - 1  # to return grain*grain points
         # generate regular grid
         faces = []
@@ -60,13 +61,13 @@ class SquareTemplate(object):
 
         for i in range(1, int(grain + 1)):
             for j in range(0, (int(grain + 1) - 1)):
-                faces.append([(grain + 1) * (grain + 1) + j + (grain + 1) * i,
-                              (grain + 1) * (grain + 1) + j + (grain + 1) * i + 1,
-                              (grain + 1) * (grain + 1) + j + (grain + 1) * (i - 1)])
+                faces.append([j + (grain + 1) * i,
+                        j + (grain + 1) * i + 1,
+                        j + (grain + 1) * (i - 1)])
         for i in range(0, (int((grain + 1)) - 1)):
             for j in range(1, int((grain + 1))):
-                faces.append([(grain + 1) * (grain + 1) + j + (grain + 1) * i,
-                              (grain + 1) * (grain + 1) + j + (grain + 1) * i - 1,
-                              (grain + 1) * (grain + 1) + j + (grain + 1) * (i + 1)])
+                faces.append([j + (grain + 1) * i,
+                        j + (grain + 1) * i - 1,
+                        j + (grain + 1) * (i + 1)])
 
         return np.array(vertices), np.array(faces)

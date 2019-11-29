@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libvirtualscanner", "cpp\libvirtualscanner\libvirtualscanner.vcxproj", "{132C8DB6-16EE-48B2-9D52-0A6D5777854E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "virtualscanner", "cpp\virtualscanner\virtualscanner.vcxproj", "{8C7CF56A-4830-4858-A90E-5DA7BE887951}"
+	ProjectSection(ProjectDependencies) = postProject
+		{132C8DB6-16EE-48B2-9D52-0A6D5777854E} = {132C8DB6-16EE-48B2-9D52-0A6D5777854E}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{132C8DB6-16EE-48B2-9D52-0A6D5777854E}.Debug|x64.ActiveCfg = Debug|x64
+		{132C8DB6-16EE-48B2-9D52-0A6D5777854E}.Debug|x64.Build.0 = Debug|x64
+		{132C8DB6-16EE-48B2-9D52-0A6D5777854E}.Debug|x86.ActiveCfg = Debug|Win32
+		{132C8DB6-16EE-48B2-9D52-0A6D5777854E}.Debug|x86.Build.0 = Debug|Win32
+		{132C8DB6-16EE-48B2-9D52-0A6D5777854E}.Release|x64.ActiveCfg = Release|x64
+		{132C8DB6-16EE-48B2-9D52-0A6D5777854E}.Release|x64.Build.0 = Release|x64
+		{132C8DB6-16EE-48B2-9D52-0A6D5777854E}.Release|x86.ActiveCfg = Release|Win32
+		{132C8DB6-16EE-48B2-9D52-0A6D5777854E}.Release|x86.Build.0 = Release|Win32
+		{8C7CF56A-4830-4858-A90E-5DA7BE887951}.Debug|x64.ActiveCfg = Debug|x64
+		{8C7CF56A-4830-4858-A90E-5DA7BE887951}.Debug|x64.Build.0 = Debug|x64
+		{8C7CF56A-4830-4858-A90E-5DA7BE887951}.Debug|x86.ActiveCfg = Debug|Win32
+		{8C7CF56A-4830-4858-A90E-5DA7BE887951}.Debug|x86.Build.0 = Debug|Win32
+		{8C7CF56A-4830-4858-A90E-5DA7BE887951}.Release|x64.ActiveCfg = Release|x64
+		{8C7CF56A-4830-4858-A90E-5DA7BE887951}.Release|x64.Build.0 = Release|x64
+		{8C7CF56A-4830-4858-A90E-5DA7BE887951}.Release|x86.ActiveCfg = Release|Win32
+		{8C7CF56A-4830-4858-A90E-5DA7BE887951}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DABA4831-F74D-45E8-8285-D16D5959FF61}
+	EndGlobalSection
+EndGlobal

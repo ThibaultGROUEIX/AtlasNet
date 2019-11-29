@@ -116,6 +116,7 @@ class AbstractTrainer(object):
         """
         Defines the learning rate schedule
         """
+        
         if self.epoch == self.opt.lr_decay_1:
             self.opt.lrate = self.opt.lrate / 10.0
             self.optimizer = optim.Adam(self.network.parameters(), lr=self.opt.lrate)

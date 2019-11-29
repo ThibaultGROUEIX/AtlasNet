@@ -12,7 +12,7 @@ from os.path import join, dirname, exists
 from easydict import EasyDict
 import json
 from termcolor import colored
-
+import auxiliary.pointcloud_processor as pointcloud_processor
 
 class ShapeNet(data.Dataset):
     def __init__(self, opt, train=True):
@@ -206,11 +206,28 @@ class ShapeNet(data.Dataset):
         else:
             return str(N)
 
+    def load_point_input(self, path):
+        points = np.load(path)
+        points = torch.from_numpy(points).float()
+        operation = pointcloud_processor.Normalization(points, keep_track=True)
+        if self.opt.normalization == "UnitBall":
+            operation.normalize_unitL2ball()
+        elif self.opt.normalization == "BoundingBox":
+            operation.normalize_bounding_box()
+        else:
+            pass
+        return_dict = {
+            'points': points,
+            'operation': operation,
+            'path': path,
+        }
+        return return_dict
+
 
 if __name__ == '__main__':
     print('Testing Shapenet dataset')
     opt = {"normalization": "UnitBall", "class_choice": ["plane"], "SVR": True, "sample": True, "npoints": 2500,
            "shapenet13": True}
-    d = ShapeNet(EasyDict(opt), train=False)
+    d = ShapeNet(EasyDict(opt), train=False, keep_track=True)
     print(d[1])
     a = len(d)
