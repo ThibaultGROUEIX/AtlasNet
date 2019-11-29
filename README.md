@@ -1,3 +1,15 @@
+# AtlasNet [[Project Page]](http://imagine.enpc.fr/~groueixt/atlasnet/) [[Paper]](https://arxiv.org/abs/1802.05384) [[Talk]](http://imagine.enpc.fr/~groueixt/atlasnet/atlasnet_slides_spotlight_CVPR.pptx)
+
+**AtlasNet: A Papier-Mâché Approach to Learning 3D Surface Generation** <br>
+Thibault Groueix,  Matthew Fisher, Vladimir G. Kim , Bryan C. Russell, Mathieu Aubry  <br>
+In [CVPR, 2018](http://cvpr2018.thecvf.com/).
+
+
+![teaset](doc/pictures/teaser.small.png)    
+
+![result](doc/pictures/plane.gif)
+
+
 <details><summary>🚀 Major refacto 11-2019 🚀 </summary>
 - [x] Factorize SVR and autoencoder <br>
 - [x] Factorise Square template and Sphere <br>
@@ -18,19 +30,6 @@
 - [x] Preprocess shapenet 55 and add it in dataloader <br>
 - [x] Make minimal dependencies <br>
 </details>
-
-
-# AtlasNet [[Project Page]](http://imagine.enpc.fr/~groueixt/atlasnet/) [[Paper]](https://arxiv.org/abs/1802.05384) [[Talk]](http://imagine.enpc.fr/~groueixt/atlasnet/atlasnet_slides_spotlight_CVPR.pptx)
-
-**AtlasNet: A Papier-Mâché Approach to Learning 3D Surface Generation** <br>
-Thibault Groueix,  Matthew Fisher, Vladimir G. Kim , Bryan C. Russell, Mathieu Aubry  <br>
-In [CVPR, 2018](http://cvpr2018.thecvf.com/).
-
-
-![teaset](doc/pictures/teaser.small.png)    
-
-![result](doc/pictures/plane.gif)
-
 
 
 The network is able to synthesize a mesh (point cloud + connectivity) from a low-resolution point cloud, or from an image.
