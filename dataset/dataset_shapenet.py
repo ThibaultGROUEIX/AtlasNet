@@ -13,10 +13,13 @@ from easydict import EasyDict
 import json
 from termcolor import colored
 import auxiliary.pointcloud_processor as pointcloud_processor
+from copy import  deepcopy
+
 
 class ShapeNet(data.Dataset):
     def __init__(self, opt, train=True):
         self.opt = opt
+        self.num_sample = opt.number_points if train else 2500
         self.train = train
         my_utils.red_print('Create Shapenet Dataset...')
         self.init_normalization()
@@ -173,12 +176,12 @@ class ShapeNet(data.Dataset):
         return points.unsqueeze(0), pointcloud_path, image_path, pointcloud, category
 
     def __getitem__(self, index):
-        return_dict = self.data_metadata[index]
+        return_dict = deepcopy(self.data_metadata[index])
         # Point processing
         points = self.data_points[index]
         points = points.clone()
         if self.opt.sample:
-            choice = np.random.choice(points.size(0), self.opt.number_points, replace=True)
+            choice = np.random.choice(points.size(0), self.num_sample, replace=True)
             points = points[choice, :]
         return_dict['points'] = points[:, :3].contiguous()
 

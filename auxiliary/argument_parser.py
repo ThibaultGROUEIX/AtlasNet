@@ -28,14 +28,14 @@ def parser():
     parser.add_argument('--batch_size', type=int, default=32, help='input batch size')
     parser.add_argument('--batch_size_test', type=int, default=32, help='input batch size')
     parser.add_argument('--workers', type=int, help='number of data loading workers', default=0)
-    parser.add_argument('--nepoch', type=int, default=100, help='number of epochs to train for')
+    parser.add_argument('--nepoch', type=int, default=150, help='number of epochs to train for')
     parser.add_argument('--start_epoch', type=int, default=0, help='number of epochs to train for')
     parser.add_argument('--randomize', type=int, default=0,
                         help='if 1, projects predicted correspondences point on target mesh')
     parser.add_argument('--lrate', type=float, default=0.001, help='learning rate')
-    parser.add_argument('--lr_decay_1', type=int, default=80, help='learning rate decay 1')
-    parser.add_argument('--lr_decay_2', type=int, default=90, help='learning rate decay 2')
-    parser.add_argument('--lr_decay_3', type=int, default=95, help='learning rate decay 2')
+    parser.add_argument('--lr_decay_1', type=int, default=120, help='learning rate decay 1')
+    parser.add_argument('--lr_decay_2', type=int, default=140, help='learning rate decay 2')
+    parser.add_argument('--lr_decay_3', type=int, default=145, help='learning rate decay 2')
     parser.add_argument('--run_single_eval', type=int, default=0, help='learning rate decay 2')
 
     # Data

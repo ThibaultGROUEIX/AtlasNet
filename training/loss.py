@@ -66,7 +66,7 @@ class Loss(object):
                 self.metro_args_input.append((path, gt_path))
 
 
-        print("start metro calculus. This is going to take a lot of time (30h)")
+        print("start metro calculus. This is going to take some time (30 minutes)")
         self.metro_results = Parallel(n_jobs=-1, backend="multiprocessing")(
             delayed(metro.metro)(*i) for i in self.metro_args_input)
         self.metro_results = np.array(self.metro_results).mean()

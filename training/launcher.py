@@ -14,13 +14,21 @@ opt = parser()
 class Experiments(object):
     def __init__(self):
         self.training = {
-            1: "python training/train.py --dir_name log/10prim_1 --nb_primitives 10 --random_rotation 0 --data_augmentation_axis_rotation 0 --data_augmentation_random_flips 1 --random_translation 1 --anisotropic_scaling 0",
-            2: "python training/train.py --dir_name log/10prim_2 --nb_primitives 10 --random_rotation 0 --data_augmentation_axis_rotation 0 --data_augmentation_random_flips 1 --random_translation 1 --anisotropic_scaling 1",
-            3: "python training/train.py --dir_name log/10prim_3 --nb_primitives 10 --random_rotation 0 --data_augmentation_axis_rotation 1 --data_augmentation_random_flips 1 --random_translation 1 --anisotropic_scaling 1",
-            4: "python training/train.py --dir_name log/10prim_4 --nb_primitives 10 --random_rotation 1 --data_augmentation_axis_rotation 0 --data_augmentation_random_flips 1 --random_translation 1 --anisotropic_scaling 1",
-            5: "python training/train.py --dir_name log/10prim_points --nb_primitives 10 --number_points 10000",
-            6: "python training/train.py --dir_name log/10prim --nb_primitives 10",
-            7: "python training/train.py --dir_name log/1prim --nb_primitives 1",
+            1: "python train.py --dir_name log/10prim_1 --nb_primitives 10 --random_rotation 0 --data_augmentation_axis_rotation 0 --data_augmentation_random_flips 0 --random_translation 1 --anisotropic_scaling 0",
+            2: "python train.py --dir_name log/10prim_2 --nb_primitives 10 --random_rotation 0 --data_augmentation_axis_rotation 0 --data_augmentation_random_flips 0 --random_translation 1 --anisotropic_scaling 1",
+            3: "python train.py --dir_name log/10prim_3 --nb_primitives 10 --random_rotation 0 --data_augmentation_axis_rotation 1 --data_augmentation_random_flips 1 --random_translation 1 --anisotropic_scaling 1",
+            4: "python train.py --dir_name log/10prim_4 --nb_primitives 10 --random_rotation 1 --data_augmentation_axis_rotation 0 --data_augmentation_random_flips 1 --random_translation 1 --anisotropic_scaling 1",
+            5: "python train.py --dir_name log/10prim_points --nb_primitives 10 --number_points 10000",
+            6: "python train.py --dir_name log/10prim --nb_primitives 10",
+            7: "python train.py --dir_name log/10primBB --nb_primitives 10 --normalization BoundingBox",
+            8: "python train.py --dir_name log/10prim128 --nb_primitives 10 --bottleneck_size 128",
+            9: "python train.py --dir_name log/1prim --nb_primitives 1",
+            10: "python train.py --dir_name log/1primSphere --template_type SPHERE",
+        }
+
+        self.multi = {
+            # 11: "python train.py --dir_name log/1prim_multi --multi_gpu 0 1 2 3 --batch_size 128",
+            # 12: "python train.py --dir_name log/10prim_multi --multi_gpu 0 1 2 3 --nb_primitives 10 --batch_size 128",
         }
 
 exp = Experiments()
@@ -65,10 +73,33 @@ def job_scheduler(dict_of_jobs):
         time.sleep(60)  # Sleeps for 30 sec
 
 
+def job_scheduler_multi(dict_of_jobs):
+    """
+    Launch Tmux session each time it finds a free gpu
+    :param dict_of_jobs:
+    """
+    keys = list(dict_of_jobs.keys())
+    while len(keys) > 0:
+        job_key = keys.pop()
+        job = dict_of_jobs[job_key]
+        while get_first_available_gpu() < 0:
+            print("Waiting to find a GPU for ", job)
+            time.sleep(30) # Sleeps for 30 sec
+
+        gpu_id = get_first_available_gpu()
+        name_tmux = f"GPU{gpu_id}"
+        cmd = f"conda activate python3;  {job}  2>&1 | tee  log_terminals/{gpu_id}_{job_key}.txt; tmux kill-session -t {name_tmux}"
+        CMD = f'tmux new-session -d -s {name_tmux} \; send-keys "{cmd}" Enter'
+        print(CMD)
+        os.system(CMD)
+        time.sleep(60)  # Sleeps for 30 sec
+
+
 for path in ["log_terminals", "log"]:
     if not os.path.exists(path):
         print(f"Creating {path} folder")
         os.mkdir(path)
 
+job_scheduler_multi(exp.multi)
 
 job_scheduler(exp.training)

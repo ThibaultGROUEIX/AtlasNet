@@ -5,7 +5,7 @@ import auxiliary.my_utils as my_utils
 import model
 import dataset.dataset_shapenet as dataset_shapenet
 import dataset.augmenter as augmenter
-from abstract_trainer import AbstractTrainer
+from training.abstract_trainer import AbstractTrainer
 import os
 import auxiliary.html_report as html_report
 import numpy as np

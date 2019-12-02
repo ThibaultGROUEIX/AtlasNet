@@ -1,7 +1,7 @@
+import os
 import auxiliary.argument_parser as argument_parser
 import auxiliary.my_utils as my_utils
 import time
-import os
 import torch
 
 opt = argument_parser.parser()
