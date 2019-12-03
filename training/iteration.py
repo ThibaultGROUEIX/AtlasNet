@@ -16,7 +16,7 @@ class Iteration(object):
         self.batch_size = self.data.points.size(0)
 
         self.data.pointsReconstructed_prims = self.network(self.data.network_input,
-                                                               train=self.flags.train)
+                                                           train=self.flags.train)
         self.fuse_primitives()
 
         self.loss_model()  # batch

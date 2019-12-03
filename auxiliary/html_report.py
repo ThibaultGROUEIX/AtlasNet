@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append('/home/thibault/ssd/netvision/')
 import HtmlGenerator
 import os
@@ -33,22 +34,18 @@ def main(trainer, outHtml=None):
         table.add_row([webpage.image(output_mesh["image_path"]),
                        webpage.mesh(output_mesh["output_path"], normalize=True)], "")
 
-
-
     webpage.return_html()
-
-
 
     # Add main results in master webpage
     if not os.path.exists("master.pkl"):
         init_html_report.main()
     webpage_after = HtmlGenerator.HtmlGenerator(path="master.html", reload_path="master.pkl")
     webpage_after.tables[trainer.opt.dataset].add_row([
-         f"{trainer.opt.nb_primitives}",
-         f"{trainer.opt.template_type}",
-         f"{loss_val}",
-         f"{final_fscore}",
-         f"{trainer.metro_results}",
-         trainer.opt.dir_name
+        f"{trainer.opt.nb_primitives}",
+        f"{trainer.opt.template_type}",
+        f"{loss_val}",
+        f"{final_fscore}",
+        f"{trainer.metro_results}",
+        trainer.opt.dir_name
     ])
     webpage_after.return_html(save_editable_version=True)

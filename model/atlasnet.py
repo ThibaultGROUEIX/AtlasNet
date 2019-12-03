@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.parallel
 import torch.utils.data
-from model.model_blocks import GetDecoder, Identity
-from model.template import GetTemplate
+from model.model_blocks import get_decoder, Identity
+from model.template import get_template
 
 
 class Atlasnet(nn.Module):
@@ -24,13 +24,10 @@ class Atlasnet(nn.Module):
             print("Replacing all batchnorms by identities.")
 
         # Initialize templates
-        self.template = [GetTemplate(opt.template_type, device=opt.device) for i in range(0, opt.nb_primitives)]
+        self.template = [get_template(opt.template_type, device=opt.device) for i in range(0, opt.nb_primitives)]
 
         # Intialize deformation networks
-        self.decoder = nn.ModuleList(
-            [GetDecoder(bottleneck_size=opt.bottleneck_size, input_size=opt.dim_template, decoder_type=opt.decoder_type)
-             for i in
-             range(0, opt.nb_primitives)])
+        self.decoder = nn.ModuleList([get_decoder(opt) for i in range(0, opt.nb_primitives)])
 
     def forward(self, latent_vector, train=True):
         """
@@ -46,8 +43,9 @@ class Atlasnet(nn.Module):
                 range(self.opt.nb_primitives)]
         else:
             input_points = [
-                self.template[i].get_regular_points(self.nb_pts_in_primitive_eval, device=latent_vector.device).transpose(0,
-                                                                                                              1).contiguous()
+                self.template[i].get_regular_points(self.nb_pts_in_primitive_eval,
+                                                    device=latent_vector.device).transpose(0,
+                                                                                           1).contiguous()
                 for i in range(self.opt.nb_primitives)]
             input_points = [input_points[i].unsqueeze(0).expand(
                 torch.Size((latent_vector.size(0), self.template[i].dim, input_points[i].size(1)))) for i in

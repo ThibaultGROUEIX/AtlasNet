@@ -51,9 +51,9 @@ python setup.py install
 
 # Usage
 
-* **[Demo](./doc/demo.md)** :    ```python inference/demo.py```
+* **[Demo](./doc/demo.md)** :    ```python inference/train.py --demo```
 
-* **[Training](./doc/training.md)** :  ```python ./training/train.py.```  *Monitor on  http://localhost:8890/*
+* **[Training](./doc/training.md)** :  ```python ./training/train.py```  *Monitor on  http://localhost:8890/*
 
 * **[Trained models evaluation](./doc/training.md)**:  ```python ./training/launch.py --mode test```
 

@@ -14,7 +14,7 @@ from training.loss import Loss
 from easydict import EasyDict
 import model.model as model
 import auxiliary.mesh_processor as mesh_processor
-
+import pymesh
 
 class Trainer(AbstractTrainer, Loss, Iteration):
     def __init__(self, opt):
@@ -83,26 +83,27 @@ class Trainer(AbstractTrainer, Loss, Iteration):
         self.datasets.dataset_train = dataset_shapenet.ShapeNet(self.opt, train=True)
         self.datasets.dataset_test = dataset_shapenet.ShapeNet(self.opt, train=False)
 
-        self.datasets.dataloader_train = torch.utils.data.DataLoader(self.datasets.dataset_train,
-                                                                     batch_size=self.opt.batch_size,
-                                                                     shuffle=True, num_workers=int(self.opt.workers))
-        self.datasets.dataloader_test = torch.utils.data.DataLoader(self.datasets.dataset_test,
-                                                                    batch_size=self.opt.batch_size_test,
-                                                                    shuffle=True, num_workers=int(self.opt.workers))
-        axis = []
-        if self.opt.data_augmentation_axis_rotation:
-            axis = [1]
+        if not self.opt.demo:
+            self.datasets.dataloader_train = torch.utils.data.DataLoader(self.datasets.dataset_train,
+                                                                         batch_size=self.opt.batch_size,
+                                                                         shuffle=True, num_workers=int(self.opt.workers))
+            self.datasets.dataloader_test = torch.utils.data.DataLoader(self.datasets.dataset_test,
+                                                                        batch_size=self.opt.batch_size_test,
+                                                                        shuffle=True, num_workers=int(self.opt.workers))
+            axis = []
+            if self.opt.data_augmentation_axis_rotation:
+                axis = [1]
 
-        flips = []
-        if self.opt.data_augmentation_random_flips:
-            flips = [0, 2]
+            flips = []
+            if self.opt.data_augmentation_random_flips:
+                flips = [0, 2]
 
-        self.datasets.data_augmenter = augmenter.Augmenter(translation=self.opt.random_translation, rotation_axis=axis,
-                                                           rotation_3D=self.opt.random_rotation,
-                                                           anisotropic_scaling=self.opt.anisotropic_scaling,
-                                                           flips=flips)
-        self.datasets.len_dataset = len(self.datasets.dataset_train)
-        self.datasets.len_dataset_test = len(self.datasets.dataset_test)
+            self.datasets.data_augmenter = augmenter.Augmenter(translation=self.opt.random_translation, rotation_axis=axis,
+                                                               anisotropic_scaling=self.opt.anisotropic_scaling,
+                                                               rotation_3D=self.opt.random_rotation,
+                                                               flips=flips)
+            self.datasets.len_dataset = len(self.datasets.dataset_train)
+            self.datasets.len_dataset_test = len(self.datasets.dataset_test)
 
     def train_loop(self):
         iterator = self.datasets.dataloader_train.__iter__()
@@ -186,3 +187,37 @@ class Trainer(AbstractTrainer, Loss, Iteration):
                                                 log_curves}
             self.html_report_data.fscore_curve = {"fscore": self.log.curves["fscore"]}
             html_report.main(self, outHtml="index.html")
+
+    def demo(self):
+        """
+        This function takes an image or pointcloud path as input and save the mesh infered by Atlasnet
+        Extension supported are ply npy obg and png
+        :return: path to the generated mesh
+        """
+        ext = self.opt.demo_path.split('.')[-1]
+        if ext == "ply" or ext == "npy" or ext == "obj":
+            self.data = self.datasets.dataset_train.load_point_input(self.opt.demo_path)
+        elif ext == "png":
+            self.data = self.datasets.dataset_train.load_image(self.opt.demo_path)
+        else:
+            print("invalid file extension")
+
+        self.data = EasyDict(self.data)
+        self.make_network_input()
+        mesh = self.network.module.generate_mesh(self.data.network_input)
+        if self.data.operation is not None:
+            vertices = torch.from_numpy(mesh.vertices).clone().unsqueeze(0)
+            self.data.operation.invert()
+            unnormalized_vertices = self.data.operation.apply(vertices)
+            mesh = pymesh.form_mesh(vertices=unnormalized_vertices.squeeze().numpy(), faces=mesh.faces)
+
+        if self.demo:
+            path = self.opt.demo_path.split('.')
+            path[-2] += "AtlasnetReconstruction"
+            path[-1] = "ply"
+            path = ".".join(path)
+        else:
+            path = '/'.join([self.opt.training_media_path, str(self.flags.media_count)]) + ".ply"
+        print(f"Atlasnet saved generated mesh at {path}!")
+        mesh_processor.save(mesh, path, self.colormap)
+        return path

@@ -129,7 +129,6 @@ class Logs(object):
         Y_Loss = None
         Names_Loss = []
 
-
         for name in self.curves_names:
             if name[:4] == "loss":
                 Names_Loss.append(name)

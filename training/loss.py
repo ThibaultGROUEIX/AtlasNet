@@ -9,6 +9,7 @@ import pymesh
 from joblib import Parallel, delayed
 import numpy as np
 
+
 class Loss(object):
     def __init__(self):
         super(Loss, self).__init__()
@@ -52,19 +53,8 @@ class Loss(object):
                 name = file.split('/')[1][:-4]
                 pointcloud_path = '/'.join([metro_path, cat, name + '.npy'])
                 gt_path = '/'.join([metro_path, cat, name + '.ply'])
-                self.data = self.datasets.dataset_train.load_point_input(pointcloud_path)
-                self.data = EasyDict(self.data)
-                self.make_network_input()
-                mesh = self.network.module.generate_mesh(self.data.network_input)
-                vertices = torch.from_numpy(mesh.vertices).clone().unsqueeze(0)
-                self.data.operation.invert()
-                unnormalized_vertices = self.data.operation.apply(vertices)
-                mesh = pymesh.form_mesh(vertices=unnormalized_vertices.squeeze().numpy(), faces=mesh.faces)
-                path = '/'.join([self.opt.training_media_path, str(self.flags.media_count)]) + ".ply"
-                mesh_processor.save(mesh, path, self.colormap)
-                self.flags.media_count += 1
+                path = self.demo(pointcloud_path)
                 self.metro_args_input.append((path, gt_path))
-
 
         print("start metro calculus. This is going to take some time (30 minutes)")
         self.metro_results = Parallel(n_jobs=-1, backend="multiprocessing")(

@@ -4,13 +4,13 @@ import torch
 from torch.autograd import Variable
 
 
-def GetTemplate(template_type, device=0):
-    if template_type == "SQUARE":
-        return SquareTemplate(device=device)
-    elif template_type == "SPHERE":
-        return SphereTemplate(device=device)
-    else:
-        print("select valid template type")
+def get_template(template_type, device=0):
+    getter = {
+        "SQUARE": SquareTemplate,
+        "SPHERE": SphereTemplate,
+    }
+    template = getter.get(template_type, "Invalid template")
+    return template(device=device)
 
 
 class SphereTemplate(object):
@@ -18,13 +18,13 @@ class SphereTemplate(object):
         self.device = device
         self.dim = 3
 
-    def get_random_points(self, shape,  device="gpu0"):
+    def get_random_points(self, shape, device="gpu0"):
         rand_grid = torch.cuda.FloatTensor(shape).to(device).float()
         rand_grid.data.normal_(0, 1)
         rand_grid = rand_grid / torch.sqrt(torch.sum(rand_grid ** 2, dim=1, keepdim=True))
         return Variable(rand_grid)
 
-    def get_regular_points(self, npoints=None,  device="gpu0"):
+    def get_regular_points(self, npoints=None, device="gpu0"):
         self.mesh = pymesh.generate_icosphere(1, [0, 0, 0], 4)  # 2562 vertices
         self.vertex = torch.from_numpy(self.mesh.vertices).to(device).float()
         self.num_vertex = self.vertex.size(0)
@@ -62,12 +62,12 @@ class SquareTemplate(object):
         for i in range(1, int(grain + 1)):
             for j in range(0, (int(grain + 1) - 1)):
                 faces.append([j + (grain + 1) * i,
-                        j + (grain + 1) * i + 1,
-                        j + (grain + 1) * (i - 1)])
+                              j + (grain + 1) * i + 1,
+                              j + (grain + 1) * (i - 1)])
         for i in range(0, (int((grain + 1)) - 1)):
             for j in range(1, int((grain + 1))):
                 faces.append([j + (grain + 1) * i,
-                        j + (grain + 1) * i - 1,
-                        j + (grain + 1) * (i + 1)])
+                              j + (grain + 1) * i - 1,
+                              j + (grain + 1) * (i + 1)])
 
         return np.array(vertices), np.array(faces)

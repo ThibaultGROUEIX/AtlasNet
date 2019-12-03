@@ -96,7 +96,7 @@ class AbstractTrainer(object):
         current_time = time.time()
         ellpased_time = current_time - self.start_train_time
         total_time_estimated = self.opt.nepoch * (self.datasets.len_dataset / self.opt.batch_size) * ellpased_time / (
-                    0.00001 + self.iteration + 1.0 * self.epoch * self.datasets.len_dataset / self.opt.batch_size)  # regle de 3
+                0.00001 + self.iteration + 1.0 * self.epoch * self.datasets.len_dataset / self.opt.batch_size)  # regle de 3
         ETL = total_time_estimated - ellpased_time
         print(
             f"\r["
@@ -123,7 +123,6 @@ class AbstractTrainer(object):
             for g in self.optimizer.param_groups:
                 g['lr'] = next_learning_rate
 
-
         if self.epoch == self.opt.lr_decay_1:
             self.opt.lrate = self.opt.lrate / 10.0
             print(f"First learning rate decay {self.opt.lrate}")
@@ -148,4 +147,3 @@ class AbstractTrainer(object):
 
     def reset_epoch(self):
         self.epoch = self.opt.start_epoch
-

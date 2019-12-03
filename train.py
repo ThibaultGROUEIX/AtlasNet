@@ -1,4 +1,4 @@
-import os
+import sys
 import auxiliary.argument_parser as argument_parser
 import auxiliary.my_utils as my_utils
 import time
@@ -16,10 +16,15 @@ trainer.build_optimizer()
 trainer.build_losses()
 trainer.start_train_time = time.time()
 
+if opt.demo:
+    with torch.no_grad():
+        trainer.demo()
+    sys.exit(0)
+
 if opt.run_single_eval:
     with torch.no_grad():
         trainer.test_epoch()
-    os.exit()
+    sys.exit(0)
 
 for epoch in range(trainer.epoch, opt.nepoch):
     trainer.train_epoch()
