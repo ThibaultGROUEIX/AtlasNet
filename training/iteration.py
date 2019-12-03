@@ -26,7 +26,7 @@ class Iteration(object):
         self.optimizer.zero_grad()
         self.common_ops()
         self.log.update("loss_train_total", self.data.loss.item())
-        if self.opt.learning:
+        if not self.opt.no_learning:
             self.data.loss.backward()
             self.optimizer.step()  # gradient update
         self.print_iteration_stats(self.data.loss)

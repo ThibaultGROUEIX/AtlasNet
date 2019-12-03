@@ -5,7 +5,7 @@ import pymesh
 from os.path import exists
 import os
 import subprocess
-
+from shutil import copy
 
 def metro(path1, path2, metro='./auxiliary/metro_sources/build/metro'):
     print(f"calculing {path1}")
@@ -20,13 +20,15 @@ def metro(path1, path2, metro='./auxiliary/metro_sources/build/metro'):
 
 
 def isolate_files():
-    with open('./inference/files-metro.txt', 'r') as file:
+    with open('./dataset/data/metro_files/files-metro.txt', 'r') as file:
         files = file.read().split('\n')
     for file in files:
         if file[-3:] == "ply":
             cat = file.split('/')[0]
             name = file.split('/')[1][:-4]
             path_points = '/'.join(['.', 'dataset', 'data', 'ShapeNetV1PointCloud', cat, name + '.points.ply.npy'])
+            path_png = '/'.join(['.', 'dataset', 'data', 'ShapeNetV1Renderings', cat, name, "rendering", '00.png'])
+
             path_obj = '/'.join(['', 'home', 'thibault', 'hdd', 'data', 'ShapeNetCore.v1', cat, name, 'model.obj'])
             mesh = pymesh.load_mesh(path_obj)
             points = np.load((path_points))
@@ -35,7 +37,7 @@ def isolate_files():
 
             pymesh.save_mesh('/'.join(['.', 'dataset', 'data', 'metro_files', cat, name + '.ply']), mesh, ascii=True)
             np.save('/'.join(['.', 'dataset', 'data', 'metro_files', cat, name + '.npy']), points)
-
+            copy(path_png, '/'.join(['.', 'dataset', 'data', 'metro_files', cat, name + '.png']))
 
 def main():
     parser = argparse.ArgumentParser()
@@ -49,5 +51,5 @@ def main():
 
 
 if __name__ == '__main__':
-    a = main()
+    a = isolate_files()
     print(a)

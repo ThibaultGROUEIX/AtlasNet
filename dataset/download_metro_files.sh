@@ -6,7 +6,7 @@ function gdrive_download() {
 }
 cd dataset
 mkdir data
-gdrive_download 12Ii9kUJQDyJGHyg16dOps1Xwj6edFXlE data/metro_files.zip
+gdrive_download 1ihCUjv4OG8G0JYsLexZs1sruvjnJMflm data/metro_files.zip
 cd data
 unzip metro_files.zip
 rm metro_files.zip

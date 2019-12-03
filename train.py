@@ -18,7 +18,7 @@ trainer.start_train_time = time.time()
 
 if opt.demo:
     with torch.no_grad():
-        trainer.demo()
+        trainer.demo(opt.demo_path)
     sys.exit(0)
 
 if opt.run_single_eval:

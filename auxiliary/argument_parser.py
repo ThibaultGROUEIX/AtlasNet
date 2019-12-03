@@ -11,7 +11,7 @@ def parser():
     parser = argparse.ArgumentParser()
 
     # Training parameters
-    parser.add_argument("--learning", action="store_true", help="Learning mode (batchnorms...)")
+    parser.add_argument("--no_learning", action="store_true", help="Learning mode (batchnorms...)")
     parser.add_argument('--batch_size', type=int, default=32, help='input batch size')
     parser.add_argument('--batch_size_test', type=int, default=32, help='input batch size')
     parser.add_argument('--workers', type=int, help='number of data loading workers', default=0)
@@ -32,7 +32,7 @@ def parser():
                         choices=['UnitBall', 'BoundingBox', 'Identity'])
     parser.add_argument("--shapenet13", action="store_true", help="Load 13 usual shapenet categories")
     parser.add_argument("--SVR", action="store_true", help="Single_view Reconstruction")
-    parser.add_argument("--sample", action="store_true", help="Sample the input pointclouds")
+    parser.add_argument("--sample", action="store_false", help="Sample the input pointclouds")
     parser.add_argument('--class_choice', nargs='+', default=["airplane"], type=str)
     parser.add_argument('--number_points', type=int, default=2500, help='Number of point sampled on the object')
     parser.add_argument('--number_points_eval', type=int, default=2500,
@@ -86,6 +86,8 @@ def parser():
                 my_opt_dict = json.load(f)
             my_opt_dict.pop("run_single_eval")
             my_opt_dict.pop("learning")
+            my_opt_dict.pop("demo")
+            my_opt_dict.pop("demo_path")
             for key in my_opt_dict.keys():
                 opt[key] = my_opt_dict[key]
             my_utils.cyan_print("PARAMETER: ")

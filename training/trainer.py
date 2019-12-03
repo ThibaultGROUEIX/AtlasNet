@@ -125,7 +125,7 @@ class Trainer(AbstractTrainer, Loss, Iteration):
             self.flags.build_website = True
 
         self.log.reset()
-        if self.opt.learning:
+        if not self.opt.no_learning:
             self.network.train()
         else:
             self.network.eval()
@@ -177,6 +177,7 @@ class Trainer(AbstractTrainer, Loss, Iteration):
         except:
             print("could not update curves")
         print(f"Sampled {self.num_val_points} regular points for evaluation")
+        self.metro_results = 0
         if (self.flags.build_website or self.opt.run_single_eval) and self.opt.compute_metro:
             self.metro()
         if self.flags.build_website:
@@ -188,17 +189,17 @@ class Trainer(AbstractTrainer, Loss, Iteration):
             self.html_report_data.fscore_curve = {"fscore": self.log.curves["fscore"]}
             html_report.main(self, outHtml="index.html")
 
-    def demo(self):
+    def demo(self, demo_path):
         """
         This function takes an image or pointcloud path as input and save the mesh infered by Atlasnet
         Extension supported are ply npy obg and png
         :return: path to the generated mesh
         """
-        ext = self.opt.demo_path.split('.')[-1]
+        ext = demo_path.split('.')[-1]
         if ext == "ply" or ext == "npy" or ext == "obj":
-            self.data = self.datasets.dataset_train.load_point_input(self.opt.demo_path)
+            self.data = self.datasets.dataset_train.load_point_input(demo_path)
         elif ext == "png":
-            self.data = self.datasets.dataset_train.load_image(self.opt.demo_path)
+            self.data = self.datasets.dataset_train.load_image(demo_path)
         else:
             print("invalid file extension")
 
@@ -211,13 +212,15 @@ class Trainer(AbstractTrainer, Loss, Iteration):
             unnormalized_vertices = self.data.operation.apply(vertices)
             mesh = pymesh.form_mesh(vertices=unnormalized_vertices.squeeze().numpy(), faces=mesh.faces)
 
-        if self.demo:
-            path = self.opt.demo_path.split('.')
+        if self.opt.demo:
+            path = demo_path.split('.')
             path[-2] += "AtlasnetReconstruction"
             path[-1] = "ply"
             path = ".".join(path)
         else:
             path = '/'.join([self.opt.training_media_path, str(self.flags.media_count)]) + ".ply"
+            self.flags.media_count += 1
+
         print(f"Atlasnet saved generated mesh at {path}!")
         mesh_processor.save(mesh, path, self.colormap)
         return path

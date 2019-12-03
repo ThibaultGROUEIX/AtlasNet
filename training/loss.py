@@ -44,16 +44,16 @@ class Loss(object):
         if not os.path.exists(metro_files_path):
             os.system("chmod +x dataset/download_metro_files.sh")
             os.system("./dataset/download_metro_files.sh")
-
+        ext = '.png' if self.opt.SVR else '.npy'
         with open(metro_files_path, 'r') as file:
             files = file.read().split('\n')
         for file in files:
             if file[-3:] == "ply":
                 cat = file.split('/')[0]
                 name = file.split('/')[1][:-4]
-                pointcloud_path = '/'.join([metro_path, cat, name + '.npy'])
+                input_path = '/'.join([metro_path, cat, name + ext])
                 gt_path = '/'.join([metro_path, cat, name + '.ply'])
-                path = self.demo(pointcloud_path)
+                path = self.demo(input_path)
                 self.metro_args_input.append((path, gt_path))
 
         print("start metro calculus. This is going to take some time (30 minutes)")
