@@ -7,7 +7,6 @@ import os
 from PIL import Image
 import auxiliary.my_utils as my_utils
 import pickle
-import auxiliary.pointcloud_processor as pointcloud_processor
 from os.path import join, dirname, exists
 from easydict import EasyDict
 import json

@@ -47,14 +47,6 @@ def print_arg(opt):
             + colored(str(opt.__dict__[a]), "cyan")
         )
 
-
-def int_2_boolean(x):
-    if x == 1:
-        return True
-    else:
-        return False
-
-
 # initialize the weighs of the network for Convolutional layers and batchnorm layers
 def weights_init(m):
     classname = m.__class__.__name__
