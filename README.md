@@ -34,13 +34,13 @@ The network synthesizes a mesh (point cloud + connectivity) from an image.
 
 # Install
 
-This implementation uses [Pytorch](http://pytorch.org/), [Pymesh](https://github.com/PyMesh/PyMesh). 
+This implementation uses Python 3.6, [Pytorch](http://pytorch.org/), [Pymesh](https://github.com/PyMesh/PyMesh). 
 
 ```shell
 git clone --recurse-submodules https://github.com/ThibaultGROUEIX/AtlasNet.git
 cd AtlasNet 
-pip install -r requirements.txt # Install dependencies
-python setup.py --build # build metro (optional)
+pip install --user --requirement  requirements.txt # Install dependencies
+python setup.py --build # build metro distance(optional)
 ```
 
 
