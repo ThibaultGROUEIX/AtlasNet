@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.parallel
 import torch.utils.data
-from model.model_blocks import get_decoder, Identity
+from model.model_blocks import Mapping2Dto3D, Identity
 from model.template import get_template
 
 
@@ -27,7 +27,7 @@ class Atlasnet(nn.Module):
         self.template = [get_template(opt.template_type, device=opt.device) for i in range(0, opt.nb_primitives)]
 
         # Intialize deformation networks
-        self.decoder = nn.ModuleList([get_decoder(opt) for i in range(0, opt.nb_primitives)])
+        self.decoder = nn.ModuleList([Mapping2Dto3D(opt) for i in range(0, opt.nb_primitives)])
 
     def forward(self, latent_vector, train=True):
         """

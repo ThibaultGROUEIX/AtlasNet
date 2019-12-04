@@ -157,6 +157,8 @@ class Trainer(AbstractTrainer, Loss, Iteration):
 
     def generate_mesh(self):
         self.data.points.unsqueeze_(0)
+        if self.opt.SVR:
+            self.data.image.unsqueeze_(0)
         self.make_network_input()
         mesh = self.network.module.generate_mesh(self.data.network_input)
         path = '/'.join([self.opt.training_media_path, str(self.flags.media_count)]) + ".obj"

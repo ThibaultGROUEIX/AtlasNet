@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append('/home/thibault/ssd/netvision/')
+sys.path.append('./auxiliary/netvision/')
 from HtmlGenerator import HtmlGenerator
 
 

@@ -17,67 +17,68 @@ opt = parser()
 class Experiments(object):
     def __init__(self):
         self.template = {
-            1: "python train.py --dir_name log/template_sphere --template_type SPHERE",
-            2: "python train.py --dir_name log/template_square --nb_primitives 1",
+            1: "python train.py --shapenet13 --dir_name log/template_sphere --template_type SPHERE",
+            2: "python train.py --shapenet13 --dir_name log/template_square --nb_primitives 1",
         }
         self.num_prim = {
-            1: "python train.py --dir_name log/num_prim_10 --nb_primitives 10",
-            2: "python train.py --dir_name log/num_prim_25 --nb_primitives 25",
+            1: "python train.py --shapenet13 --dir_name log/num_prim_10 --nb_primitives 10",
+            2: "python train.py --shapenet13 --dir_name log/num_prim_25 --nb_primitives 25",
         }
         self.data_augmentation = {
-            1: "python train.py --dir_name log/data_augmentation_1 --nb_primitives 10 --random_translation 1",
-            2: "python train.py --dir_name log/data_augmentation_2 --nb_primitives 10 --random_translation 1 --anisotropic_scaling 1",
-            3: "python train.py --dir_name log/data_augmentation_3 --nb_primitives 10 --data_augmentation_axis_rotation 1 --data_augmentation_random_flips 1 --random_translation 1 --anisotropic_scaling 1",
-            4: "python train.py --dir_name log/data_augmentation_4 --nb_primitives 10 --random_rotation 1 --data_augmentation_random_flips 1 --random_translation 1 --anisotropic_scaling 1",
+            1: "python train.py --shapenet13 --dir_name log/data_augmentation_1 --nb_primitives 10 --random_translation 1",
+            2: "python train.py --shapenet13 --dir_name log/data_augmentation_2 --nb_primitives 10 --random_translation 1 --anisotropic_scaling 1",
+            3: "python train.py --shapenet13 --dir_name log/data_augmentation_3 --nb_primitives 10 --data_augmentation_axis_rotation 1 --data_augmentation_random_flips 1 --random_translation 1 --anisotropic_scaling 1",
+            4: "python train.py --shapenet13 --dir_name log/data_augmentation_4 --nb_primitives 10 --random_rotation 1 --data_augmentation_random_flips 1 --random_translation 1 --anisotropic_scaling 1",
         }
 
         self.number_points = {
-            1: "python train.py --dir_name log/number_points_10000 --nb_primitives 10 --number_points 10000",
-            2: "python train.py --dir_name log/number_points_1000 --nb_primitives 10 --number_points 1000",
+            1: "python train.py --shapenet13 --dir_name log/number_points_10000 --nb_primitives 10 --number_points 10000",
+            2: "python train.py --shapenet13 --dir_name log/number_points_1000 --nb_primitives 10 --number_points 1000",
         }
 
         self.normalization = {
-            1: "python train.py --dir_name log/normalization_boundingBox --nb_primitives 10 --normalization BoundingBox",
-            2: "python train.py --dir_name log/normalization_identity --nb_primitives 10 --normalization Identity",
-            3: "python train.py --dir_name log/normalization_unitBall --nb_primitives 10 --normalization UnitBall",
+            1: "python train.py --shapenet13 --dir_name log/normalization_boundingBox --nb_primitives 10 --normalization BoundingBox",
+            2: "python train.py --shapenet13 --dir_name log/normalization_identity --nb_primitives 10 --normalization Identity",
+            3: "python train.py --shapenet13 --dir_name log/normalization_unitBall --nb_primitives 10 --normalization UnitBall",
         }
 
         self.bottleneck_size = {
-            1: "python train.py --dir_name log/bottleneck_size_128 --nb_primitives 10 --bottleneck_size 128",
-            2: "python train.py --dir_name log/bottleneck_size_2048 --nb_primitives 10 --bottleneck_size 2048",
+            1: "python train.py --shapenet13 --dir_name log/bottleneck_size_128 --nb_primitives 10 --bottleneck_size 128",
+            2: "python train.py --shapenet13 --dir_name log/bottleneck_size_2048 --nb_primitives 10 --bottleneck_size 2048",
         }
 
         self.multi_gpu = {
-            1: "python train.py --dir_name log/multi_gpu_1 --multi_gpu 0 1 2 3 --batch_size 128",
-            2: "python train.py --dir_name log/multi_gpu_10 --multi_gpu 0 1 2 3 --nb_primitives 10 --batch_size 128",
+            1: "python train.py --shapenet13 --dir_name log/multi_gpu_1 --multi_gpu 0 1 2 3 --batch_size 128",
+            2: "python train.py --shapenet13 --dir_name log/multi_gpu_10 --multi_gpu 0 1 2 3 --nb_primitives 10 --batch_size 128",
         }
 
         self.activation = {
-            1: "python train.py --dir_name log/activation_sigmoid --nb_primitives 10  --activation sigmoid",
-            2: "python train.py --dir_name log/activation_softplus --nb_primitives 10  --activation softplus",
-            3: "python train.py --dir_name log/activation_logsigmoid --nb_primitives 10  --activation logsigmoid",
-            4: "python train.py --dir_name log/activation_softsign --nb_primitives 10  --activation softsign",
-            5: "python train.py --dir_name log/activation_tanh --nb_primitives 10  --activation tanh",
+            1: "python train.py --shapenet13 --dir_name log/activation_sigmoid --nb_primitives 10  --activation sigmoid",
+            2: "python train.py --shapenet13 --dir_name log/activation_softplus --nb_primitives 10  --activation softplus",
+            3: "python train.py --shapenet13 --dir_name log/activation_logsigmoid --nb_primitives 10  --activation logsigmoid",
+            4: "python train.py --shapenet13 --dir_name log/activation_softsign --nb_primitives 10  --activation softsign",
+            5: "python train.py --shapenet13 --dir_name log/activation_tanh --nb_primitives 10  --activation tanh",
         }
 
         self.num_layers = {
-            1: "python train.py --dir_name log/num_layers_2 --nb_primitives 10  --num_layers 2",
-            2: "python train.py --dir_name log/num_layers_3 --nb_primitives 10  --num_layers 3",
-            3: "python train.py --dir_name log/num_layers_4 --nb_primitives 10  --num_layers 4",
-            4: "python train.py --dir_name log/num_layers_5 --nb_primitives 10  --num_layers 5",
+            1: "python train.py --shapenet13 --dir_name log/num_layers_2 --nb_primitives 10  --num_layers 2",
+            2: "python train.py --shapenet13 --dir_name log/num_layers_3 --nb_primitives 10  --num_layers 3",
+            3: "python train.py --shapenet13 --dir_name log/num_layers_4 --nb_primitives 10  --num_layers 4",
+            4: "python train.py --shapenet13 --dir_name log/num_layers_5 --nb_primitives 10  --num_layers 5",
         }
 
         self.hidden_neurons = {
-            1: "python train.py --dir_name log/hidden_neurons_256 --nb_primitives 10  --hidden_neurons 256",
-            2: "python train.py --dir_name log/hidden_neurons_128 --nb_primitives 10  --hidden_neurons 128",
-            3: "python train.py --dir_name log/hidden_neurons_64 --nb_primitives 10  --hidden_neurons 64",
+            1: "python train.py --shapenet13 --dir_name log/hidden_neurons_256 --nb_primitives 10  --hidden_neurons 256",
+            2: "python train.py --shapenet13 --dir_name log/hidden_neurons_128 --nb_primitives 10  --hidden_neurons 128",
+            3: "python train.py --shapenet13 --dir_name log/hidden_neurons_64 --nb_primitives 10  --hidden_neurons 64",
+            3: "python train.py --shapenet13 --dir_name log/hidden_neurons_512 --nb_primitives 10  --hidden_neurons 512",
+            4: "python train.py --shapenet13 --dir_name log/hidden_neurons_1024 --nb_primitives 10  --hidden_neurons 1024",
         }
 
-        self.decoder_type = {
-            1: "python train.py --dir_name log/decoder_type --nb_primitives 10  --decoder_type AtlasNet",
-            2: "python train.py --dir_name log/decoder_type_light --nb_primitives 10  --decoder_type AtlasNetLight",
-        }
 
+        self.single_view = {
+            1: "python train.py --dir_name log/single_view --shapenet13 --nb_primitives 10  --SVR",
+        }
 
 exp = Experiments()
 
@@ -149,4 +150,14 @@ for path in ["log_terminals", "log"]:
         print(f"Creating {path} folder")
         os.mkdir(path)
 
-job_scheduler(exp.decoder_type)
+
+job_scheduler(exp.activation)
+job_scheduler(exp.number_points)
+job_scheduler(exp.bottleneck_size)
+job_scheduler(exp.num_layers)
+job_scheduler(exp.multi_gpu)
+job_scheduler(exp.single_view)
+job_scheduler(exp.normalization)
+job_scheduler(exp.template)
+job_scheduler(exp.num_prim)
+job_scheduler(exp.data_augmentation)

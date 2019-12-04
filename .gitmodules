@@ -15,3 +15,12 @@
 [submodule "vcglib"]
 	path = vcglib
 	url = https://github.com/cnr-isti-vclab/vcglib.git
+[submodule "auxiliary/ChamferDistancePytorch"]
+	path = auxiliary/ChamferDistancePytorch
+	url = https://github.com/ThibaultGROUEIX/ChamferDistancePytorch
+[submodule "auxiliary/sampling_and_meshing/O-CNN"]
+	path = auxiliary/sampling_and_meshing/O-CNN
+	url = https://github.com/palanglois/O-CNN.git
+[submodule "auxiliary/sampling_and_meshing/PoissonRecon"]
+	path = auxiliary/sampling_and_meshing/PoissonRecon
+	url = https://github.com/mkazhdan/PoissonRecon.git

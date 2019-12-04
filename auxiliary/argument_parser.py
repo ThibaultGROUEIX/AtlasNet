@@ -56,13 +56,13 @@ def parser():
 
     # Network
     parser.add_argument('--model', type=str, default='', help='optional reload model path')
+    parser.add_argument('--num_layers', type=int, default=2, help='number of hidden MLP Layer')
+    parser.add_argument('--hidden_neurons', type=int, default=512, help='number of neurons in each hidden layer')
     parser.add_argument('--loop_per_epoch', type=int, default=1, help='number of data loop per epoch')
     parser.add_argument('--nb_primitives', type=int, default=1, help='number of primitives')
     parser.add_argument('--template_type', type=str, default="SQUARE", choices=["SPHERE", "SQUARE"],
                         help='dim_out_patch')
-    parser.add_argument('--decoder_type', type=str, default="AtlasNet", choices=["AtlasNet", "AtlasNetLight"],
-                        help='dim_out_patch')
-    parser.add_argument('--multi_gpu', nargs='+', type=int, default=[0], help='dim_out_patch')
+    parser.add_argument('--multi_gpu', nargs='+', type=int, default=[0], help='Use multiple gpus')
     parser.add_argument("--remove_all_batchNorms", action="store_true", help="Replace all batchnorms by identity")
     parser.add_argument('--bottleneck_size', type=int, default=1024, help='dim_out_patch')
     parser.add_argument('--activation', type=str, default='relu',

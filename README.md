@@ -5,34 +5,30 @@ Thibault Groueix,  Matthew Fisher, Vladimir G. Kim , Bryan C. Russell, Mathieu A
 In [CVPR, 2018](http://cvpr2018.thecvf.com/).
 
 
-![teaset](doc/pictures/teaser.small.png)    
+![teaser](doc/pictures/teaser.small.png)  
 
-![result](doc/pictures/plane.gif)
+The network synthesizes a mesh (point cloud + connectivity) from an image.
 
-
-<details><summary>🚀 Major refacto 11-2019 🚀 </summary>
-- [x] Factorize SVR and autoencoder <br>
-- [x] Factorise Square template and Sphere <br>
-- [x] Add latent vector as bias (30% speedup) <br>
+<details><summary> Latest Refacto 12-2019  </summary>
+- [x] Factorize Single View Reconstruction and autoencoder in same class <br>
+- [x] Factorise Square and Sphere template in same class<br>
+- [x] Add latent vector as bias after first layer(30% speedup) <br>
 - [x] Remove last th in decoder <br>
 - [x] Make large .pth tensor with all pointclouds in cache(drop the nasty Chunk_reader) <br>
 - [x] Make-it multi-gpu <br>
-- [x] Add netvision results <br>
+- [x] Add netvision visualization of the results <br>
 - [x] Rewrite main script object-oriented  <br>
 - [x] Check that everything works in latest pytorch version <br>
-- [x] Add more layer by default and flag for the number of layers <br>
+- [x] Add more layer by default and flag for the number of layers and hidden neurons <br>
 - [x] Add a flag to generate a mesh directly <br>
-- [x] Add a python setup install ( that update the submodule, and install the right packages) <br>
+- [x] Add a python setup install <br>
 - [x] Make sure GPU are used at 100% <br>
 - [x] Add f-score in Chamfer + report f-score <br>
 - [x] Get rid of shapenet_v2 data and use v1! <br>
-- [x] Fix path no more sys.path.append <br>
+- [x] Fix path issues no more sys.path.append <br>
 - [x] Preprocess shapenet 55 and add it in dataloader <br>
 - [x] Make minimal dependencies <br>
 </details>
-
-
-The network is able to synthesize a mesh (point cloud + connectivity) from a low-resolution point cloud, or from an image.
 
 
 
@@ -41,10 +37,10 @@ The network is able to synthesize a mesh (point cloud + connectivity) from a low
 This implementation uses [Pytorch](http://pytorch.org/), [Pymesh](https://github.com/PyMesh/PyMesh). 
 
 ```shell
-git clone https://github.com/ThibaultGROUEIX/AtlasNet.git
-cd AtlasNet
-git submodule update --init
-python setup.py install
+git clone --recurse-submodules https://github.com/ThibaultGROUEIX/AtlasNet.git
+cd AtlasNet 
+pip install -r requirements.txt # Install dependencies
+python setup.py --build # build metro (optional)
 ```
 
 
@@ -70,14 +66,14 @@ python setup.py install
         }
 ```
 
-### 
+![result](doc/pictures/plane.gif)
+
 
 ## Related project
 
 *  [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
 *  [3D-CODED](https://github.com/ThibaultGROUEIX/3D-CODED)
 *  [Cycle Consistent Deformations](https://github.com/ThibaultGROUEIX/CycleConsistentDeformation)
-
 
 
 

@@ -4,8 +4,7 @@
 import argparse
 from os import makedirs, system
 from shutil import rmtree
-from os.path import dirname, realpath, join, exists
-
+from os.path import dirname, realpath, join, exists, isfile
 
 def main():
     parser = argparse.ArgumentParser()
@@ -21,6 +20,7 @@ def main():
     elif args.clean:
         if exists(build_dir):
             rmtree(build_dir)
+
 
 
 if __name__ == '__main__':
