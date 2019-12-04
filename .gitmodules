@@ -24,3 +24,6 @@
 [submodule "auxiliary/sampling_and_meshing/PoissonRecon"]
 	path = auxiliary/sampling_and_meshing/PoissonRecon
 	url = https://github.com/mkazhdan/PoissonRecon.git
+[submodule "auxiliary/netvision"]
+	path = auxiliary/netvision
+	url = https://github.com/palanglois/netvision.git
