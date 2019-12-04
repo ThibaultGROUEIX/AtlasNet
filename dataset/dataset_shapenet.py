@@ -69,13 +69,12 @@ class ShapeNet(data.Dataset):
             self.path_dataset = join(self.path_dataset,
                                      self.opt.normalization + str(train) + "_".join(self.opt.class_choice))
 
-            if self.opt.SVR:
-                if not exists(self.image_path):
-                    os.system("chmod +x dataset/download_shapenet_renderings.sh")
-                    os.system("./dataset/download_shapenet_renderings.sh")
+            if not exists(self.image_path):
+                os.system("chmod +x dataset/download_shapenet_renderings.sh")
+                os.system("./dataset/download_shapenet_renderings.sh")
 
-                self.num_image_per_object = 24
-                self.idx_image_val = 0
+            self.num_image_per_object = 24
+            self.idx_image_val = 0
 
             # Compile list of pointcloud path by selected category
             for category in self.classes:

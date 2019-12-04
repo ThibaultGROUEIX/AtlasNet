@@ -5,7 +5,7 @@ function gdrive_download() {
   rm -rf /tmp/cookies.txt
 }
 cd dataset
-gdrive_download 1QWebLVxzQhuYi9mjN9b2RRMnbKx98AaM data/ShapeNetV1Renderings.zip
+gdrive_download 153nd1oUd5ONnP8AoXaU8IZunskd5LEvB data/ShapeNetV1Renderings.zip
 unzip ShapeNetV1Renderings.zip
 rm ShapeNetV1Renderings.zip
 cd ..
