@@ -1,4 +1,3 @@
-from __future__ import print_function
 import torch
 import torch.nn as nn
 import torch.nn.parallel
@@ -26,12 +25,14 @@ def get_activation(argument):
     return getter.get(argument, "Invalid activation")
 
 
-
-class PointNetfeat(nn.Module):
+class PointNet(nn.Module):
     def __init__(self, nlatent=1024, dim_input=3):
-        """Encoder"""
+        """
+        PointNet Encoder
+        See : TODO
+        """
 
-        super(PointNetfeat, self).__init__()
+        super(PointNet, self).__init__()
         self.dim_input = dim_input
         self.conv1 = torch.nn.Conv1d(dim_input, 64, 1)
         self.conv2 = torch.nn.Conv1d(64, 128, 1)
@@ -48,7 +49,6 @@ class PointNetfeat(nn.Module):
         self.nlatent = nlatent
 
     def forward(self, x):
-        batchsize = x.size()[0]
         x = F.relu(self.bn1(self.conv1(x)))
         x = F.relu(self.bn2(self.conv2(x)))
         x = self.bn3(self.conv3(x))
@@ -60,6 +60,15 @@ class PointNetfeat(nn.Module):
 
 
 class Mapping2Dto3D(nn.Module):
+    """
+    Core Atlasnet Function.
+    Takes batched points as input and run them through an MLP.
+    Note : the MLP is implemented as a torch.nn.Conv1d with kernels of size 1 for speed.
+    Note : The latent vector is added as a bias after the first layer. Note that this is strictly identical
+    as concatenating each input point with the latent vector but saves memory and speeed.
+    Author : Thibault Groueix 01.11.2019
+    """
+
     def __init__(self, opt):
         self.opt = opt
         self.bottleneck_size = opt.bottleneck_size

@@ -1,4 +1,3 @@
-import sys
 import argparse
 import numpy as np
 import pymesh
@@ -7,7 +6,20 @@ import os
 import subprocess
 from shutil import copy
 
+"""
+        Author : Thibault Groueix 01.11.2019
+"""
+
+
 def metro(path1, path2, metro='./auxiliary/metro_sources/build/metro'):
+    """
+    Run the metro compiled program on two meshes and get the output.
+    :param path1: mesh 1
+    :param path2: mesh 2
+    :param metro: path to metro
+    :return: metro(mesh 1, mesh 2) [float]
+    """
+
     print(f"calculing {path1}")
     cmd = f"{metro} {path1} {path2}"
     returned_output = subprocess.check_output(cmd, shell=True)
@@ -20,6 +32,9 @@ def metro(path1, path2, metro='./auxiliary/metro_sources/build/metro'):
 
 
 def isolate_files():
+    """
+    Utility fonction to generate the metro_file archive. Useless to all users but the author.
+    """
     with open('./dataset/data/metro_files/files-metro.txt', 'r') as file:
         files = file.read().split('\n')
     for file in files:
@@ -38,6 +53,7 @@ def isolate_files():
             pymesh.save_mesh('/'.join(['.', 'dataset', 'data', 'metro_files', cat, name + '.ply']), mesh, ascii=True)
             np.save('/'.join(['.', 'dataset', 'data', 'metro_files', cat, name + '.npy']), points)
             copy(path_png, '/'.join(['.', 'dataset', 'data', 'metro_files', cat, name + '.png']))
+
 
 def main():
     parser = argparse.ArgumentParser()

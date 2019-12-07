@@ -1,5 +1,4 @@
 import sys
-
 sys.path.append('./auxiliary/netvision/')
 import HtmlGenerator
 import os
@@ -8,18 +7,26 @@ import auxiliary.init_html_report as init_html_report
 
 
 def main(trainer, outHtml=None):
+    """
+    Create a report for the completed experiment.
+    Author : Thibault Groueix 01.11.2019
+    """
+
     if outHtml is None:
         outHtml = os.path.join(trainer.opt.dir_name, f"{trainer.epoch}") + '.html'
     else:
         outHtml = os.path.join(trainer.opt.dir_name, outHtml)
 
     webpage = HtmlGenerator.HtmlGenerator(path=outHtml, title=trainer.opt.dir_name, local_copy=True)
+
+    # Display loss at the top in a title
     loss_val = trainer.log.meters["loss_val"].avg
     final_fscore = trainer.html_report_data.fscore_curve["fscore"][-1]
     webpage.add_title(f"Reconstruction (Val):{loss_val} Metro:{trainer.metro_results} Fscore:{final_fscore}")
 
     table = webpage.add_table()
 
+    # Add all parameters for the experiments and training curves
     table2 = deepcopy(table)
     table2.add_titleless_columns(1)
     table.add_titleless_columns(2)
@@ -29,6 +36,8 @@ def main(trainer, outHtml=None):
     table2.add_row([curve_recons])
 
     table.add_row([webpage.dict(trainer.opt), table2], "")
+
+    # Add random test samples the experiments and training curves
     for i in range(3):
         output_mesh = trainer.html_report_data.output_meshes[i]
         table.add_row([webpage.image(output_mesh["image_path"]),

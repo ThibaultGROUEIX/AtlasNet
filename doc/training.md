@@ -1,6 +1,26 @@
 # Training
 
-:raised_hand_with_fingers_splayed: Monitor your training on http://localhost:8888/
+```shell
+python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares --nb_primitives 25 --template_type SQUARE" # Autoencoder
+
+python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_decoder_path log/atlasnet_autoencoder_25_squares --train_only_encoder #Single-View Reconstruction
+```
+
+
+
+:raised_hand_with_fingers_splayed: Monitor your training on http://localhost:8890/
+
+:raised_hand_with_fingers_splayed: See report on a completed training at http://localhost:8891/{DIR_NAME}
+
+
+
+
+
+
+
+TODO -> Add update visdom Visual
+
+TODO -> Add Netvision Visual
 
 ![visdom](./pictures/visdom2.png)
 
@@ -11,6 +31,7 @@
 ```shell
 # Training parameters
 --no_learning, action="store_true", help="Learning mode (batchnorms...)"
+--train_only_encoder, action="store_true", help="only train the encoder"
 --batch_size, type=int, default=32, help="input batch size"
 --batch_size_test, type=int, default=32, help="input batch size"
 --workers, type=int, help="number of data loading workers', default=0)"
@@ -35,8 +56,7 @@
 --class_choice, nargs='+', default=["airplane"], type=str)
 --number_points, type=int, default=2500, help="Number of point sampled on the object"
 --random_rotation, action="store_true", help="apply data augmentation : random rotation"
---dataset, type=str, default="Shapenet",
-                    choices=['Shapenet'])
+--demo, action="store_true", help="run demo autoencoder or single-view"
 --normalization, type=str, default="UnitBall",
                     choices=['UnitBall', 'BoundingBox', 'Identity'])
 --number_points_eval, type=int, default=2500,
@@ -53,12 +73,13 @@
 # Save dirs and reload
 --id, type=str, default="0", help="training name"
 --env, type=str, default="Atlasnet", help="visdom environment"
---port, type=int, default=8890, help="visdom port"
---dir_name, type=str, default="", help="dirname"
---demo_path, type=str, default="./doc/pictures/plane_input_demo.png", help="dirname"
+--visdom_port, type=int, default=8890, help="visdom port"
+--http_port, type=int, default=8891, help="http port"
+--dir_name, type=str, default="", help="Name of the log folder."
+--demo_input_path, type=str, default="./doc/pictures/plane_input_demo.png", help="dirname"
+
 
 # Network
---model, type=str, default='', help="optional reload model path"
 --num_layers, type=int, default=2, help="number of hidden MLP Layer"
 --hidden_neurons, type=int, default=512, help="number of neurons in each hidden layer"
 --nb_primitives, type=int, default=1, help="number of primitives"
@@ -68,8 +89,11 @@
                     choices=["relu", "sigmoid", "softplus", "logsigmoid", "softsign", 											"tanh"], help="dim_out_patch"
 --template_type, type=str, default="SQUARE", choices=["SPHERE", "SQUARE"],
                     help="dim_out_patch"
+--reload_model_path, type=str, help='reload model path", 		    	default="./training/trained_models/atlasnet_AE_25_patches.pth"
+--reload_decoder_path, type=str, help='reload decoder path', default="./training/trained_models/atlasnet_AE_25_patches.pth"
+
 # Loss
---compute_metro, action="store_true", help="Compute metro distance"
+--no_metro, action="store_true", help="Skip metro distance"
 
 ```
 
@@ -91,18 +115,11 @@ The number reported are the chamfer distance, the f-score and the [metro](https:
 
 ⁽⁰⁾  computed between 2500 ground truth points and 2500 reconstructed points.
 
-⁽¹⁾ with the flag ```--accelerated_chamfer 1```.
-
-⁽²⁾this is only an estimate, the code is not optimised.  The easiest way to enhance it would be to preload the training data to use the GPU at 100%. Time computed with the flag ```--accelerated_chamfer 1```.
-Visualisation 
-
-
-
 
 
 # Paper reproduction 
 
-To reproduce main results from the paper : ```python ./training/launch.py --mode train```
+To reproduce main results from the paper : ```python ./training/launcher.py --mode train```
 
 In case you need the results of ICP on PointSetGen output :
 

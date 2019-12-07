@@ -1,4 +1,3 @@
-from __future__ import print_function
 import torch
 import torch.nn as nn
 import torch.nn.parallel
@@ -11,14 +10,19 @@ class Atlasnet(nn.Module):
 
     def __init__(self, opt):
         """
-        Main Atlasnet module. This network takes an embedding in the form of a latent vector and returns a pointcloud or a mesh
+        Core Atlasnet module : decoder to meshes and pointclouds.
+        This network takes an embedding in the form of a latent vector and returns a pointcloud or a mesh
+        Author : Thibault Groueix 01.11.2019
         :param opt: 
         """
         super(Atlasnet, self).__init__()
         self.opt = opt
         self.device = opt.device
+
+        # Define number of points per primitives
         self.nb_pts_in_primitive = opt.number_points // opt.nb_primitives
         self.nb_pts_in_primitive_eval = opt.number_points_eval // opt.nb_primitives
+
         if opt.remove_all_batchNorms:
             torch.nn.BatchNorm1d = Identity
             print("Replacing all batchnorms by identities.")
@@ -32,37 +36,33 @@ class Atlasnet(nn.Module):
     def forward(self, latent_vector, train=True):
         """
         Deform points from self.template using the embedding latent_vector
-        :param latent_vector: an opt.bottleneck size vector encoding a 3D shape or an image.
-        :return: A deformed pointcloud
+        :param latent_vector: an opt.bottleneck size vector encoding a 3D shape or an image. size : batch, bottleneck
+        :return: A deformed pointcloud os size : batch, nb_prim, num_point, 3
         """
         # Sample points in the patches
         if train:
             input_points = [self.template[i].get_random_points(
                 torch.Size((latent_vector.size(0), self.template[i].dim, self.nb_pts_in_primitive)),
-                latent_vector.device) for i in
-                range(self.opt.nb_primitives)]
+                latent_vector.device) for i in range(self.opt.nb_primitives)]
         else:
-            input_points = [
-                self.template[i].get_regular_points(self.nb_pts_in_primitive_eval,
-                                                    device=latent_vector.device).transpose(0,
-                                                                                           1).contiguous()
-                for i in range(self.opt.nb_primitives)]
+            # Evaluation mode. Use regularly sampled points on the primitives
+            input_points = [self.template[i].get_regular_points(self.nb_pts_in_primitive_eval,
+                                                                device=latent_vector.device).transpose(0,1).contiguous()
+                            for i in range(self.opt.nb_primitives)]
+
             input_points = [input_points[i].unsqueeze(0).expand(
-                torch.Size((latent_vector.size(0), self.template[i].dim, input_points[i].size(1)))) for i in
-                range(self.opt.nb_primitives)]
+                torch.Size((latent_vector.size(0), self.template[i].dim, input_points[i].size(1))))
+                for i in range(self.opt.nb_primitives)]
+
         # Deform each patch
         output_points = torch.cat([self.decoder[i](input_points[i], latent_vector.unsqueeze(2)).unsqueeze(1) for i in
                                    range(0, self.opt.nb_primitives)], dim=1)
 
-        # Deform return the deformed pointcloud
+        # Return the deformed pointcloud
         return output_points.contiguous()  # batch, nb_prim, num_point, 3
 
     def generate_mesh(self, latent_vector):
-        """
-        latent_vector has batch size 1
-        :param x:
-        :return:
-        """
+        assert(latent_vector.size(0)==1, "input should have batch size 1!")
         import pymesh
         input_points = [self.template[i].get_regular_points(self.nb_pts_in_primitive, latent_vector.device).transpose(0,
                                                                                                                       1).contiguous()

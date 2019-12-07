@@ -11,10 +11,17 @@ from os.path import join, dirname, exists
 from easydict import EasyDict
 import json
 from termcolor import colored
-import auxiliary.pointcloud_processor as pointcloud_processor
+import dataset.pointcloud_processor as pointcloud_processor
 from copy import deepcopy
 
 class ShapeNet(data.Dataset):
+    """
+    Shapenet Dataloader
+    Uses Shapenet V1
+    Make sure to respect shapenet Licence.
+    Author : Thibault Groueix 01.11.2019
+    """
+
     def __init__(self, opt, train=True):
         self.opt = opt
         self.num_sample = opt.number_points if train else 2500
@@ -209,7 +216,7 @@ class ShapeNet(data.Dataset):
             return str(N)
 
     def load_point_input(self, path):
-        ext = self.opt.demo_path.split('.')[-1]
+        ext = path.split('.')[-1]
         if ext == "npy":
             points = np.load(path)
         elif ext == "ply" or ext == "obj":
@@ -227,7 +234,7 @@ class ShapeNet(data.Dataset):
         else:
             pass
         return_dict = {
-            'points': points.unsqueeze_(0),
+            'points': points,
             'operation': operation,
             'path': path,
         }

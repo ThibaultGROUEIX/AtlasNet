@@ -1,7 +1,10 @@
 import numpy as np
 import torch
 
+
 """
+Author : Thibault Groueix 01.09.2019
+
 Standards :
 -- For batch processing. If you have a 2D tensor, it will unsqueeze it first
 -- Support in place and out of place

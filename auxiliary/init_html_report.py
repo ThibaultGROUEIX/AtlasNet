@@ -5,6 +5,10 @@ from HtmlGenerator import HtmlGenerator
 
 
 def main():
+    """
+    Create a master webpage to summurize results of all experiments.
+    Author : Thibault Groueix 01.11.2019
+    """
     webpage = HtmlGenerator(path="master.html")
 
     for dataset in ["Shapenet"]:

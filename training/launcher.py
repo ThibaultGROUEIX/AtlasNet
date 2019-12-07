@@ -1,21 +1,22 @@
-import argparse
 import os
 import gpustat
 import time
 
-
-def parser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--mode', type=str, default="current", choices=['training', 'inference', 'current'])
-    opt = parser.parse_args()
-    return opt
-
-
-opt = parser()
+"""
+    Author : Thibault Groueix 01.11.2019
+"""
 
 
 class Experiments(object):
     def __init__(self):
+        self.atlasnet = {
+            # 1: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_1_sphere  --nb_primitives 1 --template_type SPHERE",
+            # 2: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares  --nb_primitives 25 --template_type SQUARE",
+            3: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere_tmp --nb_primitives 1 --template_type SPHERE --SVR --reload_decoder_path log/atlasnet_autoencoder_1_sphere --train_only_encoder",
+            4: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_decoder_path log/atlasnet_autoencoder_25_squares --train_only_encoder",
+            # 5: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere --nb_primitives 1 --template_type SPHERE --SVR --reload_model_path log/atlasnet_singleview_1_sphere_tmp",
+            # 6: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_model_path log/atlasnet_singleview_25_squares_tmp",
+        }
         self.template = {
             1: "python train.py --shapenet13 --dir_name log/template_sphere --template_type SPHERE",
             2: "python train.py --shapenet13 --dir_name log/template_square --nb_primitives 1",
@@ -32,7 +33,7 @@ class Experiments(object):
         }
 
         self.number_points = {
-            1: "python train.py --shapenet13 --dir_name log/number_points_10000 --nb_primitives 10 --number_points 10000",
+            1: "python train.py --shapenet13 --dir_name log/number_points_8000 --nb_primitives 10 --number_points 8000",
             2: "python train.py --shapenet13 --dir_name log/number_points_1000 --nb_primitives 10 --number_points 1000",
         }
 
@@ -45,6 +46,7 @@ class Experiments(object):
         self.bottleneck_size = {
             1: "python train.py --shapenet13 --dir_name log/bottleneck_size_128 --nb_primitives 10 --bottleneck_size 128",
             2: "python train.py --shapenet13 --dir_name log/bottleneck_size_2048 --nb_primitives 10 --bottleneck_size 2048",
+            3: "python train.py --shapenet13 --dir_name log/bottleneck_size_4096 --nb_primitives 10 --bottleneck_size 4096",
         }
 
         self.multi_gpu = {
@@ -75,10 +77,10 @@ class Experiments(object):
             4: "python train.py --shapenet13 --dir_name log/hidden_neurons_1024 --nb_primitives 10  --hidden_neurons 1024",
         }
 
-
         self.single_view = {
             1: "python train.py --dir_name log/single_view --shapenet13 --nb_primitives 10  --SVR",
         }
+
 
 exp = Experiments()
 
@@ -101,7 +103,7 @@ def get_first_available_gpu():
     return -1
 
 
-def job_scheduler(dict_of_jobs):
+def job_scheduler_parralel(dict_of_jobs):
     """
     Launch Tmux session each time it finds a free gpu
     :param dict_of_jobs:
@@ -112,7 +114,7 @@ def job_scheduler(dict_of_jobs):
         job = dict_of_jobs[job_key]
         while get_first_available_gpu() < 0:
             print("Waiting to find a GPU for ", job)
-            time.sleep(30)  # Sleeps for 30 sec
+            time.sleep(15)  # Sleeps for 30 sec
 
         gpu_id = get_first_available_gpu()
         name_tmux = f"GPU{gpu_id}"
@@ -120,28 +122,30 @@ def job_scheduler(dict_of_jobs):
         CMD = f'tmux new-session -d -s {name_tmux} \; send-keys "{cmd}" Enter'
         print(CMD)
         os.system(CMD)
-        time.sleep(60)  # Sleeps for 30 sec
+        time.sleep(15)  # Sleeps for 30 sec
 
 
-def job_scheduler_multi(dict_of_jobs):
+def job_scheduler_sequential(dict_of_jobs):
     """
-    Launch Tmux session each time it finds a free gpu
+    Choose a gpum then launches jobs sequentially on that GPU in tmux sessions.
     :param dict_of_jobs:
     """
     keys = list(dict_of_jobs.keys())
-    while len(keys) > 0:
-        job_key = keys.pop()
-        job = dict_of_jobs[job_key]
-        while get_first_available_gpu() < 0:
-            print("Waiting to find a GPU for ", job)
-            time.sleep(30)  # Sleeps for 30 sec
+    while get_first_available_gpu() < 0:
+        time.sleep(15)  # Sleeps for 30 sec
 
-        gpu_id = get_first_available_gpu()
-        name_tmux = f"GPU{gpu_id}"
-        cmd = f"conda activate python3;  {job}  2>&1 | tee  log_terminals/{gpu_id}_{job_key}.txt; tmux kill-session -t {name_tmux}"
-        CMD = f'tmux new-session -d -s {name_tmux} \; send-keys "{cmd}" Enter'
-        print(CMD)
-        os.system(CMD)
+    gpu_id = get_first_available_gpu()
+
+    while len(keys) > 0:
+        has = os.system(f"tmux has-session -t GPU{gpu_id} 2>/dev/null")
+        if not int(has) == 0:
+            job_key = keys.pop()
+            job = dict_of_jobs[job_key]
+            name_tmux = f"GPU{gpu_id}"
+            cmd = f"conda activate python3;  {job}  2>&1 | tee  log_terminals/{gpu_id}_{job_key}.txt; tmux kill-session -t {name_tmux}"
+            CMD = f'tmux new-session -d -s {name_tmux} \; send-keys "{cmd}" Enter'
+            print(CMD)
+            os.system(CMD)
         time.sleep(60)  # Sleeps for 30 sec
 
 
@@ -150,14 +154,13 @@ for path in ["log_terminals", "log"]:
         print(f"Creating {path} folder")
         os.mkdir(path)
 
-
-job_scheduler(exp.activation)
-job_scheduler(exp.number_points)
-job_scheduler(exp.bottleneck_size)
-job_scheduler(exp.num_layers)
-job_scheduler(exp.multi_gpu)
-job_scheduler(exp.single_view)
-job_scheduler(exp.normalization)
-job_scheduler(exp.template)
-job_scheduler(exp.num_prim)
-job_scheduler(exp.data_augmentation)
+job_scheduler_parralel(exp.atlasnet)
+# job_scheduler_parralel(exp.number_points)
+# job_scheduler_parralel(exp.bottleneck_size)
+# job_scheduler_parralel(exp.num_layers)
+# job_scheduler_parralel(exp.multi_gpu)
+# job_scheduler_parralel(exp.single_view)
+# job_scheduler_parralel(exp.normalization)
+# job_scheduler_parralel(exp.template)
+# job_scheduler_parralel(exp.num_prim)
+# job_scheduler_parralel(exp.data_augmentation)

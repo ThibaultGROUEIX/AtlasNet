@@ -1,34 +1,45 @@
 import torch
-from easydict import EasyDict
 import auxiliary.ChamferDistancePytorch.chamfer3D.dist_chamfer_3D as dist_chamfer_3D
 from auxiliary.ChamferDistancePytorch.fscore import fscore
 import os
-import auxiliary.mesh_processor as mesh_processor
 import training.metro as metro
-import pymesh
 from joblib import Parallel, delayed
 import numpy as np
 
 
-class Loss(object):
+class TrainerLoss(object):
+    """
+    This class implements all functions related to the loss of Atlasnet, mainly applies chamfer and metro.
+    Author : Thibault Groueix 01.11.2019
+    """
+
     def __init__(self):
-        super(Loss, self).__init__()
+        super(TrainerLoss, self).__init__()
 
     def build_losses(self):
         """
-        Create losses
+        Create loss functions.
         """
         self.distChamfer = dist_chamfer_3D.chamfer_3DDist()
-        self.loss_model = self.chamfer_loss_union
+        self.loss_model = self.chamfer_loss
 
     def fuse_primitives(self):
-        # prim, batch, exp, 2, npoints
-        self.data.pointsReconstructed = self.data.pointsReconstructed_prims.transpose(2,
-                                                                                      3).contiguous()  # batch, exp, prim, npoints, 2,
+        """
+        Merge generated surface elements in a single one and prepare data for Chamfer
+        Input size : batch, prim, 3, npoints
+        Output size : prim, prim*npoints, 3
+        :return:
+        """
+        #
+        self.data.pointsReconstructed = self.data.pointsReconstructed_prims.transpose(2, 3).contiguous()
         self.data.pointsReconstructed = self.data.pointsReconstructed.view(self.batch_size, -1, 3)
 
-    def chamfer_loss_union(self):
-        inCham1 = self.data.points.view(self.data.points.size(0), self.opt.number_points, 3).contiguous()
+    def chamfer_loss(self):
+        """
+        Training loss of Atlasnet. The Chamfer Distance. Compute the f-score in eval mode.
+        :return:
+        """
+        inCham1 = self.data.points.view(self.data.points.size(0), -1, 3).contiguous()
         inCham2 = self.data.pointsReconstructed.contiguous().view(self.data.points.size(0), -1, 3).contiguous()
 
         dist1, dist2, idx1, idx2 = self.distChamfer(inCham1, inCham2)  # mean over points
@@ -38,6 +49,11 @@ class Loss(object):
             self.data.loss_fscore = self.data.loss_fscore.mean()
 
     def metro(self):
+        """
+        Compute the metro distance on a randomly selected test files.
+        Uses joblib to leverage as much cpu as possible
+        :return:
+        """
         metro_path = './dataset/data/metro_files'
         metro_files_path = '/'.join([metro_path, 'files-metro.txt'])
         self.metro_args_input = []
@@ -47,6 +63,7 @@ class Loss(object):
         ext = '.png' if self.opt.SVR else '.npy'
         with open(metro_files_path, 'r') as file:
             files = file.read().split('\n')
+
         for file in files:
             if file[-3:] == "ply":
                 cat = file.split('/')[0]

@@ -5,6 +5,11 @@ import datetime
 import json
 from termcolor import colored
 from easydict import EasyDict
+from os.path import exists, join
+
+"""
+    Author : Thibault Groueix 01.11.2019
+"""
 
 
 def parser():
@@ -12,6 +17,7 @@ def parser():
 
     # Training parameters
     parser.add_argument("--no_learning", action="store_true", help="Learning mode (batchnorms...)")
+    parser.add_argument("--train_only_encoder", action="store_true", help="only train the encoder")
     parser.add_argument('--batch_size', type=int, default=32, help='input batch size')
     parser.add_argument('--batch_size_test', type=int, default=32, help='input batch size')
     parser.add_argument('--workers', type=int, help='number of data loading workers', default=0)
@@ -26,8 +32,6 @@ def parser():
     parser.add_argument("--demo", action="store_true", help="run demo autoencoder or single-view")
 
     # Data
-    parser.add_argument('--dataset', type=str, default="Shapenet",
-                        choices=['Shapenet'])
     parser.add_argument('--normalization', type=str, default="UnitBall",
                         choices=['UnitBall', 'BoundingBox', 'Identity'])
     parser.add_argument("--shapenet13", action="store_true", help="Load 13 usual shapenet categories")
@@ -50,12 +54,15 @@ def parser():
     # Save dirs and reload
     parser.add_argument('--id', type=str, default="0", help='training name')
     parser.add_argument('--env', type=str, default="Atlasnet", help='visdom environment')
-    parser.add_argument('--port', type=int, default=8890, help='visdom port')
-    parser.add_argument('--dir_name', type=str, default="", help='dirname')
-    parser.add_argument('--demo_path', type=str, default="./doc/pictures/plane_input_demo.png", help='dirname')
+    parser.add_argument('--visdom_port', type=int, default=8890, help="visdom port")
+    parser.add_argument('--http_port', type=int, default=8891, help="http port")
+    parser.add_argument('--dir_name', type=str, default="", help='name of the log folder.')
+    parser.add_argument('--demo_input_path', type=str, default="./doc/pictures/plane_input_demo.png", help='dirname')
+    parser.add_argument('--reload_decoder_path', type=str,
+                        default="./training/trained_models/atlasnet_AE_25_patches.pth", help='dirname')
+    parser.add_argument('--reload_model_path', type=str, default='', help='optional reload model path')
 
     # Network
-    parser.add_argument('--model', type=str, default='', help='optional reload model path')
     parser.add_argument('--num_layers', type=int, default=2, help='number of hidden MLP Layer')
     parser.add_argument('--hidden_neurons', type=int, default=512, help='number of neurons in each hidden layer')
     parser.add_argument('--loop_per_epoch', type=int, default=1, help='number of data loop per epoch')
@@ -69,7 +76,7 @@ def parser():
                         choices=["relu", "sigmoid", "softplus", "logsigmoid", "softsign", "tanh"], help='dim_out_patch')
 
     # Loss
-    parser.add_argument("--compute_metro", action="store_true", help="Compute metro distance")
+    parser.add_argument("--no_metro", action="store_true", help="Compute metro distance")
 
     opt = parser.parse_args()
 
@@ -78,13 +85,17 @@ def parser():
     opt = EasyDict(opt.__dict__)
 
     if opt.dir_name == "":
-        opt.dir_name = os.path.join('log', opt.id + now.isoformat())
-    else:
+        # Create default dirname
+        opt.dir_name = join('log', opt.id + now.isoformat())
+
+    if exists(join(opt.dir_name, "options.json")):
         print("Modifying input arguments to match network in dirname")
         try:
-            with open(os.path.join(opt.dir_name, "options.json"), 'r') as f:
+            # Reload parameters from options.txt if it exists
+            with open(join(opt.dir_name, "options.json"), 'r') as f:
                 my_opt_dict = json.load(f)
             my_opt_dict.pop("run_single_eval")
+            my_opt_dict.pop("train_only_encoder")
             my_opt_dict.pop("learning")
             my_opt_dict.pop("demo")
             my_opt_dict.pop("demo_path")
@@ -101,17 +112,32 @@ def parser():
         except:
             print("failed to reload parameters from option.txt, must be a new experiment")
 
-    if opt.template_type == "SQUARE":
-        opt.dim_template = 2
-    if opt.template_type == "SPHERE":
-        opt.dim_template = 3
+    # Hard code dimension of the template.
+    dim_template_dict = {
+        "SQUARE": 2,
+        "SPHERE": 3,
+    }
+    opt.dim_template = dim_template_dict[opt.template_type]
+
+    # Visdom env
     opt.env = opt.env + opt.dir_name.split('/')[-1]
 
+    # If running a demo, check if input is an image or a pointcloud
     if opt.demo:
         ext = opt.demo_path.split('.')[-1]
         if ext == "ply" or ext == "npy" or ext == "obj":
             opt.SVR = False
         elif ext == "png":
             opt.SVR = True
+
+        if not exists("./training/trained_models/atlasnet_singleview_25_squares/network.pth"):
+            print("Dowload Trained Models.")
+            os.system("chmod +x training/download_trained_models.sh")
+            os.system("./training/download_trained_models.sh")
+
+        if opt.reload_model_path == "" and opt.SVR:
+            opt.reload_model_path = "./training/trained_models/atlasnet_singleview_25_squares/network.pth"
+        elif opt.reload_model_path == "" and not opt.SVR:
+            opt.reload_model_path = "./training/trained_models/atlasnet_autoencoder_25_squares/network.pth"
 
     return opt

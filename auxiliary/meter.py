@@ -2,12 +2,13 @@ import numpy as np
 from termcolor import colored
 import matplotlib.pyplot as plt
 import os
-import torch
 
 
 class AverageValueMeter(object):
     """
-    Slightly fancier than the standard AverageValueMeter
+    Slightly fancier than the standard AverageValueMeter. Keeps track
+    Author : Thibault Groueix 01.11.2019
+
     """
 
     def __init__(self):
@@ -48,24 +49,6 @@ class AverageValueMeter(object):
         self.std = np.nan
 
 
-def convert_label_to_one_hot_numpy(labels, num_categories):
-    labels = labels.view(len(labels), 1)
-    label_one_hot = np.zeros((labels.shape[0], num_categories))
-    for idx in range(labels.shape[0]):
-        label_one_hot[idx, labels[idx]] = 1
-    return label_one_hot
-
-
-def convert_label_to_one_hot_torch(labels, num_categories):
-    labels = labels.view(labels.nelement(), 1).long()
-    labels_onehot = torch.FloatTensor(len(labels), num_categories).to(labels.device)
-    labels_onehot.zero_()
-    labels_onehot.scatter_(1, labels, 1)
-    return labels_onehot
-
-
-def convert_one_hot_to_labels(one_hot):
-    return torch.max(one_hot, 1)[1]
 
 
 class Logs(object):
@@ -136,7 +119,7 @@ class Logs(object):
                 Y_Loss = self.stack_numpy_array(Y_Loss, np.array(self.curves[name]))
 
             else:
-                print(f"Dont know what to do with {name}")
+                pass
 
         vis.line(X=X_Loss,
                  Y=Y_Loss,

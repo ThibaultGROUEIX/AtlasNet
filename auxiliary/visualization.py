@@ -3,33 +3,59 @@ import os
 import sys
 import time
 
+"""
+    Author : Thibault Groueix 01.11.2019
+"""
+
 
 def is_port_in_use(port):
+    """
+    test if a port is being used or is free to use.
+    :param port:
+    :return:
+    """
     import socket
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(('localhost', port)) == 0
 
 
-"""
-This class takes a pytorch tensor pointcloud as input
-"""
-
-
 class Visualizer(object):
-    def __init__(self, port, env):
+    def __init__(self, visdom_port, env, http_port):
         super(Visualizer, self).__init__()
-        if not is_port_in_use(8890):
-            print(f"Launching new visdom instance in port {port}")
-            cmd = f"{sys.executable} -m visdom.server -p {port} > /dev/null 2>&1"
-            CMD = f'tmux new-session -d -s visdom \; send-keys "{cmd}" Enter'
-            print(CMD)
-            os.system(CMD)
-            time.sleep(2)
-        vis = visdom.Visdom(port=port, env=env)
+        # Create Visdom Server
+        while not is_port_in_use(visdom_port):
+            visdom_port -= visdom_port
 
+        print(f"Launching new visdom instance in port {visdom_port}")
+        cmd = f"{sys.executable} -m visdom.server -p {visdom_port} > /dev/null 2>&1"
+        CMD = f'tmux new-session -d -s visdom_server \; send-keys "{cmd}" Enter'
+        print(CMD)
+        os.system(CMD)
+        time.sleep(2)
+
+        # Create Http Server
+        while not is_port_in_use(http_port):
+            http_port -= http_port
+
+        print(f"Launching new HTTP instance in port {http_port}")
+        cmd = f"{sys.executable} -m http.server -p {http_port} > /dev/null 2>&1"
+        CMD = f'tmux new-session -d -s http_server \; send-keys "{cmd}" Enter'
+        print(CMD)
+        os.system(CMD)
+
+        self.visdom_port = visdom_port
+        self.http_port = http_port
+
+        vis = visdom.Visdom(port=visdom_port, env=env)
         self.vis = vis
 
     def show_pointcloud(self, points, title=None, Y=None):
+        """
+        :param points: pytorch tensor pointcloud
+        :param title:
+        :param Y:
+        :return:
+        """
         points = points.squeeze()
         if points.size(-1) == 3:
             points = points.contiguous().data.cpu()

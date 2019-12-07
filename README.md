@@ -32,7 +32,7 @@ The network synthesizes a mesh (point cloud + connectivity) from an image.
 
 
 
-# Install
+## Install
 
 This implementation uses Python 3.6, [Pytorch](http://pytorch.org/), [Pymesh](https://github.com/PyMesh/PyMesh). 
 
@@ -45,7 +45,7 @@ python setup.py --build # build metro distance(optional)
 
 
 
-# Usage
+## Usage
 
 * **[Demo](./doc/demo.md)** :    ```python inference/train.py --demo```
 
@@ -69,22 +69,10 @@ python setup.py --build # build metro distance(optional)
 ![result](doc/pictures/plane.gif)
 
 
+
 ## Related project
 
 *  [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
 *  [3D-CODED](https://github.com/ThibaultGROUEIX/3D-CODED)
 *  [Cycle Consistent Deformations](https://github.com/ThibaultGROUEIX/CycleConsistentDeformation)
-
-
-
-
-[Cool Contributions from Yana Hasson](./doc/contributions.md)
-
-[Meshlab Visualization Trick](./doc/meshlab.md)
-
-The code for the Chamfer Loss was adapted from Fei Xia' repo : [PointGan](https://github.com/fxia22/pointGAN). Many thanks to him !
-
-This work was funded by [Adobe System](https://github.com/fxia22/pointGAN) and [Ecole Doctorale MSTIC](http://www.univ-paris-est.fr/fr/-ecole-doctorale-mathematiques-et-stic-mstic-ed-532/).
-
-When using the provided data make sure to respect the shapenet [license](https://shapenet.org/terms).
 

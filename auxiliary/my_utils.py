@@ -1,9 +1,12 @@
 import random
 import numpy as np
-import os
 import torch
 from termcolor import colored
 
+
+"""
+    Author : Thibault Groueix 01.11.2019
+"""
 
 def grey_print(x):
     print(colored(x, "grey"))
@@ -46,14 +49,6 @@ def print_arg(opt):
             + " : "
             + colored(str(opt.__dict__[a]), "cyan")
         )
-
-# initialize the weighs of the network for Convolutional layers and batchnorm layers
-def weights_init(m):
-    classname = m.__class__.__name__
-    if classname.find('BatchNorm') != -1:
-        m.weight.data.normal_(1.0, 0.02)
-        m.bias.data.fill_(0)
-
 
 def plant_seeds(randomized_seed=False):
     if randomized_seed:
