@@ -14,15 +14,7 @@ python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp  
 
 
 
-
-
-
-
-TODO -> Add update visdom Visual
-
-TODO -> Add Netvision Visual
-
-![visdom](./pictures/visdom2.png)
+![visdom](./pictures/netvision.png)
 
 
 
@@ -106,16 +98,18 @@ TODO -> Add Netvision Visual
 
 The number reported are the chamfer distance, the f-score and the [metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) distance.
 
+
+
 | Method                 | Chamfer⁽⁰⁾ | Fscore | Metro | GPU memory | Total Train time |
 | ---------------------- | ---------- | ------ | ----- | ---------- | ---------------- |
-| Autoencoder 25 Squares | -          | -      | -     | -          | -                |
-| Autoencoder 1 Sphere   | -          | -      | -     | -          | -                |
+| Autoencoder 25 Squares | 1.35 | 82.3%   | 6.82  | -          | -                |
+| Autoencoder 1 Sphere   | 1.35 | 83.3%   | 6.94  | -          | -                |
 | SingleView 25  Squares | -          | -      | -     | -          | -                |
 | SingleView 1 Sphere    | -          | -      | -     | -          | -                |
 
-⁽⁰⁾  computed between 2500 ground truth points and 2500 reconstructed points.
+⁽⁰⁾  computed between 2500 ground truth points and 2500 reconstructed points. x1000
 
-⁽1⁾  Metro is ran on unormalized point clouds (which explains a difference with Atlasnet numbers)
+⁽1⁾  Metro is ran on unormalized point clouds (which explains a difference with Atlasnet numbers) x100
 
 
 

@@ -1,4 +1,4 @@
-# AtlasNet [[Project Page]](http://imagine.enpc.fr/~groueixt/atlasnet/) [[Paper]](https://arxiv.org/abs/1802.05384) [[Talk]](http://imagine.enpc.fr/~groueixt/atlasnet/atlasnet_slides_spotlight_CVPR.pptx)
+## AtlasNet [[Project Page]](http://imagine.enpc.fr/~groueixt/atlasnet/) [[Paper]](https://arxiv.org/abs/1802.05384) [[Talk]](http://imagine.enpc.fr/~groueixt/atlasnet/atlasnet_slides_spotlight_CVPR.pptx)
 
 **AtlasNet: A Papier-Mâché Approach to Learning 3D Surface Generation** <br>
 Thibault Groueix,  Matthew Fisher, Vladimir G. Kim , Bryan C. Russell, Mathieu Aubry  <br>
@@ -32,7 +32,7 @@ The network synthesizes a mesh (point cloud + connectivity) from an image.
 
 
 
-## Install
+### Install
 
 This implementation uses Python 3.6, [Pytorch](http://pytorch.org/), [Pymesh](https://github.com/PyMesh/PyMesh). 
 
@@ -45,7 +45,7 @@ python setup.py --build # build metro distance(optional)
 
 
 
-## Usage
+### Usage
 
 * **[Demo](./doc/demo.md)** :    ```python inference/train.py --demo```
 
@@ -55,7 +55,15 @@ python setup.py --build # build metro distance(optional)
 
   
 
-## Citing this work
+### Related project
+
+*  [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
+*  [3D-CODED](https://github.com/ThibaultGROUEIX/3D-CODED)
+*  [Cycle Consistent Deformations](https://github.com/ThibaultGROUEIX/CycleConsistentDeformation)
+
+
+
+### Citing this work
 
 ```
 @inproceedings{groueix2018,
@@ -67,12 +75,3 @@ python setup.py --build # build metro distance(optional)
 ```
 
 ![result](doc/pictures/plane.gif)
-
-
-
-## Related project
-
-*  [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
-*  [3D-CODED](https://github.com/ThibaultGROUEIX/3D-CODED)
-*  [Cycle Consistent Deformations](https://github.com/ThibaultGROUEIX/CycleConsistentDeformation)
-
