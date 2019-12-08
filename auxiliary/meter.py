@@ -5,53 +5,29 @@ import os
 
 
 class AverageValueMeter(object):
-    """
-    Slightly fancier than the standard AverageValueMeter. Keeps track
-    Author : Thibault Groueix 01.11.2019
-
-    """
+    """Computes and stores the average and current value"""
 
     def __init__(self):
-        super(AverageValueMeter, self).__init__()
         self.reset()
-        self.val = 0
-
-    def update(self, value, n=1):
-        self.val = value
-        self.sum += value
-        self.var += value * value
-        self.n += n
-
-        if self.n == 0:
-            self.avg, self.std = np.nan, np.nan
-        elif self.n == 1:
-            self.avg = 0.0 + self.sum  # This is to force a copy in torch/numpy
-            self.std = np.inf
-            self.avg_old = self.avg
-            self.m_s = 0.0
-        else:
-            self.avg = self.avg_old + (value - n * self.avg_old) / float(self.n)
-            self.m_s += (value - self.avg_old) * (value - self.avg)
-            self.avg_old = self.avg
-            self.std = np.sqrt(self.m_s / (self.n - 1.0))
-
-    def value(self):
-        return self.avg, self.std
 
     def reset(self):
-        self.n = 0
-        self.sum = 0.0
-        self.var = 0.0
-        self.val = 0.0
+        self.val = 0
         self.avg = 0
-        self.avg_old = 0.0
-        self.m_s = 0.0
-        self.std = np.nan
+        self.sum = 0
+        self.count = 0.0
 
-
+    def update(self, val, n=1):
+        self.val = val
+        self.sum += val * n
+        self.count += n
+        self.avg = self.sum / self.count
 
 
 class Logs(object):
+    """
+    Author : Thibault Groueix 01.11.2019
+    """
+
     def __init__(self, curves=[]):
         self.curves_names = curves
         self.curves = {}

@@ -76,7 +76,7 @@ TODO -> Add Netvision Visual
 --visdom_port, type=int, default=8890, help="visdom port"
 --http_port, type=int, default=8891, help="http port"
 --dir_name, type=str, default="", help="Name of the log folder."
---demo_input_path, type=str, default="./doc/pictures/plane_input_demo.png", help="dirname"
+--demo_input_path, type=str, default="./doc/pictures/plane_input_demo.png", help="input test path"
 
 
 # Network
@@ -114,6 +114,8 @@ The number reported are the chamfer distance, the f-score and the [metro](https:
 | SingleView 1 Sphere    | -          | -      | -     | -          | -                |
 
 ⁽⁰⁾  computed between 2500 ground truth points and 2500 reconstructed points.
+
+⁽1⁾  Metro is ran on unormalized point clouds (which explains a difference with Atlasnet numbers)
 
 
 

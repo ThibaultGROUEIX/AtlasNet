@@ -12,10 +12,10 @@ class Experiments(object):
         self.atlasnet = {
             # 1: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_1_sphere  --nb_primitives 1 --template_type SPHERE",
             # 2: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares  --nb_primitives 25 --template_type SQUARE",
-            3: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere_tmp --nb_primitives 1 --template_type SPHERE --SVR --reload_decoder_path log/atlasnet_autoencoder_1_sphere --train_only_encoder",
-            4: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_decoder_path log/atlasnet_autoencoder_25_squares --train_only_encoder",
-            # 5: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere --nb_primitives 1 --template_type SPHERE --SVR --reload_model_path log/atlasnet_singleview_1_sphere_tmp",
-            # 6: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_model_path log/atlasnet_singleview_25_squares_tmp",
+            3: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere_tmp_True --nb_primitives 1 --template_type SPHERE --SVR --reload_decoder_path log/atlasnet_autoencoder_1_sphere/network.pth --train_only_encoder",
+            4: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp_True  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_decoder_path log/atlasnet_autoencoder_25_squares/network.pth --train_only_encoder",
+            # 5: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere --nb_primitives 1 --template_type SPHERE --SVR --reload_model_path log/atlasnet_singleview_1_sphere_tmp/network.pth",
+            # 6: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_model_path log/atlasnet_singleview_25_squares_tmp/network.pth",
         }
         self.template = {
             1: "python train.py --shapenet13 --dir_name log/template_sphere --template_type SPHERE",

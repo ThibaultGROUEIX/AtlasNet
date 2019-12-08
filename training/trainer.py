@@ -1,15 +1,16 @@
 import torch
-from training.trainer_abstract import TrainerAbstract
 import os
 import auxiliary.html_report as html_report
 import numpy as np
-from training.trainer_iteration import TrainerIteration
-from training.trainer_loss import TrainerLoss
 from easydict import EasyDict
-import dataset.mesh_processor as mesh_processor
 import pymesh
+
+from training.trainer_abstract import TrainerAbstract
+import dataset.mesh_processor as mesh_processor
+from training.trainer_iteration import TrainerIteration
 from model.trainer_model import TrainerModel
 from dataset.trainer_dataset import TrainerDataset
+from training.trainer_loss import TrainerLoss
 
 
 class Trainer(TrainerAbstract, TrainerLoss, TrainerIteration, TrainerDataset, TrainerModel):

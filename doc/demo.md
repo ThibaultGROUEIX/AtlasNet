@@ -30,4 +30,10 @@ All training options can be recovered in `options.txt`
 
   
 
+
+
+Even if you don't own a GPU, the demo can run on  CPU. 
+
+
+
 You can use our  [Meshlab Visualization Trick](./doc/meshlab.md) to have nicer visualization of the generated mesh in Meshlab.

@@ -62,7 +62,7 @@ class Atlasnet(nn.Module):
         return output_points.contiguous()  # batch, nb_prim, num_point, 3
 
     def generate_mesh(self, latent_vector):
-        assert(latent_vector.size(0)==1, "input should have batch size 1!")
+        assert latent_vector.size(0)==1, "input should have batch size 1!"
         import pymesh
         input_points = [self.template[i].get_regular_points(self.nb_pts_in_primitive, latent_vector.device).transpose(0,
                                                                                                                       1).contiguous()

@@ -9,7 +9,7 @@ Author : Thibault Groueix 01.09.2019
 
 class ColorMap:
     def __init__(self):
-        self.colormap_path = join(dirname(__file__), "colormap.npy")
+        self.colormap_path = "auxiliary/colormap.npy"
         self.colormap = (np.load(self.colormap_path) * 255).astype('int')
 
     def __call__(self, index):

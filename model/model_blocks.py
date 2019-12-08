@@ -29,7 +29,8 @@ class PointNet(nn.Module):
     def __init__(self, nlatent=1024, dim_input=3):
         """
         PointNet Encoder
-        See : TODO
+        See : PointNet: Deep Learning on Point Sets for 3D Classification and Segmentation
+                Charles R. Qi, Hao Su, Kaichun Mo, Leonidas J. Guibas
         """
 
         super(PointNet, self).__init__()

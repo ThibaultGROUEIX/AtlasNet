@@ -47,6 +47,7 @@ class TrainerAbstract(object):
         self.opt.log_path = join(self.opt.dir_name, "log.txt")
         self.opt.optimizer_path = join(self.opt.dir_name, 'optimizer.pth')
         self.opt.model_path = join(self.opt.dir_name, "network.pth")
+        self.opt.reload_optimizer_path = ""
 
         # # If a network is already created in the directory
         if exists(self.opt.model_path):

@@ -3,7 +3,7 @@ import math
 import torch.utils.model_zoo as model_zoo
 
 
-# From : TODO
+# From : https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py
 
 __all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
            'resnet152']

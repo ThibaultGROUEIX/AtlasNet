@@ -98,7 +98,7 @@ def parser():
             my_opt_dict.pop("train_only_encoder")
             my_opt_dict.pop("learning")
             my_opt_dict.pop("demo")
-            my_opt_dict.pop("demo_path")
+            my_opt_dict.pop("demo_input_path")
             for key in my_opt_dict.keys():
                 opt[key] = my_opt_dict[key]
             my_utils.cyan_print("PARAMETER: ")
@@ -124,7 +124,7 @@ def parser():
 
     # If running a demo, check if input is an image or a pointcloud
     if opt.demo:
-        ext = opt.demo_path.split('.')[-1]
+        ext = opt.demo_input_path.split('.')[-1]
         if ext == "ply" or ext == "npy" or ext == "obj":
             opt.SVR = False
         elif ext == "png":

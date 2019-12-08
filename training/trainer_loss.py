@@ -1,5 +1,9 @@
 import torch
-import auxiliary.ChamferDistancePytorch.chamfer3D.dist_chamfer_3D as dist_chamfer_3D
+try:
+    import auxiliary.ChamferDistancePytorch.chamfer3D.dist_chamfer_3D as dist_chamfer_3D
+except:
+    pass
+
 from auxiliary.ChamferDistancePytorch.fscore import fscore
 import os
 import training.metro as metro
