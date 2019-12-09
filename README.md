@@ -13,7 +13,6 @@ In [CVPR, 2018](http://cvpr2018.thecvf.com/).
 ### Install
 
 This implementation uses Python 3.6, [Pytorch](http://pytorch.org/), [Pymesh](https://github.com/PyMesh/PyMesh). 
-
 ```shell
 git clone --recurse-submodules https://github.com/ThibaultGROUEIX/AtlasNet.git
 cd AtlasNet 
@@ -28,9 +27,7 @@ python setup.py --build # build metro distance(optional)
 ### Usage
 
 * **[Demo](./doc/demo.md)** :    ```python inference/train.py --demo```
-
 * **[Training](./doc/training.md)** :  ```python ./training/train.py```  *Monitor on  http://localhost:8890/*
-
 * **[Trained models evaluation](./doc/training.md)**:  ```python ./training/launch.py --mode test```
 
   <details><summary> Latest Refacto 12-2019  </summary>
@@ -79,4 +76,6 @@ python setup.py --build # build metro distance(optional)
           year={2018}
         }
 ```
-<img src="doc/pictures/plane.gif" alt="chair.png"  class="center" />
+<p align="center">
+  <img  src="doc/pictures/plane.gif">
+</p>
