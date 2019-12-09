@@ -28,9 +28,7 @@ python setup.py --build # build metro distance(optional)
 
 * **[Demo](./doc/demo.md)** :    ```python inference/train.py --demo```
 * **[Training](./doc/training.md)** :  ```python ./training/train.py```  *Monitor on  http://localhost:8890/*
-* **[Trained models evaluation](./doc/training.md)**:  ```python ./training/launch.py --mode test```
-
-  <details><summary> Latest Refacto 12-2019  </summary>
+* <details><summary> Latest Refacto 12-2019  </summary>
   - [x] Factorize Single View Reconstruction and autoencoder in same class <br>
   - [x] Factorise Square and Sphere template in same class<br>
   - [x] Add latent vector as bias after first layer(30% speedup) <br>
@@ -50,7 +48,7 @@ python setup.py --build # build metro distance(optional)
   - [x] Preprocess shapenet 55 and add it in dataloader <br>
   - [x] Make minimal dependencies <br>
   </details>
-  
+
   
 
 
