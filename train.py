@@ -38,8 +38,7 @@ for epoch in range(trainer.epoch, opt.nepoch):
         trainer.test_epoch()
     trainer.dump_stats()
     trainer.increment_epoch()
-
-trainer.save_network()
+    trainer.save_network()
 
 yellow_print(f"Visdom url http://localhost:{trainer.opt.visdom_port}/")
 yellow_print(f"Netvision report url http://localhost:{trainer.opt.http_port}/{trainer.opt.dir_name}/index.html")

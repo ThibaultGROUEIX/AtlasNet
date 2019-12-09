@@ -93,7 +93,7 @@ python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp  
 
 
 
-##Quantitative Results 
+## Quantitative Results 
 
 
 The number reported are the chamfer distance, the f-score and the [metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) distance.

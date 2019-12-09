@@ -49,7 +49,7 @@ def main(trainer, outHtml=None):
     if not os.path.exists("master.pkl"):
         init_html_report.main()
     webpage_after = HtmlGenerator.HtmlGenerator(path="master.html", reload_path="master.pkl")
-    webpage_after.tables[trainer.opt.dataset].add_row([
+    webpage_after.tables["Shapenet"].add_row([
         f"{trainer.opt.nb_primitives}",
         f"{trainer.opt.template_type}",
         f"{loss_val}",

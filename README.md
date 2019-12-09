@@ -4,31 +4,7 @@
 Thibault Groueix,  Matthew Fisher, Vladimir G. Kim , Bryan C. Russell, Mathieu Aubry  <br>
 In [CVPR, 2018](http://cvpr2018.thecvf.com/).
 
-
-![teaser](doc/pictures/teaser.small.png)  
-
-The network synthesizes a mesh (point cloud + connectivity) from an image.
-
-<details><summary> Latest Refacto 12-2019  </summary>
-- [x] Factorize Single View Reconstruction and autoencoder in same class <br>
-- [x] Factorise Square and Sphere template in same class<br>
-- [x] Add latent vector as bias after first layer(30% speedup) <br>
-- [x] Remove last th in decoder <br>
-- [x] Make large .pth tensor with all pointclouds in cache(drop the nasty Chunk_reader) <br>
-- [x] Make-it multi-gpu <br>
-- [x] Add netvision visualization of the results <br>
-- [x] Rewrite main script object-oriented  <br>
-- [x] Check that everything works in latest pytorch version <br>
-- [x] Add more layer by default and flag for the number of layers and hidden neurons <br>
-- [x] Add a flag to generate a mesh directly <br>
-- [x] Add a python setup install <br>
-- [x] Make sure GPU are used at 100% <br>
-- [x] Add f-score in Chamfer + report f-score <br>
-- [x] Get rid of shapenet_v2 data and use v1! <br>
-- [x] Fix path issues no more sys.path.append <br>
-- [x] Preprocess shapenet 55 and add it in dataloader <br>
-- [x] Make minimal dependencies <br>
-</details>
+<img src="doc/pictures/chair.png" alt="chair.png" width="35%" /> <img src="doc/pictures/chair.gif" alt="chair.gif" width="32%" />
 
 
 
@@ -53,13 +29,35 @@ python setup.py --build # build metro distance(optional)
 
 * **[Trained models evaluation](./doc/training.md)**:  ```python ./training/launch.py --mode test```
 
+  <details><summary> Latest Refacto 12-2019  </summary>
+  - [x] Factorize Single View Reconstruction and autoencoder in same class <br>
+  - [x] Factorise Square and Sphere template in same class<br>
+  - [x] Add latent vector as bias after first layer(30% speedup) <br>
+  - [x] Remove last th in decoder <br>
+  - [x] Make large .pth tensor with all pointclouds in cache(drop the nasty Chunk_reader) <br>
+  - [x] Make-it multi-gpu <br>
+  - [x] Add netvision visualization of the results <br>
+  - [x] Rewrite main script object-oriented  <br>
+  - [x] Check that everything works in latest pytorch version <br>
+  - [x] Add more layer by default and flag for the number of layers and hidden neurons <br>
+  - [x] Add a flag to generate a mesh directly <br>
+  - [x] Add a python setup install <br>
+  - [x] Make sure GPU are used at 100% <br>
+  - [x] Add f-score in Chamfer + report f-score <br>
+  - [x] Get rid of shapenet_v2 data and use v1! <br>
+  - [x] Fix path issues no more sys.path.append <br>
+  - [x] Preprocess shapenet 55 and add it in dataloader <br>
+  - [x] Make minimal dependencies <br>
+  </details>
+  
   
 
-### Related project
+### Related projects
 
 *  [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
 *  [3D-CODED](https://github.com/ThibaultGROUEIX/3D-CODED)
 *  [Cycle Consistent Deformations](https://github.com/ThibaultGROUEIX/CycleConsistentDeformation)
+*  [Atlasnet code V2.2](https://github.com/ThibaultGROUEIX/AtlasNet/tree/V2.2) (more linear, script like, may be easier to understand at first)
 
 
 

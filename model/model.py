@@ -13,8 +13,7 @@ class EncoderDecoder(nn.Module):
     def __init__(self, opt):
         super(EncoderDecoder, self).__init__()
         if opt.SVR:
-            self.encoder = nn.Sequential(resnet.resnet18(pretrained=True, num_classes=1000),
-                                         nn.Linear(1000, opt.bottleneck_size))
+            self.encoder = resnet.resnet18(pretrained=False, num_classes=opt.bottleneck_size)
         else:
             self.encoder = PointNet(nlatent=opt.bottleneck_size)
 
