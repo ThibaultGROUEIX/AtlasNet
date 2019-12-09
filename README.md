@@ -8,6 +8,8 @@ In [CVPR, 2018](http://cvpr2018.thecvf.com/).
 
 
 
+
+
 ### Install
 
 This implementation uses Python 3.6, [Pytorch](http://pytorch.org/), [Pymesh](https://github.com/PyMesh/PyMesh). 
@@ -18,6 +20,8 @@ cd AtlasNet
 pip install --user --requirement  requirements.txt # Install dependencies
 python setup.py --build # build metro distance(optional)
 ```
+
+
 
 
 
@@ -52,12 +56,16 @@ python setup.py --build # build metro distance(optional)
   
   
 
+
+
 ### Related projects
 
 *  [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
 *  [3D-CODED](https://github.com/ThibaultGROUEIX/3D-CODED)
 *  [Cycle Consistent Deformations](https://github.com/ThibaultGROUEIX/CycleConsistentDeformation)
 *  [Atlasnet code V2.2](https://github.com/ThibaultGROUEIX/AtlasNet/tree/V2.2) (more linear, script like, may be easier to understand at first)
+
+
 
 
 
@@ -71,5 +79,4 @@ python setup.py --build # build metro distance(optional)
           year={2018}
         }
 ```
-
-![result](doc/pictures/plane.gif)
+<img src="doc/pictures/plane.gif" alt="chair.png"  class="center" />
