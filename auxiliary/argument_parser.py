@@ -58,8 +58,7 @@ def parser():
     parser.add_argument('--http_port', type=int, default=8891, help="http port")
     parser.add_argument('--dir_name', type=str, default="", help='name of the log folder.')
     parser.add_argument('--demo_input_path', type=str, default="./doc/pictures/plane_input_demo.png", help='dirname')
-    parser.add_argument('--reload_decoder_path', type=str,
-                        default="./training/trained_models/atlasnet_AE_25_patches.pth", help='dirname')
+    parser.add_argument('--reload_decoder_path', type=str, default="", help='dirname')
     parser.add_argument('--reload_model_path', type=str, default='', help='optional reload model path')
 
     # Network
@@ -95,10 +94,11 @@ def parser():
             with open(join(opt.dir_name, "options.json"), 'r') as f:
                 my_opt_dict = json.load(f)
             my_opt_dict.pop("run_single_eval")
-            # my_opt_dict.pop("train_only_encoder")
-            # my_opt_dict.pop("learning")
-            # my_opt_dict.pop("demo")
-            # my_opt_dict.pop("demo_input_path")
+            my_opt_dict.pop("no_metro")
+            my_opt_dict.pop("train_only_encoder")
+            my_opt_dict.pop("learning")
+            my_opt_dict.pop("demo")
+            my_opt_dict.pop("demo_input_path")
             for key in my_opt_dict.keys():
                 opt[key] = my_opt_dict[key]
             my_utils.cyan_print("PARAMETER: ")
