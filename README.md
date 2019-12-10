@@ -26,8 +26,8 @@ python setup.py --build # build metro distance(optional)
 
 ### Usage
 
-* **[Demo](./doc/demo.md)** :    ```python inference/train.py --demo```
-* **[Training](./doc/training.md)** :  ```python ./training/train.py```  *Monitor on  http://localhost:8890/*
+* **[Demo](./doc/demo.md)** :    ```python train.py --demo```
+* **[Training](./doc/training.md)** :  ```python train.py```  *Monitor on  http://localhost:8890/*
 * <details><summary> Latest Refacto 12-2019  </summary>
   - [x] Factorize Single View Reconstruction and autoencoder in same class <br>
   - [x] Factorise Square and Sphere template in same class<br>

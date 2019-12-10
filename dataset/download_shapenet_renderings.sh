@@ -7,6 +7,7 @@ function gdrive_download() {
 }
 cd dataset
 gdrive_download 153nd1oUd5ONnP8AoXaU8IZunskd5LEvB data/ShapeNetV1Renderings.zip
+cd data
 unzip ShapeNetV1Renderings.zip
 rm ShapeNetV1Renderings.zip
 cd ..

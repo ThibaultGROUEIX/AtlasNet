@@ -95,10 +95,10 @@ def parser():
             with open(join(opt.dir_name, "options.json"), 'r') as f:
                 my_opt_dict = json.load(f)
             my_opt_dict.pop("run_single_eval")
-            my_opt_dict.pop("train_only_encoder")
-            my_opt_dict.pop("learning")
-            my_opt_dict.pop("demo")
-            my_opt_dict.pop("demo_input_path")
+            # my_opt_dict.pop("train_only_encoder")
+            # my_opt_dict.pop("learning")
+            # my_opt_dict.pop("demo")
+            # my_opt_dict.pop("demo_input_path")
             for key in my_opt_dict.keys():
                 opt[key] = my_opt_dict[key]
             my_utils.cyan_print("PARAMETER: ")

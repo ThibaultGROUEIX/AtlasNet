@@ -11,8 +11,8 @@ author : Thibault Groueix 01.11.2019
 """
 
 opt = argument_parser.parser()
+torch.cuda.set_device(opt.multi_gpu[0])
 my_utils.plant_seeds(randomized_seed=opt.randomize)
-
 import training.trainer as trainer
 
 trainer = trainer.Trainer(opt)

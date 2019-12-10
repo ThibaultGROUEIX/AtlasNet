@@ -1,8 +1,6 @@
 import torch
-try:
-    import auxiliary.ChamferDistancePytorch.chamfer3D.dist_chamfer_3D as dist_chamfer_3D
-except:
-    pass
+import auxiliary.ChamferDistancePytorch.chamfer3D.dist_chamfer_3D as dist_chamfer_3D
+
 
 from auxiliary.ChamferDistancePytorch.fscore import fscore
 import os
