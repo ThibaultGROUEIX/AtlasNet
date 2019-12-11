@@ -63,7 +63,7 @@ class TrainerAbstract(object):
 
     def save_network(self):
         print("saving net...")
-        torch.save(self.network.module.state_dict(), self.opt.model_path)
+        torch.save(self.network.state_dict(), self.opt.model_path)
         torch.save(self.optimizer.state_dict(), self.opt.optimizer_path)
         print("network saved")
 

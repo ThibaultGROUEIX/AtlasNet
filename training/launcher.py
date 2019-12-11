@@ -14,8 +14,13 @@ class Experiments(object):
             # 2: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares  --nb_primitives 25 --template_type SQUARE",
             # 3: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere_tmp_True --nb_primitives 1 --template_type SPHERE --SVR --reload_decoder_path log/atlasnet_autoencoder_1_sphere/network.pth --train_only_encoder",
             # 4: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp_True  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_decoder_path log/atlasnet_autoencoder_25_squares/network.pth --train_only_encoder",
-            5: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere --nb_primitives 1 --template_type SPHERE --SVR --reload_model_path log/atlasnet_singleview_1_sphere_tmp_True/network.pth",
-            6: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_model_path log/atlasnet_singleview_25_squares_tmp_True/network.pth",
+            5: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere --nb_primitives 1 --template_type SPHERE --SVR --reload_model_path log/atlasnet_singleview_1_sphere_tmp_True/network.pth --lrate 0.0001 --nepoch 50 --lr_decay_1 40",
+            6: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_model_path log/atlasnet_singleview_25_squares_tmp_True/network.pth  --lrate 0.0001 --nepoch 50 --lr_decay_1 40",
+        }
+
+        self.atlasnet = {
+            1: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_1_sphere  --nb_primitives 1 --template_type SPHERE --run_single_eval --no_metro",
+            2: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares  --nb_primitives 25 --template_type SQUARE  --run_single_eval --no_metro",
         }
         self.template = {
             1: "python train.py --shapenet13 --dir_name log/template_sphere --template_type SPHERE",

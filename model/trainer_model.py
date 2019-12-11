@@ -4,7 +4,7 @@ from model.model import EncoderDecoder
 import torch.optim as optim
 import numpy as np
 import torch.nn as nn
-
+from copy import deepcopy
 
 class TrainerModel(object):
     def __init__(self):
@@ -19,15 +19,16 @@ class TrainerModel(object):
         Create network architecture. Refer to auxiliary.model
         :return:
         """
-        if torch.cuda.is_available(): # TODO:
+        if torch.cuda.is_available():
             self.opt.device = torch.device(f"cuda:{self.opt.multi_gpu[0]}")
         else:
             # Run on CPU
             self.opt.device = torch.device(f"cpu")
 
         self.network = EncoderDecoder(self.opt)
-        self.reload_network()
         self.network = nn.DataParallel(self.network, device_ids=self.opt.multi_gpu)
+
+        self.reload_network()
 
     def reload_network(self):
         """
@@ -35,24 +36,23 @@ class TrainerModel(object):
         :return:
         """
         if self.opt.reload_model_path != "":
-            try:
-                self.network.load_state_dict(torch.load(self.opt.reload_model_path))
-                yellow_print(f"Network weights loaded from  {self.opt.reload_model_path}!")
-            except:
-                yellow_print(f"Failed to reload {self.opt.reload_model_path}")
+            # try:
+            yellow_print(f"Network weights loaded from  {self.opt.reload_model_path}!")
+            print(self.network.state_dict().keys())
+            print(torch.load(self.opt.reload_model_path).keys())
+            self.network.module.load_state_dict(torch.load(self.opt.reload_model_path))
+            # except:
+            #     yellow_print(f"Failed to reload {self.opt.reload_model_path}")
 
         elif self.opt.reload_decoder_path != "":
-            try:
-                # 1. filter out unnecessary keys
-                model_dict = self.network.decoder.state_dict()
-                pretrained_dict = torch.load(self.opt.reload_decoder_path)
-                pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-                # 2. overwrite entries in the existing state dict
-                model_dict.update(pretrained_dict)
-                self.network.decoder.load_state_dict(model_dict)
-                yellow_print(f"Network Decoder weights loaded from  {self.opt.reload_decoder_path}!")
-            except:
-                yellow_print(f"Failed to reload decoder {self.opt.reload_decoder_path}")
+            opt = deepcopy(self.opt)
+            opt.SVR = False
+            network = EncoderDecoder(opt)
+            network = nn.DataParallel(network, device_ids=opt.multi_gpu)
+            network.module.load_state_dict(torch.load(opt.reload_decoder_path))
+            self.network.module.decoder = network.module.decoder
+            yellow_print(f"Network Decoder weights loaded from  {self.opt.reload_decoder_path}!")
+
         else:
             yellow_print("No network weights to reload!")
 
