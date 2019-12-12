@@ -115,16 +115,8 @@ The number reported are the chamfer distance, the f-score and the [metro](https:
 
 # Paper reproduction 
 
-To reproduce main results from the paper : ```python ./training/launcher.py --mode train```
+To reproduce main results from the paper : ```python ./training/launcher.py```
 
 In case you need the results of ICP on PointSetGen output :
 
 * [ICP on PSG](https://cloud.enpc.fr/s/3a7Xg9RzIsgmofw)
-
-
-
-
-
-#### TODO
-
---Make sure generated mesh are unormalized as GT meshes
