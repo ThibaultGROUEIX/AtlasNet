@@ -215,6 +215,13 @@ class ShapeNet(data.Dataset):
         else:
             return str(N)
 
+    def load(self, path):
+        ext = path.split('.')[-1]
+        if ext == "npy" or ext == "ply" or ext == "obj":
+            return self.load_point_input(path)
+        else:
+            return self.load_image(path)
+
     def load_point_input(self, path):
         ext = path.split('.')[-1]
         if ext == "npy":

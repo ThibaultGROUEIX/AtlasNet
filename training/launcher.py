@@ -10,17 +10,19 @@ import time
 class Experiments(object):
     def __init__(self):
         self.atlasnet = {
-            # 1: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_1_sphere  --nb_primitives 1 --template_type SPHERE",
-            # 2: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares  --nb_primitives 25 --template_type SQUARE",
-            # 3: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere_tmp_True --nb_primitives 1 --template_type SPHERE --SVR --reload_decoder_path log/atlasnet_autoencoder_1_sphere/network.pth --train_only_encoder",
-            # 4: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp_True  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_decoder_path log/atlasnet_autoencoder_25_squares/network.pth --train_only_encoder",
+            1: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_1_sphere  --nb_primitives 1 --template_type SPHERE",
+            2: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares  --nb_primitives 25 --template_type SQUARE",
+            3: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere_tmp_True --nb_primitives 1 --template_type SPHERE --SVR --reload_decoder_path log/atlasnet_autoencoder_1_sphere/network.pth --train_only_encoder",
+            4: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp_True  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_decoder_path log/atlasnet_autoencoder_25_squares/network.pth --train_only_encoder",
             5: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_1_sphere --nb_primitives 1 --template_type SPHERE --SVR --reload_model_path log/atlasnet_singleview_1_sphere_tmp_True/network.pth --lrate 0.0001 --nepoch 50 --lr_decay_1 40",
             6: "python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares  --nb_primitives 25 --template_type SQUARE  --SVR  --reload_model_path log/atlasnet_singleview_25_squares_tmp_True/network.pth  --lrate 0.0001 --nepoch 50 --lr_decay_1 40",
         }
 
-        self.atlasnet = {
-            1: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_1_sphere  --nb_primitives 1 --template_type SPHERE --run_single_eval --no_metro",
-            2: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares  --nb_primitives 25 --template_type SQUARE  --run_single_eval --no_metro",
+        self.atlasnet_test = {
+            1: "python train.py --shapenet13 --dir_name training/trained_models/atlasnet_autoencoder_1_sphere  --nb_primitives 1 --template_type SPHERE --run_single_eval --no_metro",
+            2: "python train.py --shapenet13 --dir_name training/trained_models/atlasnet_autoencoder_25_squares  --nb_primitives 25 --template_type SQUARE  --run_single_eval --no_metro",
+            3: "python train.py --shapenet13 --dir_name training/trained_models/atlasnet_singleview_1_sphere  --nb_primitives 1 --template_type SPHERE --run_single_eval --no_metro  --SVR",
+            4: "python train.py --shapenet13 --dir_name training/trained_models/atlasnet_singleview_25_squares  --nb_primitives 25 --template_type SQUARE  --run_single_eval --no_metro  --SVR",
         }
         self.template = {
             1: "python train.py --shapenet13 --dir_name log/template_sphere --template_type SPHERE",
@@ -160,12 +162,3 @@ for path in ["log_terminals", "log"]:
         os.mkdir(path)
 
 job_scheduler_parralel(exp.atlasnet)
-# job_scheduler_parralel(exp.number_points)
-# job_scheduler_parralel(exp.bottleneck_size)
-# job_scheduler_parralel(exp.num_layers)
-# job_scheduler_parralel(exp.multi_gpu)
-# job_scheduler_parralel(exp.single_view)
-# job_scheduler_parralel(exp.normalization)
-# job_scheduler_parralel(exp.template)
-# job_scheduler_parralel(exp.num_prim)
-# job_scheduler_parralel(exp.data_augmentation)

@@ -100,12 +100,12 @@ The number reported are the chamfer distance, the f-score and the [metro](https:
 
 
 
-| Method                 | Chamfer⁽⁰⁾ | Fscore | Metro | GPU memory | Total Train time |
-| ---------------------- | ---------- | ------ | ----- | ---------- | ---------------- |
-| Autoencoder 25 Squares | 1.35 | 82.3%   | 6.82  | -          | -                |
-| Autoencoder 1 Sphere   | 1.35 | 83.3%   | 6.94  | -          | -                |
-| SingleView 25  Squares | -          | -      | -     | -          | -                |
-| SingleView 1 Sphere    | -          | -      | -     | -          | -                |
+| Method                 | Chamfer⁽⁰⁾ | Fscore | Metro | Total Train time (min) |
+| ---------------------- | ---- | --- -   | ----- |-------     |
+| Autoencoder 25 Squares | 1.35 | 82.3%   | 6.82  | 731       |
+| Autoencoder 1 Sphere   | 1.35 | 83.3%   | 6.94  | 548    |
+| SingleView 25  Squares | 3.91 | 59.5%   | 10.2 | 1422      |
+| SingleView 1 Sphere    | 3.91 | 59.9%   |  10.2  | 1297      |
 
 ⁽⁰⁾  computed between 2500 ground truth points and 2500 reconstructed points. x1000
 
@@ -121,3 +121,10 @@ In case you need the results of ICP on PointSetGen output :
 
 * [ICP on PSG](https://cloud.enpc.fr/s/3a7Xg9RzIsgmofw)
 
+
+
+
+
+#### TODO
+
+--Make sure generated mesh are unormalized as GT meshes

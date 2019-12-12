@@ -36,13 +36,10 @@ class TrainerModel(object):
         :return:
         """
         if self.opt.reload_model_path != "":
-            # try:
             yellow_print(f"Network weights loaded from  {self.opt.reload_model_path}!")
-            print(self.network.state_dict().keys())
-            print(torch.load(self.opt.reload_model_path).keys())
+            # print(self.network.state_dict().keys())
+            # print(torch.load(self.opt.reload_model_path).keys())
             self.network.module.load_state_dict(torch.load(self.opt.reload_model_path))
-            # except:
-            #     yellow_print(f"Failed to reload {self.opt.reload_model_path}")
 
         elif self.opt.reload_decoder_path != "":
             opt = deepcopy(self.opt)

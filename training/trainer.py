@@ -100,6 +100,7 @@ class Trainer(TrainerAbstract, TrainerLoss, TrainerIteration, TrainerDataset, Tr
         self.metro_results = 0
         if (self.flags.build_website or self.opt.run_single_eval) and not self.opt.no_metro:
             self.metro()
+
         if self.flags.build_website:
             # Build report using Netvision.
             self.html_report_data = EasyDict()
@@ -133,28 +134,30 @@ class Trainer(TrainerAbstract, TrainerLoss, TrainerIteration, TrainerDataset, Tr
         return {"output_path": path,
                 "image_path": image_path}
 
-    def demo(self, demo_path):
+    def demo(self, demo_path, input_path_points=None):
         """
         This function takes an image or pointcloud path as input and save the mesh infered by Atlasnet
         Extension supported are ply npy obg and png
         :return: path to the generated mesh
         """
         ext = demo_path.split('.')[-1]
-        if ext == "ply" or ext == "npy" or ext == "obj":
-            self.data = self.datasets.dataset_train.load_point_input(demo_path)
-        elif ext == "png":
-            self.data = self.datasets.dataset_train.load_image(demo_path)
-        else:
-            print("invalid file extension")
+        self.data = self.datasets.dataset_train.load(demo_path)
         self.data = EasyDict(self.data)
+
+        if input_path_points is None:
+            input_path_points = demo_path
+
+        #prepare normalization
+        get_normalization = self.datasets.dataset_train.load(input_path_points)
+        get_normalization = EasyDict(get_normalization)
 
         self.make_network_input()
         mesh = self.network.module.generate_mesh(self.data.network_input)
-        if self.data.operation is not None:
+        if get_normalization.operation is not None:
             # Undo any normalization that was used to preprocess the input.
             vertices = torch.from_numpy(mesh.vertices).clone().unsqueeze(0)
-            self.data.operation.invert()
-            unnormalized_vertices = self.data.operation.apply(vertices)
+            get_normalization.operation.invert()
+            unnormalized_vertices = get_normalization.operation.apply(vertices)
             mesh = pymesh.form_mesh(vertices=unnormalized_vertices.squeeze().numpy(), faces=mesh.faces)
 
         if self.opt.demo:

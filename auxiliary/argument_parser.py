@@ -87,40 +87,6 @@ def parser():
         # Create default dirname
         opt.dir_name = join('log', opt.id + now.isoformat())
 
-    if exists(join(opt.dir_name, "options.json")):
-        print("Modifying input arguments to match network in dirname")
-        try:
-            # Reload parameters from options.txt if it exists
-            with open(join(opt.dir_name, "options.json"), 'r') as f:
-                my_opt_dict = json.load(f)
-            my_opt_dict.pop("run_single_eval")
-            my_opt_dict.pop("no_metro")
-            my_opt_dict.pop("train_only_encoder")
-            my_opt_dict.pop("learning")
-            my_opt_dict.pop("demo")
-            my_opt_dict.pop("demo_input_path")
-            for key in my_opt_dict.keys():
-                opt[key] = my_opt_dict[key]
-            my_utils.cyan_print("PARAMETER: ")
-            for a in my_opt_dict:
-                print(
-                    "         "
-                    + colored(a, "yellow")
-                    + " : "
-                    + colored(str(my_opt_dict[a]), "cyan")
-                )
-        except:
-            print("failed to reload parameters from option.txt, must be a new experiment")
-
-    # Hard code dimension of the template.
-    dim_template_dict = {
-        "SQUARE": 2,
-        "SPHERE": 3,
-    }
-    opt.dim_template = dim_template_dict[opt.template_type]
-
-    # Visdom env
-    opt.env = opt.env + opt.dir_name.split('/')[-1]
 
     # If running a demo, check if input is an image or a pointcloud
     if opt.demo:
@@ -136,8 +102,42 @@ def parser():
             os.system("./training/download_trained_models.sh")
 
         if opt.reload_model_path == "" and opt.SVR:
-            opt.reload_model_path = "./training/trained_models/atlasnet_singleview_25_squares/network.pth"
+            opt.dir_name = "./training/trained_models/atlasnet_singleview_1_sphere"
         elif opt.reload_model_path == "" and not opt.SVR:
-            opt.reload_model_path = "./training/trained_models/atlasnet_autoencoder_25_squares/network.pth"
+            opt.dir_name = "./training/trained_models/atlasnet_autoencoder_1_sphere"
+
+
+    if exists(join(opt.dir_name, "options.json")):
+        print("Modifying input arguments to match network in dirname")
+        # Reload parameters from options.txt if it exists
+        with open(join(opt.dir_name, "options.json"), 'r') as f:
+            my_opt_dict = json.load(f)
+        my_opt_dict.pop("run_single_eval")
+        my_opt_dict.pop("no_metro")
+        my_opt_dict.pop("train_only_encoder")
+        my_opt_dict.pop("no_learning")
+        my_opt_dict.pop("demo")
+        my_opt_dict.pop("demo_input_path")
+        my_opt_dict.pop("dir_name")
+        for key in my_opt_dict.keys():
+            opt[key] = my_opt_dict[key]
+        my_utils.cyan_print("PARAMETER: ")
+        for a in my_opt_dict:
+            print(
+                "         "
+                + colored(a, "yellow")
+                + " : "
+                + colored(str(my_opt_dict[a]), "cyan")
+            )
+
+    # Hard code dimension of the template.
+    dim_template_dict = {
+        "SQUARE": 2,
+        "SPHERE": 3,
+    }
+    opt.dim_template = dim_template_dict[opt.template_type]
+
+    # Visdom env
+    opt.env = opt.env + opt.dir_name.split('/')[-1]
 
     return opt

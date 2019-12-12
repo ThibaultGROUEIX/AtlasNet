@@ -1,4 +1,4 @@
-# Demo
+Demo
 
 ```python train.py --demo --demo_input_path YOUR_PATH --reload_model_path YOUR_PATH ```
 

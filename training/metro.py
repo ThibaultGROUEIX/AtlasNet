@@ -26,9 +26,10 @@ def metro(path1, path2, metro='./auxiliary/metro_sources/build/metro'):
     returned_output = returned_output.decode("utf-8")
     location = returned_output.find("Hausdorff")
     returned_output = returned_output[location:location + 40]
-    print(f"calculing {path1} Done !")
+    distance = float(returned_output.split(" ")[2])
+    print(f"calculing {path1} Done {distance}!")
 
-    return float(returned_output.split(" ")[2])
+    return distance
 
 
 def isolate_files():
