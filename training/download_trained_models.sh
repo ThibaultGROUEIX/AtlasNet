@@ -5,7 +5,7 @@ function gdrive_download () {
   rm -rf /tmp/cookies.txt
 }
 cd training
-gdrive_download 1KdeRUXfV066Cu9SD7daWIk0QFqsxRrWp trained_models.zip
+gdrive_download 13JHM_0pNJzO9NBjgp1P9IDDLAc1vMZA7 trained_models.zip
 unzip trained_models.zip
 rm trained_models.zip
 cd ..
