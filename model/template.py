@@ -29,6 +29,7 @@ class SphereTemplate(Template):
     def __init__(self, device=0, grain=6):
         self.device = device
         self.dim = 3
+        self.npoints = 0
 
     def get_random_points(self, shape, device="gpu0"):
         """
@@ -46,9 +47,13 @@ class SphereTemplate(Template):
         Get regular points on a Sphere
         Return Tensor of Size [x, 3]
         """
-        self.mesh = pymesh.generate_icosphere(1, [0, 0, 0], 4)  # 2562 vertices
-        self.vertex = torch.from_numpy(self.mesh.vertices).to(device).float()
-        self.num_vertex = self.vertex.size(0)
+        if not self.npoints == npoints:
+            self.npoints = npoints
+            self.mesh = pymesh.generate_icosphere(1, [0, 0, 0], 4)  # 2562 vertices
+            self.vertex = torch.from_numpy(self.mesh.vertices).to(device).float()
+            self.num_vertex = self.vertex.size(0)
+            self.vertex = self.vertex.transpose(0,1).contiguous().unsqueeze(0)
+
         return Variable(self.vertex)
 
 
@@ -56,6 +61,7 @@ class SquareTemplate(Template):
     def __init__(self, device=0):
         self.device = device
         self.dim = 2
+        self.npoints = 0
 
     def get_random_points(self, shape, device="gpu0"):
         """
@@ -71,10 +77,14 @@ class SquareTemplate(Template):
         Get regular points on a Square
         Return Tensor of Size [x, 3]
         """
-        vertices, faces = self.generate_square(np.sqrt(npoints))
-        self.mesh = pymesh.form_mesh(vertices=vertices, faces=faces)  # 10k vertices
-        self.vertex = torch.from_numpy(self.mesh.vertices).to(device).float()
-        self.num_vertex = self.vertex.size(0)
+        if not self.npoints == npoints:
+            self.npoints = npoints
+            vertices, faces = self.generate_square(np.sqrt(npoints))
+            self.mesh = pymesh.form_mesh(vertices=vertices, faces=faces)  # 10k vertices
+            self.vertex = torch.from_numpy(self.mesh.vertices).to(device).float()
+            self.num_vertex = self.vertex.size(0)
+            self.vertex = self.vertex.transpose(0,1).contiguous().unsqueeze(0)
+
         return Variable(self.vertex[:, :2].contiguous())
 
     @staticmethod

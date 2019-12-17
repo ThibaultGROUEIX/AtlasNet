@@ -6,7 +6,6 @@ import time
     Author : Thibault Groueix 01.11.2019
 """
 
-
 class Experiments(object):
     def __init__(self):
         self.atlasnet = {
@@ -26,11 +25,11 @@ class Experiments(object):
         }
         self.template = {
             1: "python train.py --shapenet13 --dir_name log/template_sphere --template_type SPHERE",
-            2: "python train.py --shapenet13 --dir_name log/template_square --nb_primitives 1",
+            2: "python train.py --shapenet13 --dir_name log/template_square --template_type SQUARE --nb_primitives 1",
         }
         self.num_prim = {
-            1: "python train.py --shapenet13 --dir_name log/num_prim_10 --nb_primitives 10",
-            2: "python train.py --shapenet13 --dir_name log/num_prim_25 --nb_primitives 25",
+            1: "python train.py --shapenet13 --dir_name log/num_prim_10 --nb_primitives 10  --template_type SQUARE",
+            2: "python train.py --shapenet13 --dir_name log/num_prim_25 --nb_primitives 25  --template_type SQUARE",
         }
         self.data_augmentation = {
             1: "python train.py --shapenet13 --dir_name log/data_augmentation_1 --nb_primitives 10 --random_translation 1",
@@ -80,8 +79,8 @@ class Experiments(object):
             1: "python train.py --shapenet13 --dir_name log/hidden_neurons_256 --nb_primitives 10  --hidden_neurons 256",
             2: "python train.py --shapenet13 --dir_name log/hidden_neurons_128 --nb_primitives 10  --hidden_neurons 128",
             3: "python train.py --shapenet13 --dir_name log/hidden_neurons_64 --nb_primitives 10  --hidden_neurons 64",
-            3: "python train.py --shapenet13 --dir_name log/hidden_neurons_512 --nb_primitives 10  --hidden_neurons 512",
-            4: "python train.py --shapenet13 --dir_name log/hidden_neurons_1024 --nb_primitives 10  --hidden_neurons 1024",
+            4: "python train.py --shapenet13 --dir_name log/hidden_neurons_512 --nb_primitives 10  --hidden_neurons 512",
+            5: "python train.py --shapenet13 --dir_name log/hidden_neurons_1024 --nb_primitives 10  --hidden_neurons 1024",
         }
 
         self.single_view = {
@@ -161,4 +160,11 @@ for path in ["log_terminals", "log"]:
         print(f"Creating {path} folder")
         os.mkdir(path)
 
-job_scheduler_parralel(exp.atlasnet)
+job_scheduler_parralel(exp.activation)
+job_scheduler_parralel(exp.number_points)
+job_scheduler_parralel(exp.hidden_neurons)
+job_scheduler_parralel(exp.num_layers)
+job_scheduler_parralel(exp.normalization)
+job_scheduler_parralel(exp.template)
+job_scheduler_parralel(exp.num_prim)
+

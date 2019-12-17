@@ -12,11 +12,16 @@ In [CVPR, 2018](http://cvpr2018.thecvf.com/).
 
 ### Install
 
-This implementation uses Python 3.6, [Pytorch](http://pytorch.org/), [Pymesh](https://github.com/PyMesh/PyMesh). 
+This implementation uses Python 3.6, [Pytorch](http://pytorch.org/), [Pymesh](https://github.com/PyMesh/PyMesh), Cuda 10.1. 
 ```shell
 git clone --recurse-submodules https://github.com/ThibaultGROUEIX/AtlasNet.git
 cd AtlasNet 
-pip install --user --requirement  requirements.txt # Install dependencies
+
+#Dependencies
+conda create -n atlasnet python=3.6
+conda activate atlasnet
+conda install pytorch torchvision cudatoolkit=10.1 -c pytorch # pytorch
+pip install --user --requirement  requirements.txt # pip dependencies
 python setup.py --build # build metro distance(optional)
 ```
 
