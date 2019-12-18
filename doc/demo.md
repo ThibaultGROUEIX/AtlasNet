@@ -18,7 +18,7 @@ Extension supported are `ply` `npy` `obg` and `png`
 
 ### Trained models
 
-All training options can be recovered in `options.txt`
+All training options can be recovered in `{dir_name}/options.txt`
 
 * `./training/trained_models/atlasnet_autoencoder_25_squares/network.pth` [Default]
 
@@ -30,9 +30,6 @@ All training options can be recovered in `options.txt`
 
   
 
-
-
-Even if you don't own a GPU, the demo can run on  CPU. 
 
 
 
