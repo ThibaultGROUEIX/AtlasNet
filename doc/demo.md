@@ -5,6 +5,8 @@ Demo
 ```
 This function takes an image or pointcloud path as input and save the mesh infered by Atlasnet
 Extension supported are `ply` `npy` `obg` and `png`
+--demo_input_path input file e.g. image.png or object.ply 
+--reload_model_path trained model path (see below for pretrained models) 
 :return: path to the generated mesh
 ```
 
