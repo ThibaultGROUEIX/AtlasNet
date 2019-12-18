@@ -1,6 +1,6 @@
 Demo
 
-```python train.py --demo --demo_input_path YOUR_PATH --reload_model_path YOUR_PATH ```
+```python train.py --demo --demo_input_path YOUR_IMAGE_or_OBJ_PATH --reload_model_path YOUR_MODEL_PTH_PATH ```
 
 ```
 This function takes an image or pointcloud path as input and save the mesh infered by Atlasnet
