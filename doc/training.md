@@ -7,7 +7,7 @@ python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares --nb
 
 
 
-#####Single-View Reconstruction [default]
+##### Single-View Reconstruction [default]
 
 ```shell
 python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp --nb_primitives 25 --template_type SQUARE --SVR --reload_decoder_path log/atlasnet_autoencoder_25_squares --train_only_encoder 
@@ -113,13 +113,13 @@ python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp -
 The number reported are the chamfer distance, the f-score and the [metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) distance.
 
 
-
-| Method                 | Chamfer⁽⁰⁾ | Fscore | Metro | Total Train time (min) |
-| ---------------------- | ---- | --- -   | ----- |-------     |
+| Method                 | Chamfer | Fscore | Metro | Total Train time (min) |
+| ---------------------- | ---- | ----   | ----- |-------     |
 | Autoencoder 25 Squares | 1.35 | 82.3%   | 6.82  | 731       |
 | Autoencoder 1 Sphere   | 1.35 | 83.3%   | 6.94  | 548    |
 | SingleView 25  Squares | 3.78 | 63.1% | 8.94 | 1422      |
 | SingleView 1 Sphere    | 3.76 | 64.4% |  9.01  | 1297      |
+
 
 ⁽⁰⁾  computed between 2500 ground truth points and 2500 reconstructed points. x1000
 
