@@ -22,10 +22,17 @@ conda create -n atlasnet python=3.6
 conda activate atlasnet
 conda install pytorch torchvision cudatoolkit=10.1 -c pytorch # pytorch
 pip install --user --requirement  requirements.txt # pip dependencies
-python setup.py --build # build metro distance(optional)
 ```
 
 
+
+##### Optional : Metro Distance (GPL3 Licence)
+```shell
+cd auxiliary
+git clone https://github.com/ThibaultGROUEIX/metro_sources.git
+cd metro_sources; python setup.py --build # build metro distance
+cd ../..
+```
 
 
 
