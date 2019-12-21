@@ -1,6 +1,12 @@
 # Demo
 
 
+
+Simply run `train.py –demo` to download the pre-trained models and run on an example airplane image. The output will be saved in PLY format as `./doc/pictures/plane_input_demoAtlasnetReconstruction.ply`. You can view the output by downloading [MeshLab] (http://www.meshlab.net/).
+
+
+
+
 ### Trained models
 
 Trained are automatically downloaded by `train.py --demo ...`.
