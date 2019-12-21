@@ -169,6 +169,6 @@ class Trainer(TrainerAbstract, TrainerLoss, TrainerIteration, TrainerDataset, Tr
             path = '/'.join([self.opt.training_media_path, str(self.flags.media_count)]) + ".ply"
             self.flags.media_count += 1
 
-        print(f"Atlasnet saved generated mesh at {path}!")
+        print(f"Atlasnet generated mesh at {path}!")
         mesh_processor.save(mesh, path, self.colormap)
         return path

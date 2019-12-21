@@ -54,10 +54,10 @@ def plant_seeds(randomized_seed=False):
     if randomized_seed:
         print("Randomized seed")
         manualSeed = random.randint(1, 10000)
+        print("Random Seed: ", manualSeed)
+
     else:
-        print("Used fix seed")
         manualSeed = 1
-    print("Random Seed: ", manualSeed)
     random.seed(manualSeed)
     torch.manual_seed(manualSeed)
     np.random.seed(manualSeed)

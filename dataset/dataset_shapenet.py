@@ -148,7 +148,9 @@ class ShapeNet(data.Dataset):
         my_utils.red_print("Dataset Size: " + str(len(self.data_metadata)))
 
     def init_normalization(self):
-        my_utils.red_print("Dataset normalization : " + self.opt.normalization)
+        if not self.opt.demo:
+            my_utils.red_print("Dataset normalization : " + self.opt.normalization)
+
         if self.opt.normalization == "UnitBall":
             self.normalization_function = pointcloud_processor.Normalization.normalize_unitL2ball_functional
         elif self.opt.normalization == "BoundingBox":

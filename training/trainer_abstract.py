@@ -54,7 +54,6 @@ class TrainerAbstract(object):
 
         # # If a network is already created in the directory
         if exists(self.opt.model_path):
-            print(f"Going to reload experiment from {self.opt.model_path}")
             self.opt.reload_model_path = self.opt.model_path
             self.opt.reload_optimizer_path = self.opt.optimizer_path
 

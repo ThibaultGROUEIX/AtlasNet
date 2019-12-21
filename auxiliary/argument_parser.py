@@ -120,9 +120,9 @@ def parser():
         my_opt_dict.pop("dir_name")
         for key in my_opt_dict.keys():
             opt[key] = my_opt_dict[key]
-        my_utils.cyan_print("PARAMETER: ")
         if not opt.demo:
             print("Modifying input arguments to match network in dirname")
+            my_utils.cyan_print("PARAMETER: ")
             for a in my_opt_dict:
                 print(
                     "         "

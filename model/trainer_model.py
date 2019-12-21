@@ -67,7 +67,7 @@ class TrainerModel(object):
         if self.opt.reload_optimizer_path != "":
             try:
                 self.optimizer.load_state_dict(torch.load(self.opt.reload_optimizer_path))
-                yellow_print(f"Reloaded optimizer {self.opt.reload_optimizer_path}")
+                # yellow_print(f"Reloaded optimizer {self.opt.reload_optimizer_path}")
             except:
                 yellow_print(f"Failed to reload optimizer {self.opt.reload_optimizer_path}")
 
