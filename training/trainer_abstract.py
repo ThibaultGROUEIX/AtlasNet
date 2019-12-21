@@ -25,7 +25,8 @@ class TrainerAbstract(object):
         self.get_log_paths()
         self.init_meters()
         self.reset_epoch()
-        my_utils.print_arg(self.opt)
+        if not opt.demo:
+            my_utils.print_arg(self.opt)
 
     def start_visdom(self):
         self.visualizer = visualization.Visualizer(self.opt.visdom_port, self.opt.env, self.opt.http_port)
@@ -37,12 +38,14 @@ class TrainerAbstract(object):
         Define paths to save and reload networks from parsed options
         :return:
         """
-        if not exists("log"):
-            print("Creating log folder")
-            mkdir("log")
-        if not exists(self.opt.dir_name):
-            print("creating folder  ", self.opt.dir_name)
-            mkdir(self.opt.dir_name)
+
+        if not self.opt.demo:
+            if not exists("log"):
+                print("Creating log folder")
+                mkdir("log")
+            if not exists(self.opt.dir_name):
+                print("creating folder  ", self.opt.dir_name)
+                mkdir(self.opt.dir_name)
 
         self.opt.log_path = join(self.opt.dir_name, "log.txt")
         self.opt.optimizer_path = join(self.opt.dir_name, 'optimizer.pth')

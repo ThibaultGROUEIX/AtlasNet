@@ -108,7 +108,6 @@ def parser():
 
 
     if exists(join(opt.dir_name, "options.json")):
-        print("Modifying input arguments to match network in dirname")
         # Reload parameters from options.txt if it exists
         with open(join(opt.dir_name, "options.json"), 'r') as f:
             my_opt_dict = json.load(f)
@@ -122,13 +121,15 @@ def parser():
         for key in my_opt_dict.keys():
             opt[key] = my_opt_dict[key]
         my_utils.cyan_print("PARAMETER: ")
-        for a in my_opt_dict:
-            print(
-                "         "
-                + colored(a, "yellow")
-                + " : "
-                + colored(str(my_opt_dict[a]), "cyan")
-            )
+        if not opt.demo:
+            print("Modifying input arguments to match network in dirname")
+            for a in my_opt_dict:
+                print(
+                    "         "
+                    + colored(a, "yellow")
+                    + " : "
+                    + colored(str(my_opt_dict[a]), "cyan")
+                )
 
     # Hard code dimension of the template.
     dim_template_dict = {

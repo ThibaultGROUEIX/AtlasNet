@@ -14,20 +14,23 @@ In [CVPR, 2018](http://cvpr2018.thecvf.com/).
 
 This implementation uses Python 3.6, [Pytorch](http://pytorch.org/), [Pymesh](https://github.com/PyMesh/PyMesh), Cuda 10.1. 
 ```shell
+# Copy/Paste the snippet in a terminal
 git clone --recurse-submodules https://github.com/ThibaultGROUEIX/AtlasNet.git
 cd AtlasNet 
 
 #Dependencies
-conda create -n atlasnet python=3.6
+conda create -n atlasnet python=3.6 --yes
 conda activate atlasnet
-conda install pytorch torchvision cudatoolkit=10.1 -c pytorch # pytorch
+conda install  pytorch torchvision cudatoolkit=10.1 -c pytorch --yes
 pip install --user --requirement  requirements.txt # pip dependencies
 ```
 
 
 
-##### Optional : Metro Distance (GPL3 Licence)
+##### Optional : Compile Chamfer + Metro Distance (GPL3 Licence)
 ```shell
+# Copy/Paste the snippet in a terminal
+python auxiliary/ChamferDistancePytorch/chamfer3D/setup.py install
 cd auxiliary
 git clone https://github.com/ThibaultGROUEIX/metro_sources.git
 cd metro_sources; python setup.py --build # build metro distance

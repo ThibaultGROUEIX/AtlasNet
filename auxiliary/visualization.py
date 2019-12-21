@@ -44,7 +44,7 @@ class Visualizer(object):
                 os.system(CMD)
         except:
             print("couldn't set up http server.")
-            
+
         self.visdom_port = visdom_port
         self.http_port = http_port
 

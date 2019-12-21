@@ -26,11 +26,11 @@ class ShapeNet(data.Dataset):
         self.opt = opt
         self.num_sample = opt.number_points if train else 2500
         self.train = train
-        my_utils.red_print('Create Shapenet Dataset...')
         self.init_normalization()
         self.init_singleview()
 
         if not opt.demo:
+            my_utils.red_print('Create Shapenet Dataset...')
             # Define core path array
             self.datapath = []
             self.category_datapath = {}
@@ -119,7 +119,6 @@ class ShapeNet(data.Dataset):
             # Preprocess and cache files
             self.preprocess()
 
-            my_utils.red_print('Create Shapenet Dataset... Done!')
 
     def preprocess(self):
         if exists(self.path_dataset + "info.pkl"):
