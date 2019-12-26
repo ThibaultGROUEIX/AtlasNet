@@ -43,9 +43,15 @@ class Atlasnet(nn.Module):
         # input_points = [self.template[i].get_regular_points(self.nb_pts_in_primitive,
         #                                                     device=latent_vector.device)
         #                 for i in range(self.opt.nb_primitives)]
-        input_points = [self.template[i].get_random_points(
-            torch.Size((1, self.template[i].dim, self.nb_pts_in_primitive)),
-            latent_vector.device) for i in range(self.opt.nb_primitives)]
+        if train:
+            input_points = [self.template[i].get_random_points(
+                torch.Size((1, self.template[i].dim, self.nb_pts_in_primitive)),
+                latent_vector.device) for i in range(self.opt.nb_primitives)]
+        else:
+            input_points = [self.template[i].get_regular_points(self.nb_pts_in_primitive_eval,
+                                                                device=latent_vector.device)
+                            for i in range(self.opt.nb_primitives)]
+
         # Deform each patch
         output_points = torch.cat([self.decoder[i](input_points[i], latent_vector.unsqueeze(2)).unsqueeze(1) for i in
                                    range(0, self.opt.nb_primitives)], dim=1)
