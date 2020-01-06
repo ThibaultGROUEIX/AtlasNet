@@ -27,13 +27,13 @@ pip install --user --requirement  requirements.txt # pip dependencies
 
 
 
-##### Optional : Compile Chamfer + Metro Distance (GPL3 Licence)
+##### Optional : Compile Chamfer (MIT) + Metro Distance (GPL3 Licence)
 ```shell
 # Copy/Paste the snippet in a terminal
-python auxiliary/ChamferDistancePytorch/chamfer3D/setup.py install
+python auxiliary/ChamferDistancePytorch/chamfer3D/setup.py install #MIT
 cd auxiliary
 git clone https://github.com/ThibaultGROUEIX/metro_sources.git
-cd metro_sources; python setup.py --build # build metro distance
+cd metro_sources; python setup.py --build # build metro distance #GPL3
 cd ../..
 ```
 
