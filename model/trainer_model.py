@@ -39,14 +39,14 @@ class TrainerModel(object):
             yellow_print(f"Network weights loaded from  {self.opt.reload_model_path}!")
             # print(self.network.state_dict().keys())
             # print(torch.load(self.opt.reload_model_path).keys())
-            self.network.module.load_state_dict(torch.load(self.opt.reload_model_path))
+            self.network.module.load_state_dict(torch.load(self.opt.reload_model_path, map_location='cuda:0'))
 
         elif self.opt.reload_decoder_path != "":
             opt = deepcopy(self.opt)
             opt.SVR = False
             network = EncoderDecoder(opt)
             network = nn.DataParallel(network, device_ids=opt.multi_gpu)
-            network.module.load_state_dict(torch.load(opt.reload_decoder_path))
+            network.module.load_state_dict(torch.load(opt.reload_decoder_path, map_location='cuda:0'))
             self.network.module.decoder = network.module.decoder
             yellow_print(f"Network Decoder weights loaded from  {self.opt.reload_decoder_path}!")
 
@@ -66,7 +66,7 @@ class TrainerModel(object):
 
         if self.opt.reload_optimizer_path != "":
             try:
-                self.optimizer.load_state_dict(torch.load(self.opt.reload_optimizer_path))
+                self.optimizer.load_state_dict(torch.load(self.opt.reload_optimizer_path, map_location='cuda:0'))
                 # yellow_print(f"Reloaded optimizer {self.opt.reload_optimizer_path}")
             except:
                 yellow_print(f"Failed to reload optimizer {self.opt.reload_optimizer_path}")
