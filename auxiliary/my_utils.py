@@ -50,8 +50,8 @@ def print_arg(opt):
             + colored(str(opt.__dict__[a]), "cyan")
         )
 
-def plant_seeds(randomized_seed=False):
-    if randomized_seed:
+def plant_seeds(random_seed=False):
+    if random_seed:
         print("Randomized seed")
         manualSeed = random.randint(1, 10000)
         print("Random Seed: ", manualSeed)

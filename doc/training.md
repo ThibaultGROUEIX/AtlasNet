@@ -35,11 +35,11 @@ python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp -
 * `--workers`, **0**,  *Number of data loading workers*
 * `--nepoch`, **150**, *Number of training epochs*
 * `--start_epoch`, **0**, *Start directly from epoch [X]*
-* `--randomize`, **False**, *Fix random seed*
+* `--random_seed`, **False**, *Fix random seed*
 * `--lrate`, **0.001**, *Learning rate*
 * `--lr_decay_1`, **120**, *Learning rate decay 1*
 * `--lr_decay_2`, **140**, *Learning rate decay 2*
-* `--lr_decay_3`, **145**, *Learning rate decay 2*
+* `--lr_decay_3`, **145**, *Learning rate decay 3*
 * `--multi_gpu`, **[0]**, *Replacing CUDA_VISIBLE_DEVICES=X. i.e  to use gpu 1 and 2 `--multi_gpu 0 1`*
 * `--loop_per_epoch`, **1**, *Number of data loop per epoch*
 * `--no_learning`,  **False**, *No backdrop + network in eval mode*
