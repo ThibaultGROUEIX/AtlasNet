@@ -42,7 +42,7 @@ cd ../..
 ### Usage
 
 * **[Demo](./doc/demo.md)** :    ```python train.py --demo```
-* **[Training](./doc/training.md)** :  ```python train.py```  *Monitor on  http://localhost:8890/*
+* **[Training](./doc/training.md)** :  ```python train.py --shapenet13```  *Monitor on  http://localhost:8890/*
 * <details><summary> Latest Refacto 12-2019  </summary>
   - [x] Factorize Single View Reconstruction and autoencoder in same class <br>
   - [x] Factorise Square and Sphere template in same class<br>
