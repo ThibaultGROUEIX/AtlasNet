@@ -69,7 +69,7 @@ cd ../..
 ### Quantitative Results 
 
 
-| Method                 | Chamfer (*1) | Fscore | [Metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) (*2) | Total Train time (min) |
+| Method                 | Chamfer (*1) | Fscore (*2) | [Metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) (*3) | Total Train time (min) |
 | ---------------------- | ---- | ----   | ----- |-------     |
 | Autoencoder 25 Squares | 1.35 | 82.3%   | 6.82  | 731       |
 | Autoencoder 1 Sphere   | 1.35 | 83.3%   | 6.94  | 548    |
@@ -78,7 +78,8 @@ cd ../..
 
 
   * (*1) x1000. Computed between 2500 ground truth points and 2500 reconstructed points. 
-  * (*2) x100. Metro is ran on unormalized point clouds (which explains a difference with the paper's numbers) 
+  * (*2) The threshold is 0.001
+  * (*3) x100. Metro is ran on unormalized point clouds (which explains a difference with the paper's numbers) 
 
 
 ### Related projects
