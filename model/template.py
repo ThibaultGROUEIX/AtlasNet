@@ -48,13 +48,13 @@ class SphereTemplate(Template):
         Return Tensor of Size [x, 3]
         """
         if not self.npoints == npoints:
-            self.npoints = npoints
             self.mesh = pymesh.generate_icosphere(1, [0, 0, 0], 4)  # 2562 vertices
             self.vertex = torch.from_numpy(self.mesh.vertices).to(device).float()
             self.num_vertex = self.vertex.size(0)
             self.vertex = self.vertex.transpose(0,1).contiguous().unsqueeze(0)
+            self.npoints = npoints
 
-        return Variable(self.vertex)
+        return Variable(self.vertex.to(device))
 
 
 class SquareTemplate(Template):
@@ -85,7 +85,7 @@ class SquareTemplate(Template):
             self.num_vertex = self.vertex.size(0)
             self.vertex = self.vertex.transpose(0,1).contiguous().unsqueeze(0)
 
-        return Variable(self.vertex[:, :2].contiguous())
+        return Variable(self.vertex[:, :2].contiguous().to(device))
 
     @staticmethod
     def generate_square(grain):
