@@ -105,15 +105,10 @@ python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp -
 
 
 
-
-
 ## Quantitative Results 
 
 
-The number reported are the chamfer distance, the f-score and the [metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) distance.
-
-
-| Method                 | Chamfer | Fscore | Metro | Total Train time (min) |
+| Method                 | Chamfer (*1) | Fscore (*2) | [Metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) (*3) | Total Train time (min) |
 | ---------------------- | ---- | ----   | ----- |-------     |
 | Autoencoder 25 Squares | 1.35 | 82.3%   | 6.82  | 731       |
 | Autoencoder 1 Sphere   | 1.35 | 83.3%   | 6.94  | 548    |
@@ -121,10 +116,9 @@ The number reported are the chamfer distance, the f-score and the [metro](https:
 | SingleView 1 Sphere    | 3.76 | 64.4% |  9.01  | 1297      |
 
 
-⁽⁰⁾  computed between 2500 ground truth points and 2500 reconstructed points. x1000
-
-⁽1⁾  Metro is ran on unormalized point clouds (which explains a difference with Atlasnet numbers) x100
-
+  * (*1) x1000. Computed between 2500 ground truth points and 2500 reconstructed points. 
+  * (*2) The threshold is 0.001
+  * (*3) x100. Metro is ran on unormalized point clouds (which explains a difference with the paper's numbers) 
 
 
 # Paper reproduction 
