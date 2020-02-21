@@ -28,7 +28,7 @@ class TrainerIteration(object):
         self.make_network_input()
         self.batch_size = self.data.points.size(0)
 
-        self.data.pointsReconstructed_prims = self.network(self.data.network_input,
+        self.data.pointsReconstructed_prims, self.data.geom_props = self.network(self.data.network_input,
                                                            train=self.flags.train)
         self.fuse_primitives()
 

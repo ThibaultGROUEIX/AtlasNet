@@ -8,6 +8,14 @@ import time
 
 class Experiments(object):
     def __init__(self):
+        self.conformal = {
+            1: "python train.py --dir_name log/atlasnet_0_1 --activation softplus --template_type SQUARE --nb_primitives 5 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 0.1",
+            2: "python train.py --dir_name log/atlasnet_1_0 --activation softplus --template_type SQUARE --nb_primitives 25 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 1",
+            3: "python train.py --dir_name log/atlasnet_10_0 --activation softplus --template_type SQUARE --nb_primitives 25 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 10",
+            4: "python train.py --dir_name log/atlasnet_0_01 --activation softplus --template_type SQUARE --nb_primitives 25 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 0.01",
+            5: "python train.py --dir_name log/atlasnet_0_1_noBN --activation softplus --template_type SQUARE --nb_primitives 25 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 0.1 --remove_all_batchNorms"
+        }
+
         self.atlasnet = {
             1: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_1_sphere  --nb_primitives 1 --template_type SPHERE",
             2: "python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares  --nb_primitives 25 --template_type SQUARE",
@@ -160,11 +168,5 @@ for path in ["log_terminals", "log"]:
         print(f"Creating {path} folder")
         os.mkdir(path)
 
-job_scheduler_parralel(exp.activation)
-job_scheduler_parralel(exp.number_points)
-job_scheduler_parralel(exp.hidden_neurons)
-job_scheduler_parralel(exp.num_layers)
-job_scheduler_parralel(exp.normalization)
-job_scheduler_parralel(exp.template)
-job_scheduler_parralel(exp.num_prim)
+job_scheduler_parralel(exp.conformal)
 

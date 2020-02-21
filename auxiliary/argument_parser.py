@@ -76,6 +76,8 @@ def parser():
 
     # Loss
     parser.add_argument("--no_metro", action="store_true", help="Compute metro distance")
+    parser.add_argument("--conformal_regul", action="store_true", help="Add conformal Regularization")
+    parser.add_argument("--lambda_conformal_regul",  type=float, default=0.1, help='ratio factor')
 
     opt = parser.parse_args()
 

@@ -4,7 +4,7 @@ import torch.nn.parallel
 import torch.utils.data
 from model.model_blocks import Mapping2Dto3D, Identity
 from model.template import get_template
-
+from model.diff_props import DiffGeomProps
 
 class Atlasnet(nn.Module):
 
@@ -33,6 +33,11 @@ class Atlasnet(nn.Module):
         # Intialize deformation networks
         self.decoder = nn.ModuleList([Mapping2Dto3D(opt) for i in range(0, opt.nb_primitives)])
 
+        #Geom props from Yan Bednarik
+        self.dgp = DiffGeomProps( self.device,
+            normals=True, curv_mean=False, curv_gauss=False, fff=True)
+
+
     def forward(self, latent_vector, train=True):
         """
         Deform points from self.template using the embedding latent_vector
@@ -45,8 +50,9 @@ class Atlasnet(nn.Module):
         #                 for i in range(self.opt.nb_primitives)]
         if train:
             input_points = [self.template[i].get_random_points(
-                torch.Size((1, self.template[i].dim, self.nb_pts_in_primitive)),
+                torch.Size((latent_vector.size(0), self.template[i].dim, self.nb_pts_in_primitive)),
                 latent_vector.device) for i in range(self.opt.nb_primitives)]
+
         else:
             input_points = [self.template[i].get_regular_points(self.nb_pts_in_primitive_eval,
                                                                 device=latent_vector.device)
@@ -56,8 +62,13 @@ class Atlasnet(nn.Module):
         output_points = torch.cat([self.decoder[i](input_points[i], latent_vector.unsqueeze(2)).unsqueeze(1) for i in
                                    range(0, self.opt.nb_primitives)], dim=1)
 
+        geom_props = {"computed": False}
+        if train and self.opt.conformal_regul:
+            geom_props = self.dgp(output_points, input_points)
+            geom_props["computed"] = True
+
         # Return the deformed pointcloud
-        return output_points.contiguous()  # batch, nb_prim, num_point, 3
+        return output_points.contiguous(), geom_props  # batch, nb_prim, num_point, 3
 
     def generate_mesh(self, latent_vector):
         assert latent_vector.size(0)==1, "input should have batch size 1!"

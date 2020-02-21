@@ -40,7 +40,7 @@ class SphereTemplate(Template):
         rand_grid = torch.cuda.FloatTensor(shape).to(device).float()
         rand_grid.data.normal_(0, 1)
         rand_grid = rand_grid / torch.sqrt(torch.sum(rand_grid ** 2, dim=1, keepdim=True))
-        return Variable(rand_grid)
+        return Variable(rand_grid, requires_grad = True)
 
     def get_regular_points(self, npoints=None, device="gpu0"):
         """
@@ -70,7 +70,7 @@ class SquareTemplate(Template):
         """
         rand_grid = torch.cuda.FloatTensor(shape).to(device).float()
         rand_grid.data.uniform_(0, 1)
-        return Variable(rand_grid)
+        return Variable(rand_grid, requires_grad = True)
 
     def get_regular_points(self, npoints=2500, device="gpu0"):
         """
