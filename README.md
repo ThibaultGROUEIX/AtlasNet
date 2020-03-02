@@ -1,14 +1,19 @@
 ## AtlasNet [[Project Page]](http://imagine.enpc.fr/~groueixt/atlasnet/) [[Paper]](https://arxiv.org/abs/1802.05384) [[Talk]](http://imagine.enpc.fr/~groueixt/atlasnet/atlasnet_slides_spotlight_CVPR.pptx)
 
-**AtlasNet: A Papier-Mâché Approach to Learning 3D Surface Generation** <br>
-Thibault Groueix,  Matthew Fisher, Vladimir G. Kim , Bryan C. Russell, Mathieu Aubry  <br>
-In [CVPR, 2018](http://cvpr2018.thecvf.com/).
-
-<img src="doc/pictures/chair.png" alt="chair.png" width="35%" /> <img src="doc/pictures/chair.gif" alt="chair.gif" width="32%" />
+Welcome to this branch : it is an unofficial implemention of [Shape Reconstruction by Learning Differentiable Surface Representations](https://arxiv.org/abs/1911.11227) from Yan Bednarik and Thibault Groueix.
 
 
 
+### Note
 
+This repo include an implementation from Yan Bednarik of Differentiable Surface properties and their usage to form a conformal regularization of 3D shape reconstruction (on ShapeNet).
+
+Such properties include (please check Yan's paper for details):
+
+* Normals 
+* First fondamental form (Jacobian)
+* Mean curvature
+* Gaussian curvature
 
 ### Install
 
@@ -39,42 +44,50 @@ cd ../..
 
 
 
-### Usage
+### Training
 
-* **[Demo](./doc/demo.md)** :    ```python train.py --demo```
-* **[Training](./doc/training.md)** :  ```python train.py --shapenet13```  *Monitor on  http://localhost:8890/*
-* <details><summary> Latest Refacto 12-2019  </summary>
-  - [x] Factorize Single View Reconstruction and autoencoder in same class <br>
-  - [x] Factorise Square and Sphere template in same class<br>
-  - [x] Add latent vector as bias after first layer(30% speedup) <br>
-  - [x] Remove last th in decoder <br>
-  - [x] Make large .pth tensor with all pointclouds in cache(drop the nasty Chunk_reader) <br>
-  - [x] Make-it multi-gpu <br>
-  - [x] Add netvision visualization of the results <br>
-  - [x] Rewrite main script object-oriented  <br>
-  - [x] Check that everything works in latest pytorch version <br>
-  - [x] Add more layer by default and flag for the number of layers and hidden neurons <br>
-  - [x] Add a flag to generate a mesh directly <br>
-  - [x] Add a python setup install <br>
-  - [x] Make sure GPU are used at 100% <br>
-  - [x] Add f-score in Chamfer + report f-score <br>
-  - [x] Get rid of shapenet_v2 data and use v1! <br>
-  - [x] Fix path issues no more sys.path.append <br>
-  - [x] Preprocess shapenet 55 and add it in dataloader <br>
-  - [x] Make minimal dependencies <br>
-  </details>
+Same options as the main branch. See here [Training](./doc/training.md)   Just add `--conformal_regul --lambda_conformal_regul 0.001` to train with Differentiable Surface properties. 
 
-  
+##### Autoencoder [default]
+
+
+```shell
+python train.py --shapenet13 --dir_name log/atlasnet_autoencoder_25_squares --nb_primitives 25 --template_type "SQUARE" --conformal_regul --lambda_conformal_regul 0.001
+```
+
+##### Single-View Reconstruction [default]
+
+```shell
+python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp --nb_primitives 25 --template_type SQUARE --SVR --reload_decoder_path log/atlasnet_autoencoder_25_squares --train_only_encoder --conformal_regul --lambda_conformal_regul 0.001
+```
+
+:raised_hand_with_fingers_splayed: Monitor your training on http://localhost:8890/
+
+:raised_hand_with_fingers_splayed: See report on a completed training at http://localhost:8891/{DIR_NAME}
+
+
+
+### Using the trained models
+
+```python train.py --demo --demo_input_path YOUR_IMAGE_or_OBJ_PATH --reload_model_path YOUR_MODEL_PTH_PATH ```
+
+```
+This function takes an image or pointcloud path as input and save the mesh infered by Atlasnet
+Extension supported are `ply` `npy` `obg` and `png`
+--demo_input_path input file e.g. image.png or object.ply 
+--reload_model_path trained model path (see below for pretrained models) 
+:return: path to the generated mesh
+```
+
+
 
 ### Quantitative Results 
 
 
-| Method                 | Chamfer (*1) | Fscore (*2) | [Metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) (*3) | Total Train time (min) |
+| Method (on Chairs)     | Chamfer (*1) | Fscore (*2) | [Metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) (*3) | Total Train time (min) |
 | ---------------------- | ---- | ----   | ----- |-------     |
-| Autoencoder 25 Squares | 1.35 | 82.3%   | 6.82  | 731       |
-| Autoencoder 1 Sphere   | 1.35 | 83.3%   | 6.94  | 548    |
-| SingleView 25  Squares | 3.78 | 63.1% | 8.94 | 1422      |
-| SingleView 1 Sphere    | 3.76 | 64.4% |  9.01  | 1297      |
+| Autoencoder 1 Square |  |             |   | 30     |
+| Autoencoder 1 Square + Conformal |  |    |   | 300 |
 
 
   * (*1) x1000. Computed between 2500 ground truth points and 2500 reconstructed points. 
@@ -82,18 +95,17 @@ cd ../..
   * (*3) x100. Metro is ran on unormalized point clouds (which explains a difference with the paper's numbers) 
 
 
-### Related projects
-
-*  [Learning Elementary Structures](https://github.com/TheoDEPRELLE/AtlasNetV2)
-*  [3D-CODED](https://github.com/ThibaultGROUEIX/3D-CODED)
-*  [Cycle Consistent Deformations](https://github.com/ThibaultGROUEIX/CycleConsistentDeformation)
-*  [Atlasnet code V2.2](https://github.com/ThibaultGROUEIX/AtlasNet/tree/V2.2) (more linear, script like, may be easier to understand at first)
-
-
-
-
 
 ### Citing this work
+
+```
+@article{bednarik2019shape,
+   title={Shape Reconstruction by Learning Differentiable Surface Representations},
+ 	 author={Bednarik, Jan and Parashar, Shaifali and Gundogdu, Erhan and Salzmann, Mathieu and Fua, Pascal},
+   booktitle={Proceedings IEEE Conf. on Computer Vision and Pattern Recognition (CVPR)},
+ 	 year={2019}
+}
+```
 
 ```
 @inproceedings{groueix2018,
@@ -103,6 +115,3 @@ cd ../..
           year={2018}
         }
 ```
-<p align="center">
-  <img  src="doc/pictures/plane.gif">
-</p>

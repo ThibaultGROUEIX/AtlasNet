@@ -51,7 +51,6 @@ class Trainer(TrainerAbstract, TrainerLoss, TrainerIteration, TrainerDataset, Tr
             if self.datasets.data_augmenter is not None and not self.opt.SVR:
                 # Apply data augmentation on points
                 self.datasets.data_augmenter(self.data.points)
-
             self.train_iteration()
 
     def train_epoch(self):

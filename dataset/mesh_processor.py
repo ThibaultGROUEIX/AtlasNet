@@ -32,6 +32,9 @@ def save(mesh, path, colormap):
             mesh.set_attribute("vertex_red", colormap.colormap[vertex_sources][:, 0])
             mesh.set_attribute("vertex_green", colormap.colormap[vertex_sources][:, 1])
             mesh.set_attribute("vertex_blue", colormap.colormap[vertex_sources][:, 2])
+            print(f"error {path}!")
     except:
         pass
-    pymesh.save_mesh(path[:-3] + "ply", mesh, *mesh.get_attribute_names(), ascii=True)
+    if path[-3:] != "obj":
+        path = path[:-3] + "ply"
+    pymesh.save_mesh(path, mesh, *mesh.get_attribute_names(), ascii=True)

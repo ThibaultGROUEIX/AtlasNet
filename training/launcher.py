@@ -9,11 +9,12 @@ import time
 class Experiments(object):
     def __init__(self):
         self.conformal = {
-            1: "python train.py --dir_name log/atlasnet_0_1 --activation softplus --template_type SQUARE --nb_primitives 5 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 0.1",
-            2: "python train.py --dir_name log/atlasnet_1_0 --activation softplus --template_type SQUARE --nb_primitives 25 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 1",
-            3: "python train.py --dir_name log/atlasnet_10_0 --activation softplus --template_type SQUARE --nb_primitives 25 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 10",
-            4: "python train.py --dir_name log/atlasnet_0_01 --activation softplus --template_type SQUARE --nb_primitives 25 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 0.01",
-            5: "python train.py --dir_name log/atlasnet_0_1_noBN --activation softplus --template_type SQUARE --nb_primitives 25 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 0.1 --remove_all_batchNorms"
+            # 1: "python train.py --dir_name log/atlasnet_0_1 --activation softplus --template_type SQUARE --nb_primitives 5 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 0.1",
+            # 1: "python train.py --dir_name log/atlasnet_1_0_with_2 --activation softplus --template_type SQUARE --nb_primitives 1 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 1",
+            # 2: "python train.py --dir_name log/atlasnet_1_0_without_2 --activation softplus --template_type SQUARE --nb_primitives 1 --batch_size 32 --number_points 2048  --lambda_conformal_regul 0",
+            3: "python train.py --dir_name log/atlasnet_1_0_with_3 --activation softplus --template_type SQUARE --nb_primitives 1 --batch_size 32 --number_points 2048  --conformal_regul --lambda_conformal_regul 0.001",
+            # 4: "python train.py --dir_name log/atlasnet_0_01 --activation softplus --template_type SQUARE --nb_primitives 25 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 0.01",
+            # 5: "python train.py --dir_name log/atlasnet_0_1_noBN --activation softplus --template_type SQUARE --nb_primitives 25 --batch_size 32 --number_points 2048 --conformal_regul --lambda_conformal_regul 0.1 --remove_all_batchNorms"
         }
 
         self.atlasnet = {

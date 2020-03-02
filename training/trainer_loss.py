@@ -57,11 +57,12 @@ class TrainerLoss(object):
             self.data.loss = self.data.loss  + self.opt.lambda_conformal_regul *  self.data.loss_conformal
 
     def isometric_regularization(self):
-        """isometric regularisation"""
+        """isometric regularisation. author : Theo Deprelle """
 
         # ============================================================================
         fff = self.data.geom_props["fff"]
-        m_11, m_22, m_21 = fff[..., 0], fff[..., 1], fff[..., 2]        # ============================================================================
+        m_11, m_21, m_22 = fff[..., 0], fff[..., 1], fff[..., 2]
+        # ============================================================================
 
         # compute the isometric loss over the element of M
         # ============================================================================
@@ -70,12 +71,12 @@ class TrainerLoss(object):
         self.data.loss_isometric = torch.mean(loss)
 
     def conformal_regularization(self):
-        """conformal regularisation"""
+        """conformal regularisation. author : Theo Deprelle """
         # compute the jacobian matrix J of the 2D to 3D mapping
 
         # ===========================================================================
         fff = self.data.geom_props["fff"]
-        m_11, m_22, m_21 = fff[..., 0], fff[..., 1], fff[..., 2]
+        m_11, m_21, m_22 = fff[..., 0], fff[..., 1], fff[..., 2]
         # ===========================================================================
         # compute the optimal scalling coef
         # ===========================================================================
