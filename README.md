@@ -4,6 +4,8 @@
 Thibault Groueix,  Matthew Fisher, Vladimir G. Kim , Bryan C. Russell, Mathieu Aubry  <br>
 In [CVPR, 2018](http://cvpr2018.thecvf.com/).
 
+:rocket: New branch : [AtlasNet + Shape Reconstruction by Learning Differentiable Surface Representations](https://github.com/ThibaultGROUEIX/AtlasNet/tree/jacobian_regularization)
+
 <img src="doc/pictures/chair.png" alt="chair.png" width="35%" /> <img src="doc/pictures/chair.gif" alt="chair.gif" width="32%" />
 
 
