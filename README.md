@@ -1,4 +1,4 @@
-## AtlasNet [[Project Page]](http://imagine.enpc.fr/~groueixt/atlasnet/) [[Paper]](https://arxiv.org/abs/1802.05384) [[Talk]](http://imagine.enpc.fr/~groueixt/atlasnet/atlasnet_slides_spotlight_CVPR.pptx)
+### AtlasNet + Shape Reconstruction by Learning Differentiable Surface Representations
 
 Welcome to this branch : it is an unofficial implemention of [Shape Reconstruction by Learning Differentiable Surface Representations](https://arxiv.org/abs/1911.11227) from Yan Bednarik and Thibault Groueix.
 
@@ -81,17 +81,19 @@ Extension supported are `ply` `npy` `obg` and `png`
 
 
 
-### Quantitative Results 
+### Quantitative Results [Pretrained models](Link)
 
 
 | Method (on Chairs)     | Chamfer (*1) | Fscore (*2) | [Metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) (*3) | Total Train time (min) |
 | ---------------------- | ---- | ----   | ----- |-------     |
-| Autoencoder 1 Square |  |             |   | 30     |
-| Autoencoder 1 Square + Conformal |  |    |   | 300 |
+| Autoencoder 1 Square | **1.40** | **85.3** | **19** | **30** |
+| Autoencoder 1 Square + Conformal (lamda=1) | 2.8 | 72.9 | 24 | 300 |
+| Autoencoder 1 Square + Conformal (lamda=0.001) |  |    |   | 300 |
+
 
 
   * (*1) x1000. Computed between 2500 ground truth points and 2500 reconstructed points. 
-  * (*2) The threshold is 0.001
+  * (*2) The threshold is sqrt(0.001)
   * (*3) x100. Metro is ran on unormalized point clouds (which explains a difference with the paper's numbers) 
 
 
