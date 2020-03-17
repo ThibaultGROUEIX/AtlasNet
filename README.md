@@ -1,14 +1,14 @@
 ### AtlasNet + Shape Reconstruction by Learning Differentiable Surface Representations
 
-Welcome to this branch : it is an unofficial implemention of [Shape Reconstruction by Learning Differentiable Surface Representations](https://arxiv.org/abs/1911.11227) from Yan Bednarik and Thibault Groueix.
+Welcome to this branch : it is an unofficial implemention of [Shape Reconstruction by Learning Differentiable Surface Representations](https://arxiv.org/abs/1911.11227) from Jan Bednarik and Thibault Groueix.
 
 
 
 ### Note
 
-This repo include an implementation from Yan Bednarik of Differentiable Surface properties and their usage to form a conformal regularization of 3D shape reconstruction (on ShapeNet).
+This repo include an implementation from Jan Bednarik of Differentiable Surface properties and their usage to form a conformal regularization of 3D shape reconstruction (on ShapeNet).
 
-Such properties include (please check Yan's paper for details):
+Such properties include (please check Jan's paper for details):
 
 * Normals 
 * First fondamental form (Jacobian)
