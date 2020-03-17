@@ -81,7 +81,7 @@ Extension supported are `ply` `npy` `obg` and `png`
 
 
 
-### Quantitative Results [Pretrained models](DownloadUrl: https://drive.google.com/a/polytechnique.org/uc?id=1mlA57o7n7CK9u8RpYS_RekTQN7RTNjhl&export=download)
+### Quantitative Results [Pretrained models](https://drive.google.com/a/polytechnique.org/uc?id=1mlA57o7n7CK9u8RpYS_RekTQN7RTNjhl&export=download)
 
 
 | Method (on Planes) | Chamfer (*1) | Fscore (*2) | [Metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) (*3) | Total Train time (min) |
