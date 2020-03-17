@@ -81,16 +81,14 @@ Extension supported are `ply` `npy` `obg` and `png`
 
 
 
-### Quantitative Results [Pretrained models](Link)
+### Quantitative Results [Pretrained models](DownloadUrl: https://drive.google.com/a/polytechnique.org/uc?id=1mlA57o7n7CK9u8RpYS_RekTQN7RTNjhl&export=download)
 
 
-| Method (on Chairs)     | Chamfer (*1) | Fscore (*2) | [Metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) (*3) | Total Train time (min) |
+| Method (on Planes) | Chamfer (*1) | Fscore (*2) | [Metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) (*3) | Total Train time (min) |
 | ---------------------- | ---- | ----   | ----- |-------     |
 | Autoencoder 1 Square | **1.40** | **85.3** | **19** | **30** |
 | Autoencoder 1 Square + Conformal (lamda=1) | 2.8 | 72.9 | 24 | 300 |
-| Autoencoder 1 Square + Conformal (lamda=0.001) |  |    |   | 300 |
-
-
+| Autoencoder 1 Square + Conformal (lamda=0.001) | 1.45 | 85.3 | 20 | 300 |
 
   * (*1) x1000. Computed between 2500 ground truth points and 2500 reconstructed points. 
   * (*2) The threshold is sqrt(0.001)
