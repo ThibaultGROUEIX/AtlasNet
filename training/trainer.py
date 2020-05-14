@@ -25,8 +25,7 @@ class Trainer(TrainerAbstract, TrainerLoss, TrainerIteration, TrainerDataset, Tr
         super(Trainer, self).__init__(opt)
         self.dataset_train = None
         self.opt.training_media_path = os.path.join(self.opt.dir_name, "training_media")
-        if not os.path.exists(self.opt.training_media_path):
-            os.mkdir(self.opt.training_media_path)
+        os.makedirs(self.opt.training_media_path,  exist_ok=True)
 
         # Define Flags
         self.flags = EasyDict()

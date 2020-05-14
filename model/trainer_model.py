@@ -27,7 +27,6 @@ class TrainerModel(object):
 
         self.network = EncoderDecoder(self.opt)
         self.network = nn.DataParallel(self.network, device_ids=self.opt.multi_gpu)
-
         self.reload_network()
 
     def reload_network(self):
@@ -39,7 +38,7 @@ class TrainerModel(object):
             yellow_print(f"Network weights loaded from  {self.opt.reload_model_path}!")
             # print(self.network.state_dict().keys())
             # print(torch.load(self.opt.reload_model_path).keys())
-            self.network.module.load_state_dict(torch.load(self.opt.reload_model_path, map_location='cuda:0'))
+            self.network.load_state_dict(torch.load(self.opt.reload_model_path, map_location='cuda:0'))
 
         elif self.opt.reload_decoder_path != "":
             opt = deepcopy(self.opt)
