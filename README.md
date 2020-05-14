@@ -67,7 +67,7 @@ python train.py --shapenet13 --dir_name log/atlasnet_singleview_25_squares_tmp -
 
 
 
-### Using the trained models
+### Using a trained model
 
 ```python train.py --demo --demo_input_path YOUR_IMAGE_or_OBJ_PATH --reload_model_path YOUR_MODEL_PTH_PATH ```
 
@@ -81,7 +81,7 @@ Extension supported are `ply` `npy` `obg` and `png`
 
 
 
-### Quantitative Results [Pretrained models](https://drive.google.com/a/polytechnique.org/uc?id=1mlA57o7n7CK9u8RpYS_RekTQN7RTNjhl&export=download)
+### Quantitative Results [Autoencoder Pretrained models](https://drive.google.com/a/polytechnique.org/uc?id=1mlA57o7n7CK9u8RpYS_RekTQN7RTNjhl&export=download)
 
 
 | Method (on Planes) | Chamfer (*1) | Fscore (*2) | [Metro](https://github.com/ThibaultGROUEIX/AtlasNet/issues/34) (*3) | Total Train time (min) |
