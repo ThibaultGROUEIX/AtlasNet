@@ -43,6 +43,9 @@ cd ../..
 
 ### Usage
 
+Data download should be automatic. However, due to the new google drive traffic caps, you may have to download manually. If you run into an error running the demo,
+you can refer to #61. 
+
 * **[Demo](./doc/demo.md)** :    ```python train.py --demo```
 * **[Training](./doc/training.md)** :  ```python train.py --shapenet13```  *Monitor on  http://localhost:8890/*
 * <details><summary> Latest Refacto 12-2019  </summary>
