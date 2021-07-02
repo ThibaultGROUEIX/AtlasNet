@@ -39,12 +39,28 @@ cd metro_sources; python setup.py --build # build metro distance #GPL3
 cd ../..
 ```
 
-
-
-### Usage
+### A note on data.
 
 Data download should be automatic. However, due to the new google drive traffic caps, you may have to download manually. If you run into an error running the demo,
 you can refer to #61. 
+
+You can manually download the data from three sources (there are the same) :
+* Google drive : https://drive.google.com/drive/folders/1If_-t0Aw9Zps-gj5ttgaMSTqRwYms9Ag?usp=sharing
+* Kaggle : https://www.kaggle.com/thibeix/atlasnet-data
+* NextCloud : https://cloud.enpc.fr/s/z9TxRcxGgeYGDJ4
+
+Please make sure to unzip the archives in the right places :
+
+```shell
+cd AtlasNet
+mkdir data
+unzip ShapeNetV1PointCloud.zip -d ./data/
+unzip ShapeNetV1Renderings.zip -d ./data/
+unzip metro_files.zip -d ./data/
+unzip trained_models.zip -d ./training/
+```
+### Usage
+
 
 * **[Demo](./doc/demo.md)** :    ```python train.py --demo```
 * **[Training](./doc/training.md)** :  ```python train.py --shapenet13```  *Monitor on  http://localhost:8890/*
