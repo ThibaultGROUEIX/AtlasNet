@@ -23,7 +23,7 @@ cd AtlasNet
 #Dependencies
 conda create -n atlasnet python=3.6 --yes
 conda activate atlasnet
-conda install  pytorch torchvision cudatoolkit=10.1 -c pytorch --yes
+conda install pytorch==1.7.1 torchvision==0.8.2 cudatoolkit=10.1 -c pytorch --yes
 pip install --user --requirement  requirements.txt # pip dependencies
 ```
 
